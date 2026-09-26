@@ -1,3 +1,5 @@
+
+import { copy } from "@/lib/i18n/copy";
 import type { TemplateInfo } from "@/lib/api";
 
 /** Mirrors backend/templates.py — instant preview without waiting on /api/templates. */
@@ -5,7 +7,7 @@ export const STATIC_TEMPLATES: TemplateInfo[] = [
   {
     id: "reels_split",
     name: "Reels 9:16 (split topo/baixo)",
-    description: "Vídeo original embaixo, espaço em cima pra imagem ou vídeo.",
+    get description() { return copy("Vídeo original embaixo, espaço em cima pra imagem ou vídeo."); },
     aspect: "9:16",
     width: 1080,
     height: 1920,
@@ -22,8 +24,8 @@ export const STATIC_TEMPLATES: TemplateInfo[] = [
   },
   {
     id: "ig_square",
-    name: "Instagram 1:1 (quadrado)",
-    description: "Vídeo original embaixo, imagem em cima. Perfeito pro feed.",
+    get name() { return copy("Instagram 1:1 (quadrado)"); },
+    get description() { return copy("Vídeo original embaixo, imagem em cima. Perfeito pro feed."); },
     aspect: "1:1",
     width: 1080,
     height: 1080,
@@ -40,8 +42,8 @@ export const STATIC_TEMPLATES: TemplateInfo[] = [
   },
   {
     id: "reels_full",
-    name: "Reels 9:16 (tela cheia)",
-    description: "Vídeo vertical 9:16 com crop central — sem overlay.",
+    get name() { return copy("Reels 9:16 (tela cheia)"); },
+    get description() { return copy("Vídeo vertical 9:16 com crop central — sem overlay."); },
     aspect: "9:16",
     width: 1080,
     height: 1920,
@@ -58,8 +60,8 @@ export const STATIC_TEMPLATES: TemplateInfo[] = [
   },
   {
     id: "choquei_image",
-    name: "Choquei (imagem em cima)",
-    description: "70% vídeo embaixo, imagem estática em cima — estilo viral.",
+    get name() { return copy("Choquei (imagem em cima)"); },
+    get description() { return copy("70% vídeo embaixo, imagem estática em cima — estilo viral."); },
     aspect: "9:16",
     width: 1080,
     height: 1920,
@@ -76,8 +78,8 @@ export const STATIC_TEMPLATES: TemplateInfo[] = [
   },
   {
     id: "choquei_video",
-    name: "Choquei (vídeo em cima)",
-    description: "70% vídeo embaixo, vídeo loop em cima — estilo viral.",
+    get name() { return copy("Choquei (vídeo em cima)"); },
+    get description() { return copy("70% vídeo embaixo, vídeo loop em cima — estilo viral."); },
     aspect: "9:16",
     width: 1080,
     height: 1920,

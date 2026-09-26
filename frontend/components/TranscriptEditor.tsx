@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useMemo, useState } from "react";
 import { Check, Loader2, Save, Search, Sparkles, Smile } from "lucide-react";
@@ -26,6 +30,7 @@ type Props = {
 export default function TranscriptEditor({
   jobId, words, onChange, onSave, onSeek, currentTime, disableEnrich = false,
 }: Props) {
+  useLocaleSubscription();
   const [query, setQuery] = useState("");
   const [saved, setSaved] = useState(false);
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
@@ -95,12 +100,12 @@ export default function TranscriptEditor({
       onChange(r.words);
       setSaved(false);
       if (r.changed === 0 && kind === "punct") {
-        setEnrichError("Nenhuma vírgula ou ponto foi adicionada — tente de novo.");
+        setEnrichError(copy("Nenhuma vírgula ou ponto foi adicionada — tente de novo."));
       } else if (r.changed > 0) {
         setEnrichError(null);
       }
     } catch (e: unknown) {
-      setEnrichError(e instanceof Error ? e.message : "Falha ao enriquecer");
+      setEnrichError(e instanceof Error ? e.message : copy("Falha ao enriquecer"));
     } finally {
       setEnriching(null);
     }
@@ -115,7 +120,7 @@ export default function TranscriptEditor({
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (e: unknown) {
-      setEnrichError(e instanceof Error ? e.message : "Falha ao salvar");
+      setEnrichError(e instanceof Error ? e.message : copy("Falha ao salvar"));
     }
   };
 
@@ -134,7 +139,7 @@ export default function TranscriptEditor({
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar palavra..."
+              placeholder={copy("Buscar palavra...")}
               className="min-w-0 flex-1 bg-transparent text-sm outline-none"
             />
             <span className="shrink-0 text-xs text-zinc-500">{visibleIndices.length}</span>
@@ -146,8 +151,7 @@ export default function TranscriptEditor({
             }`}
           >
             {saved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
-            Salvar
-          </button>
+            {copy("Salvar")}</button>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {!disableEnrich && (
@@ -158,23 +162,20 @@ export default function TranscriptEditor({
                 className="flex items-center gap-1 rounded-md border border-border bg-panel px-2 py-1 text-xs text-zinc-300 hover:border-accent/40 hover:text-accent disabled:opacity-50"
               >
                 {enriching === "punct" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
-                Pontuação IA
-              </button>
+                {copy("Pontuação IA")}</button>
               <button
                 onClick={() => handleEnrich("emoji")}
                 disabled={enriching !== null}
                 className="flex items-center gap-1 rounded-md border border-border bg-panel px-2 py-1 text-xs text-zinc-300 hover:border-accent/40 hover:text-accent disabled:opacity-50"
               >
                 {enriching === "emoji" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Smile className="h-3 w-3" />}
-                Emojis IA
-              </button>
+                {copy("Emojis IA")}</button>
               <button
                 onClick={handleRemoveEmojis}
                 disabled={enriching !== null}
                 className="flex items-center gap-1 rounded-md border border-border bg-panel px-2 py-1 text-xs text-zinc-300 hover:border-red-400/40 hover:text-red-300 disabled:opacity-50"
               >
-                Remover emojis
-              </button>
+                {copy("Remover emojis")}</button>
             </>
           )}
         </div>
@@ -183,7 +184,7 @@ export default function TranscriptEditor({
 
       {editingIdx !== null && (
         <div className="border-b border-border bg-panel/80 p-3">
-          <p className="mb-2 text-xs text-zinc-500">Editando — pontuação e emojis:</p>
+          <p className="mb-2 text-xs text-zinc-500">{copy("Editando — pontuação e emojis:")}</p>
           <div className="mb-2 flex flex-wrap gap-1">
             {QUICK_PUNCT.map((p) => (
               <button
@@ -227,7 +228,7 @@ export default function TranscriptEditor({
                       ? "bg-accent/20 text-accent"
                       : "text-zinc-300 hover:bg-panel"
                   } ${isEditing ? "ring-1 ring-accent" : ""}`}
-                  title={`${w.start.toFixed(2)}s — duplo clique para editar`}
+                  title={copy("{0}s — duplo clique para editar", {0: w.start.toFixed(2)})}
                 >
                   {isEditing ? (
                     <input
@@ -251,9 +252,7 @@ export default function TranscriptEditor({
           })}
         </div>
         <p className="mt-4 text-xs text-zinc-500">
-          Clique para ir ao tempo · duplo clique para editar (vírgulas, !, emojis) ·
-          pontuação já vem automática após transcrever · use Emojis IA para destacar palavras-chave.
-        </p>
+          {copy("Clique para ir ao tempo · duplo clique para editar (vírgulas, !, emojis) · pontuação já vem automática após transcrever · use Emojis IA para destacar palavras-chave.")}</p>
       </div>
     </div>
   );

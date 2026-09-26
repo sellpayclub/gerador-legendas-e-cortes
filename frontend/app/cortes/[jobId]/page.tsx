@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -106,28 +110,29 @@ const DEFAULT_COMPOSE_LOCAL: ComposeSettings = { ...DEFAULT_COMPOSE };
 
 function labelForStage(stage: string): string {
   const map: Record<string, string> = {
-    queued: "Na fila",
-    extracting_audio: "Extraindo áudio",
-    audio_ready: "Áudio pronto",
-    transcribing: "Transcrevendo",
-    transcribed: "Transcrição pronta",
-    generating_ass: "Gerando legendas",
-    rendering: "Renderizando cortes",
-    done: "Pronto",
-    error: "Erro",
+    queued: copy("Na fila"),
+    extracting_audio: copy("Extraindo áudio"),
+    audio_ready: copy("Áudio pronto"),
+    transcribing: copy("Transcrevendo"),
+    transcribed: copy("Transcrição pronta"),
+    generating_ass: copy("Gerando legendas"),
+    rendering: copy("Renderizando cortes"),
+    done: copy("Pronto"),
+    error: copy("Erro"),
   };
   return map[stage] ?? stage;
 }
 
 const STEP_HINTS: Record<CortesStep, string> = {
-  1: "Marque os cortes desejados. Toque em «Ajustar corte» no rodapé da lista se quiser editar início/fim.",
-  2: "Estilo e destaques valem para todos os cortes selecionados; texto e frases de destaque são por corte.",
-  3: "Gere um MP4 separado por corte marcado — o vídeo original completo não é exportado.",
+  get 1() { return copy("Marque os cortes desejados. Toque em «Ajustar corte» no rodapé da lista se quiser editar início/fim."); },
+  get 2() { return copy("Estilo e destaques valem para todos os cortes selecionados; texto e frases de destaque são por corte."); },
+  get 3() { return copy("Gere um MP4 separado por corte marcado — o vídeo original completo não é exportado."); },
 };
 
 type Step2Tab = "style" | "highlights" | "text";
 
 export default function CortesPage() {
+  useLocaleSubscription();
   const params = useParams<{ jobId: string }>();
   const router = useRouter();
   const jobId = params.jobId;
@@ -184,7 +189,7 @@ export default function CortesPage() {
   useEffect(() => {
     if (liveJob) setJob(liveJob);
     if (liveJob?.stage === "error") {
-      setError(liveJob.message || "Falha ao processar.");
+      setError(liveJob.message || copy("Falha ao processar."));
     }
   }, [liveJob]);
 
@@ -209,7 +214,7 @@ export default function CortesPage() {
             await startTranscribe(jobId);
           }
         } else if (j.stage === "error") {
-          setError(j.message || "Falha ao processar o vídeo.");
+          setError(j.message || copy("Falha ao processar o vídeo."));
         } else if (j.stage === "audio_ready") {
           try {
             await startTranscribe(jobId);
@@ -289,7 +294,7 @@ export default function CortesPage() {
         );
         setSettingsReady(true);
       } catch (e: unknown) {
-        if (active) setError(e instanceof Error ? e.message : "Erro ao carregar");
+        if (active) setError(e instanceof Error ? e.message : copy("Erro ao carregar"));
       } finally {
         if (active) setLoading(false);
       }
@@ -488,8 +493,8 @@ export default function CortesPage() {
       } catch (e: unknown) {
         setError(
           e instanceof Error && e.message
-            ? `Não foi possível salvar os cortes: ${e.message}`
-            : "Não foi possível salvar os cortes — verifique sua conexão e tente novamente.",
+            ? copy("Não foi possível salvar os cortes: {0}", {0: e.message})
+            : copy("Não foi possível salvar os cortes — verifique sua conexão e tente novamente."),
         );
       }
     },
@@ -552,8 +557,8 @@ export default function CortesPage() {
       } catch (e: unknown) {
         setError(
           e instanceof Error && e.message
-            ? `Não foi possível salvar as configurações: ${e.message}`
-            : "Não foi possível salvar as configurações — verifique sua conexão e tente novamente.",
+            ? copy("Não foi possível salvar as configurações: {0}", {0: e.message})
+            : copy("Não foi possível salvar as configurações — verifique sua conexão e tente novamente."),
         );
       }
     },
@@ -653,8 +658,8 @@ export default function CortesPage() {
       const overlay = clip?.overlay_asset ?? compose.overlay_asset;
       if (needsOverlay(exportFormat) && !overlay) {
         return clip
-          ? `O corte "${clip.title.slice(0, 24)}" precisa de mídia de overlay.`
-          : "Este formato exige mídia de overlay — envie na aba Composição.";
+          ? copy("O corte \"{0}\" precisa de mídia de overlay.", {0: clip.title.slice(0, 24)})
+          : copy("Este formato exige mídia de overlay — envie na aba Composição.");
       }
       return null;
     },
@@ -663,7 +668,7 @@ export default function CortesPage() {
 
   const handleSyncEditing = useCallback(async () => {
     if (!activeClipId) {
-      setError("Selecione um corte como referência.");
+      setError(copy("Selecione um corte como referência."));
       return;
     }
     setSyncingEdits(true);
@@ -676,11 +681,11 @@ export default function CortesPage() {
       clipWordsCache.current = {};
       clipKeywordsCache.current = {};
       const parts = [
-        `Estilo de legenda aplicado a ${r.synced} corte(s).`,
-        "Título e imagem de cada corte continuam individuais.",
+        copy("Estilo de legenda aplicado a {0} corte(s).", {0: r.synced}),
+        copy("Título e imagem de cada corte continuam individuais."),
       ];
       if (r.highlight_enabled && r.keywords_synced > 0) {
-        parts.push(`Destaques detectados em ${r.keywords_synced} corte(s).`);
+        parts.push(copy("Destaques detectados em {0} corte(s).", {0: r.keywords_synced}));
       }
       setSyncMessage(parts.join(" "));
       if (activeClip) {
@@ -691,7 +696,7 @@ export default function CortesPage() {
         if (kw) setClipKeywords(kw.indices ?? []);
       }
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Falha ao sincronizar");
+      setError(e instanceof Error ? e.message : copy("Falha ao sincronizar"));
     } finally {
       setSyncingEdits(false);
     }
@@ -731,7 +736,7 @@ export default function CortesPage() {
     if (r.detect_error) {
       setError(r.detect_error);
     } else if (!list.length) {
-      setError("Nenhum corte encontrado — tente de novo ou ajuste manualmente.");
+      setError(copy("Nenhum corte encontrado — tente de novo ou ajuste manualmente."));
     }
     setDetecting(false);
     setDetectPhase("working");
@@ -751,7 +756,7 @@ export default function CortesPage() {
       } catch (e: unknown) {
         setDetecting(false);
         setDetectPhase("working");
-        setError(e instanceof Error ? e.message : "Falha ao detectar cortes");
+        setError(e instanceof Error ? e.message : copy("Falha ao detectar cortes"));
       }
     },
     [jobId, applyDetectResult, detectFocuses],
@@ -903,8 +908,8 @@ export default function CortesPage() {
       await renderSingleClip(jobId, clipId, renderBody(clip));
       pollClips();
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Falha ao gerar corte";
-      setError(msg.includes("409") ? "Corte já está gerando — aguarde ou recarregue a página." : msg);
+      const msg = e instanceof Error ? e.message : copy("Falha ao gerar corte");
+      setError(msg.includes("409") ? copy("Corte já está gerando — aguarde ou recarregue a página.") : msg);
       setClipList((prev) =>
         prev.map((c) =>
           c.id === clipId ? { ...c, status: c.status === "done" ? "done" : "pending" } : c,
@@ -922,7 +927,7 @@ export default function CortesPage() {
     const enabled = clipList.filter((c) => c.enabled);
     const ids = enabled.map((c) => c.id);
     if (!ids.length) {
-      setError("Selecione ao menos um corte.");
+      setError(copy("Selecione ao menos um corte."));
       return;
     }
     for (const c of enabled) {
@@ -938,7 +943,7 @@ export default function CortesPage() {
       await startClipsRender(jobId, { clip_ids: ids, ...renderBody() });
       pollClips();
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Falha ao iniciar exportação");
+      setError(e instanceof Error ? e.message : copy("Falha ao iniciar exportação"));
       setRenderingAll(false);
     }
   };
@@ -947,11 +952,11 @@ export default function CortesPage() {
 
   const goNext = () => {
     if (step === 1 && !canContinueStep1) {
-      setError("Selecione ao menos um corte para continuar.");
+      setError(copy("Selecione ao menos um corte para continuar."));
       return;
     }
     if (step === 2 && enabledClips.length === 0) {
-      setError("Selecione ao menos um corte para continuar.");
+      setError(copy("Selecione ao menos um corte para continuar."));
       return;
     }
     setError(null);
@@ -971,8 +976,7 @@ export default function CortesPage() {
     return (
       <div className="flex flex-1 items-center justify-center gap-2 text-zinc-400">
         <Loader2 className="h-5 w-5 animate-spin" />
-        Carregando...
-      </div>
+        {copy("Carregando...")}</div>
     );
   }
 
@@ -983,13 +987,12 @@ export default function CortesPage() {
           onClick={() => router.push("/")}
           className="flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-100"
         >
-          <ArrowLeft className="h-4 w-4" /> Início
-        </button>
+          <ArrowLeft className="h-4 w-4" /> {copy("Início")}</button>
         <Scissors className="h-4 w-4 text-accent" />
         <div className="min-w-0 flex-1 truncate text-sm font-medium">{job?.filename}</div>
         {job && (
           <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs text-accent">
-            Cortes · {stageLabel}
+            {copy("Cortes ·")}{stageLabel}
           </span>
         )}
       </header>
@@ -1002,9 +1005,9 @@ export default function CortesPage() {
         <div className="mb-3 flex shrink-0 items-center gap-3 rounded-lg border border-accent/30 bg-accent/5 px-4 py-3">
           <Loader2 className="h-5 w-5 animate-spin text-accent" />
           <div>
-            <div className="text-sm font-medium text-zinc-100">Transcrevendo vídeo...</div>
+            <div className="text-sm font-medium text-zinc-100">{copy("Transcrevendo vídeo...")}</div>
             <div className="text-xs text-zinc-500">
-              {job?.message || "Aguarde — vídeos longos podem levar alguns minutos."}
+              {job?.message || copy("Aguarde — vídeos longos podem levar alguns minutos.")}
             </div>
           </div>
         </div>
@@ -1021,8 +1024,8 @@ export default function CortesPage() {
           {step >= 2 && highlightEnabled && (
             <p className="mb-1 shrink-0 text-center text-[10px] text-accent">
               {clipKeywords.length > 0
-                ? `Destaques ativos — ${clipKeywords.length} palavra(s) · dê play no trecho`
-                : "Destaques ligados — aba Destaques → Detectar com IA"}
+                ? copy("Destaques ativos — {0} palavra(s) · dê play no trecho", {0: clipKeywords.length})
+                : copy("Destaques ligados — aba Destaques → Detectar com IA")}
             </p>
           )}
           <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center overflow-hidden">
@@ -1092,7 +1095,7 @@ export default function CortesPage() {
           </div>
           {step >= 2 && (
             <p className="mt-1 shrink-0 text-center text-xs text-muted">
-              Preview — arraste a legenda{exportFormat === "reels_full" ? " · 9:16 (arraste o vídeo p/ ajustar o corte)" : usesTemplatePreview(exportFormat) ? " · formato composto" : ""}
+              {copy("Preview — arraste a legenda")}{exportFormat === "reels_full" ? copy(" · 9:16 (arraste o vídeo p/ ajustar o corte)") : usesTemplatePreview(exportFormat) ? " · formato composto" : ""}
             </p>
           )}
         </div>
@@ -1126,11 +1129,11 @@ export default function CortesPage() {
                   {step === 2 && (
                     <>
                   <div className="sticky top-0 z-10 border-b border-border bg-accent/5 px-4 py-3 text-sm text-zinc-300">
-                    Corte{" "}
+                    {copy("Corte")}{" "}
                     <span className="font-semibold text-accent">
                       {enabledClips.findIndex((c) => c.id === activeClipId) + 1 || 1}
                     </span>{" "}
-                    de {enabledClips.length}
+                    {copy("de")}{enabledClips.length}
                   </div>
 
                   {enabledClips.length > 1 && (
@@ -1153,7 +1156,7 @@ export default function CortesPage() {
                   )}
 
                   <div className="space-y-3 p-3">
-                    <Section step={1} title="Formato do vídeo" description="Proporção e template de exportação">
+                    <Section step={1} title={copy("Formato do vídeo")} description={copy("Proporção e template de exportação")}>
                       <ClipFormatPicker
                         format={exportFormat}
                         onChange={handleFormatChange}
@@ -1162,7 +1165,7 @@ export default function CortesPage() {
                     </Section>
 
                     {isComposeFormat(exportFormat) && (
-                      <Section step={2} title="Composição" description="Headline, mídia e barra de progresso">
+                      <Section step={2} title={copy("Composição")} description={copy("Headline, mídia e barra de progresso")}>
                         <ClipComposePanel
                           jobId={jobId}
                           format={exportFormat}
@@ -1178,8 +1181,8 @@ export default function CortesPage() {
                     {wordsData ? (
                     <Section
                       step={isComposeFormat(exportFormat) ? 3 : 2}
-                      title="Estilo da legenda"
-                      description="Estilo, destaques e texto — sincronize para todos os cortes"
+                      title={copy("Estilo da legenda")}
+                      description={copy("Estilo, destaques e texto — sincronize para todos os cortes")}
                     >
                       <div className="mb-3 flex flex-wrap items-center gap-2 px-1">
                         <button
@@ -1187,18 +1190,16 @@ export default function CortesPage() {
                           onClick={() => void handleSyncEditing()}
                           disabled={syncingEdits || !activeClipId || enabledClips.length < 2}
                           className="inline-flex items-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-3 py-2 text-sm font-medium text-accent transition hover:bg-accent/15 disabled:opacity-50"
-                          title="Usa o corte selecionado como referência"
+                          title={copy("Usa o corte selecionado como referência")}
                         >
                           {syncingEdits ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
                             <Copy className="h-4 w-4" />
                           )}
-                          Sincronizar legenda para todos
-                        </button>
+                          {copy("Sincronizar legenda para todos")}</button>
                         <span className="text-xs text-muted">
-                          Título e imagem do topo ficam por corte
-                        </span>
+                          {copy("Título e imagem do topo ficam por corte")}</span>
                       </div>
                       {syncMessage && (
                         <p className="mb-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-200">
@@ -1207,13 +1208,13 @@ export default function CortesPage() {
                       )}
                       <TabBar
                         tabs={[
-                          { id: "style" as const, label: "Estilo", shortLabel: "Estilo" },
+                          { id: "style" as const, label: copy("Estilo"), shortLabel: copy("Estilo") },
                           {
                             id: "highlights" as const,
-                            label: "Destaques",
-                            shortLabel: "Dest.",
+                            label: copy("Destaques"),
+                            shortLabel: copy("Dest."),
                           },
-                          { id: "text" as const, label: "Texto", shortLabel: "Texto" },
+                          { id: "text" as const, label: copy("Texto"), shortLabel: copy("Texto") },
                         ]}
                         active={step2Tab}
                         onChange={setStep2Tab}
@@ -1222,8 +1223,7 @@ export default function CortesPage() {
                     </Section>
                     ) : (
                       <p className="rounded-lg border border-border bg-panel/50 px-4 py-3 text-sm text-zinc-400">
-                        Aguardando transcrição para editar legendas, destaques e texto…
-                      </p>
+                        {copy("Aguardando transcrição para editar legendas, destaques e texto…")}</p>
                     )}
                   </div>
 
@@ -1231,9 +1231,7 @@ export default function CortesPage() {
                     <>
                       {highlightEnabled && clipKeywords.length === 0 && (
                         <p className="border-b border-amber-500/20 bg-amber-500/5 px-4 py-2 text-xs text-amber-200">
-                          Para frase grande + blur: aba <strong>Destaques</strong> → ligue o
-                          toggle → Detectar com IA
-                        </p>
+                          {copy("Para frase grande + blur: aba")}<strong>{copy("Destaques")}</strong> {copy("→ ligue o toggle → Detectar com IA")}</p>
                       )}
                     <StylePicker
                       style={style}
@@ -1296,19 +1294,16 @@ export default function CortesPage() {
                     <>
                       <div className="border-b border-border bg-panel/80 px-4 py-3">
                         <p className="text-xs text-zinc-400">
-                          Ajustar legenda antes de exportar?
-                        </p>
+                          {copy("Ajustar legenda antes de exportar?")}</p>
                         <button
                           type="button"
                           onClick={() => setStep(2)}
                           className="mt-2 text-xs font-medium text-accent hover:underline"
                         >
-                          ← Voltar para editar Estilo / Destaques / Texto
-                        </button>
+                          {copy("← Voltar para editar Estilo / Destaques / Texto")}</button>
                         {highlightEnabled && (
                           <p className="mt-2 text-[10px] text-accent">
-                            Destaques dramáticos incluídos no MP4
-                          </p>
+                            {copy("Destaques dramáticos incluídos no MP4")}</p>
                         )}
                       </div>
                       <ClipExportPanel
@@ -1333,8 +1328,7 @@ export default function CortesPage() {
 
           <div className="hidden shrink-0 border-t border-border bg-panel p-3 lg:block">
             <p className="mb-2 text-center text-xs text-muted">
-              Etapa {step} de 3 — use o botão amarelo abaixo da tela
-            </p>
+              {copy("Etapa")}{step} {copy("de 3 — use o botão amarelo abaixo da tela")}</p>
           </div>
         </aside>
       </div>
@@ -1343,11 +1337,11 @@ export default function CortesPage() {
       <div className="pb-safe fixed inset-x-0 bottom-0 z-50 border-t-2 border-accent/40 bg-[#121214]/98 px-3 py-3 shadow-[0_-12px_40px_rgba(0,0,0,0.6)] backdrop-blur-md sm:px-5">
         <div className="mx-auto flex max-w-[1920px] items-center gap-3">
           <div className="hidden min-w-0 flex-1 text-sm text-muted sm:block">
-            <span className="font-medium text-zinc-200">Etapa {step}/3</span>
+            <span className="font-medium text-zinc-200">{copy("Etapa")}{step}/3</span>
             {" · "}
             {step === 1 && `${clipList.filter((c) => c.enabled).length} corte(s) selecionado(s)`}
-            {step === 2 && "Estilo + destaques + texto dos cortes selecionados"}
-            {step === 3 && "Gere e baixe os MP4s"}
+            {step === 2 && copy("Estilo + destaques + texto dos cortes selecionados")}
+            {step === 3 && copy("Gere e baixe os MP4s")}
           </div>
           <div className="flex w-full flex-1 gap-2 sm:w-auto sm:flex-none">
             {step > 1 && (
@@ -1357,7 +1351,7 @@ export default function CortesPage() {
                 className="touch-target flex items-center justify-center gap-1 rounded-lg border border-border px-4 py-3 text-sm text-zinc-300 hover:bg-border/40"
               >
                 <ChevronLeft className="h-4 w-4" />
-                <span className="hidden sm:inline">Voltar</span>
+                <span className="hidden sm:inline">{copy("Voltar")}</span>
               </button>
             )}
             {step < 3 ? (
@@ -1367,7 +1361,7 @@ export default function CortesPage() {
                 disabled={transcribing || (step === 1 && !canContinueStep1)}
                 className="touch-target flex min-w-[200px] flex-1 items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-bold text-bg shadow-lg shadow-accent/20 disabled:opacity-50 sm:flex-none"
               >
-                {step === 1 ? "Continuar para legendas" : "Continuar para exportar"}
+                {step === 1 ? copy("Continuar para legendas") : copy("Continuar para exportar")}
                 <ArrowRight className="h-4 w-4" />
               </button>
             ) : (
@@ -1376,8 +1370,7 @@ export default function CortesPage() {
                 onClick={() => router.push("/")}
                 className="flex flex-1 items-center justify-center rounded-lg border border-border px-6 py-3 text-sm font-medium text-zinc-200 hover:bg-border/40 sm:flex-none"
               >
-                Novo vídeo
-              </button>
+                {copy("Novo vídeo")}</button>
             )}
           </div>
         </div>

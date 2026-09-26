@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -10,6 +14,7 @@ import Field from "@/components/ui/Field";
 import { inputClass } from "@/components/ui/inputClass";
 
 export default function AtualizarSenhaPage() {
+  useLocaleSubscription();
   const router = useRouter();
   const [checking, setChecking] = useState(true);
   const [password, setPassword] = useState("");
@@ -32,11 +37,11 @@ export default function AtualizarSenhaPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password.length < 6) {
-      setError("A senha deve ter pelo menos 6 caracteres.");
+      setError(copy("A senha deve ter pelo menos 6 caracteres."));
       return;
     }
     if (password !== confirm) {
-      setError("As senhas não coincidem.");
+      setError(copy("As senhas não coincidem."));
       return;
     }
     setLoading(true);
@@ -51,7 +56,7 @@ export default function AtualizarSenhaPage() {
         router.refresh();
       }, 2000);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Não foi possível alterar a senha");
+      setError(e instanceof Error ? e.message : copy("Não foi possível alterar a senha"));
     } finally {
       setLoading(false);
     }
@@ -59,7 +64,7 @@ export default function AtualizarSenhaPage() {
 
   if (checking) {
     return (
-      <AuthShell title="Carregando..." subtitle="">
+      <AuthShell title={copy("Carregando...")} subtitle="">
         <div className="flex justify-center py-8">
           <Loader2 className="h-8 w-8 animate-spin text-accent" />
         </div>
@@ -69,27 +74,25 @@ export default function AtualizarSenhaPage() {
 
   return (
     <AuthShell
-      title="Definir nova senha"
+      title={copy("Definir nova senha")}
       subtitle={
         done
           ? undefined
-          : "Escolha uma senha segura para acessar sua conta no futuro."
+          : copy("Escolha uma senha segura para acessar sua conta no futuro.")
       }
       footer={
         !done ? (
           <Link href="/login" className="text-accent hover:underline">
-            Voltar ao login
-          </Link>
+            {copy("Voltar ao login")}</Link>
         ) : null
       }
     >
       {done ? (
         <p className="text-center text-sm text-green-400">
-          Senha atualizada! Redirecionando...
-        </p>
+          {copy("Senha atualizada! Redirecionando...")}</p>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Field label="Nova senha">
+          <Field label={copy("Nova senha")}>
             <input
               type="password"
               required
@@ -100,7 +103,7 @@ export default function AtualizarSenhaPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Field>
-          <Field label="Confirmar senha">
+          <Field label={copy("Confirmar senha")}>
             <input
               type="password"
               required
@@ -118,8 +121,7 @@ export default function AtualizarSenhaPage() {
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 font-medium text-zinc-950 transition hover:bg-accent-hover disabled:opacity-60"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            Salvar senha
-          </button>
+            {copy("Salvar senha")}</button>
         </form>
       )}
     </AuthShell>

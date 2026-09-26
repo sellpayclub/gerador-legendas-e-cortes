@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import { listPresets, type StyleConfig, type Word } from "@/lib/api";
@@ -41,6 +45,7 @@ const STYLE_DEFAULTS: StyleConfig = {
 };
 
 function PresetPreview({ values }: { values: Partial<StyleConfig> }) {
+  useLocaleSubscription();
   const style = { ...STYLE_DEFAULTS, ...values };
   const scaleY = 0.19;
   return (
@@ -92,6 +97,7 @@ export default function StylePicker({
   onPositionChange,
   defaultPosition,
 }: Props) {
+  useLocaleSubscription();
   const [presets, setPresets] = useState<{ id: string; name: string; values: any }[]>([]);
 
   useEffect(() => {
@@ -120,7 +126,7 @@ export default function StylePicker({
 
   return (
     <div className="space-y-4">
-      <Section title="Presets" description="Estilos prontos — clique para aplicar">
+      <Section title={copy("Presets")} description={copy("Estilos prontos — clique para aplicar")}>
         <div className="grid max-h-80 grid-cols-1 gap-2 overflow-y-auto overscroll-contain pr-1 sm:grid-cols-2">
           {presets.map((p) => (
             <button
@@ -136,9 +142,9 @@ export default function StylePicker({
         </div>
       </Section>
 
-      <Section title="Tipografia" collapsible defaultOpen>
+      <Section title={copy("Tipografia")} collapsible defaultOpen>
         <div className="space-y-3">
-        <Field label="Fonte">
+        <Field label={copy("Fonte")}>
           <select
             value={style.font}
             onChange={(e) => set({ font: e.target.value })}
@@ -149,12 +155,12 @@ export default function StylePicker({
             ))}
           </select>
         </Field>
-        <Field label="Caixa">
+        <Field label={copy("Caixa")}>
           <div className="flex gap-2">
             {([
               ["normal", "Normal"],
-              ["upper", "MAIÚSCULAS"],
-              ["lower", "minúsculas"],
+              ["upper", copy("MAIÚSCULAS")],
+              ["lower", copy("minúsculas")],
             ] as const).map(([value, label]) => (
               <button
                 key={value}
@@ -178,14 +184,14 @@ export default function StylePicker({
             className="w-full"
           />
         </Field>
-        <Field label={`Palavras por linha (máx.): ${wordsPerLine}`}>
+        <Field label={copy("Palavras por linha (máx.): {0}", {0: wordsPerLine})}>
           <input
             type="range" min={1} max={8} value={wordsPerLine}
             onChange={(e) => onWordsPerLineChange(+e.target.value)}
             className="w-full"
           />
         </Field>
-        <Field label={`Sensibilidade de pausa: ${(style.pause_threshold_s ?? 0.45).toFixed(2)}s`}>
+        <Field label={copy("Sensibilidade de pausa: {0}s", {0: (style.pause_threshold_s ?? 0.45).toFixed(2)})}>
           <input
             type="range"
             min={0.25}
@@ -196,24 +202,23 @@ export default function StylePicker({
             className="w-full"
           />
           <p className="mt-1 text-[10px] text-zinc-500">
-            Quebra a linha quando há silêncio maior que este valor. Menor = mais sensível.
-          </p>
+            {copy("Quebra a linha quando há silêncio maior que este valor. Menor = mais sensível.")}</p>
         </Field>
-        <Field label={`Espaçamento de letras: ${letterSpacing}px`}>
+        <Field label={copy("Espaçamento de letras: {0}px", {0: letterSpacing})}>
           <input
             type="range" min={0} max={20} value={letterSpacing}
             onChange={(e) => set({ letter_spacing: +e.target.value })}
             className="w-full"
           />
         </Field>
-        <Field label={`Espaçamento de palavras: ${wordSpacing}px`}>
+        <Field label={copy("Espaçamento de palavras: {0}px", {0: wordSpacing})}>
           <input
             type="range" min={0} max={40} value={wordSpacing}
             onChange={(e) => set({ word_spacing: +e.target.value })}
             className="w-full"
           />
         </Field>
-        <Field label={`Altura (posição Y): ${Math.round(posY)}px`}>
+        <Field label={copy("Altura (posição Y): {0}px", {0: Math.round(posY)})}>
           <input
             type="range"
             min={sliderMin}
@@ -234,8 +239,7 @@ export default function StylePicker({
             onClick={resetPosition}
             className="mt-2 w-full rounded-lg border border-border bg-panel px-3 py-2 text-xs text-zinc-300 transition hover:border-accent/40 hover:text-zinc-100"
           >
-            Resetar posição da legenda
-          </button>
+            {copy("Resetar posição da legenda")}</button>
         </Field>
         <div className="flex gap-4">
           <label className="flex items-center gap-2 text-sm">
@@ -243,27 +247,25 @@ export default function StylePicker({
               type="checkbox" checked={style.bold}
               onChange={(e) => set({ bold: e.target.checked })}
             />
-            Negrito
-          </label>
+            {copy("Negrito")}</label>
           <label className="flex items-center gap-2 text-sm">
             <input
               type="checkbox" checked={style.italic}
               onChange={(e) => set({ italic: e.target.checked })}
             />
-            Itálico
-          </label>
+            {copy("Itálico")}</label>
         </div>
         </div>
       </Section>
 
-      <Section title="Cores" collapsible defaultOpen>
+      <Section title={copy("Cores")} collapsible defaultOpen>
         <div className="space-y-3">
         <div className="grid grid-cols-3 gap-3">
-          <ColorField label="Highlight" value={style.primary_color} onChange={(v) => set({ primary_color: v })} />
+          <ColorField label={copy("Highlight")} value={style.primary_color} onChange={(v) => set({ primary_color: v })} />
           <ColorField label="Base" value={style.secondary_color} onChange={(v) => set({ secondary_color: v })} />
-          <ColorField label="Contorno" value={style.outline_color} onChange={(v) => set({ outline_color: v })} />
+          <ColorField label={copy("Contorno")} value={style.outline_color} onChange={(v) => set({ outline_color: v })} />
         </div>
-        <Field label={`Espessura contorno: ${style.outline_width}px`}>
+        <Field label={copy("Espessura contorno: {0}px", {0: style.outline_width})}>
           <input
             type="range" min={0} max={24} value={style.outline_width}
             onChange={(e) => set({ outline_width: +e.target.value })}
@@ -273,15 +275,15 @@ export default function StylePicker({
         </div>
       </Section>
 
-      <Section title="Animação" collapsible defaultOpen={false}>
+      <Section title={copy("Animação")} collapsible defaultOpen={false}>
         <div className="space-y-3">
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {([
-            ["pop", "Pop"],
-            ["bounce", "Bounce"],
-            ["slide", "Slide"],
-            ["fade", "Fade"],
-            ["none", "Nenhuma"],
+            ["pop", copy("Pop")],
+            ["bounce", copy("Bounce")],
+            ["slide", copy("Slide")],
+            ["fade", copy("Fade")],
+            ["none", copy("Nenhuma")],
           ] as const).map(([a, label]) => (
             <button
               key={a}
@@ -307,7 +309,7 @@ export default function StylePicker({
           </Field>
         )}
         {(style.animation === "bounce" || style.animation === "slide") && (
-          <Field label={`Duração: ${style.pop_duration_ms}ms`}>
+          <Field label={copy("Duração: {0}ms", {0: style.pop_duration_ms})}>
             <input
               type="range" min={60} max={300} step={10} value={style.pop_duration_ms}
               onChange={(e) => set({ pop_duration_ms: +e.target.value })}
@@ -318,18 +320,17 @@ export default function StylePicker({
         </div>
       </Section>
 
-      <Section title="Caixa de fundo" collapsible defaultOpen={false}>
+      <Section title={copy("Caixa de fundo")} collapsible defaultOpen={false}>
         <div className="space-y-3">
         <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox" checked={style.box}
             onChange={(e) => set({ box: e.target.checked })}
           />
-          Mostrar caixa atrás do texto
-        </label>
+          {copy("Mostrar caixa atrás do texto")}</label>
         {style.box && (
           <>
-            <ColorField label="Cor da caixa" value={style.box_color} onChange={(v) => set({ box_color: v })} />
+            <ColorField label={copy("Cor da caixa")} value={style.box_color} onChange={(v) => set({ box_color: v })} />
             <Field label={`Opacidade: ${Math.round(style.box_opacity * 100)}%`}>
               <input
                 type="range" min={0} max={1} step={0.05} value={style.box_opacity}
@@ -346,6 +347,7 @@ export default function StylePicker({
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  useLocaleSubscription();
   return (
     <label className="block">
       <div className="label">{label}</div>
@@ -355,6 +357,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  useLocaleSubscription();
   return (
     <label className="block">
       <div className="label">{label}</div>

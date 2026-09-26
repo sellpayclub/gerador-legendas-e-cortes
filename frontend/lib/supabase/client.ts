@@ -1,3 +1,5 @@
+
+import { copy } from "@/lib/i18n/copy";
 import { createBrowserClient } from "@supabase/ssr";
 import { isMultiTenant } from "@/lib/hosted";
 
@@ -5,7 +7,7 @@ export function createClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) {
-    throw new Error("Supabase não configurado (NEXT_PUBLIC_SUPABASE_URL / ANON_KEY).");
+    throw new Error(copy("Supabase não configurado (NEXT_PUBLIC_SUPABASE_URL / ANON_KEY)."));
   }
   return createBrowserClient(url, key);
 }

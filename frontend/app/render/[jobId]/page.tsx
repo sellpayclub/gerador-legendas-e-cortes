@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -12,6 +16,7 @@ import { useJobEvents } from "@/lib/useJobEvents";
 import { useI18n } from "@/lib/i18n/context";
 
 export default function RenderPage() {
+  useLocaleSubscription();
   const params = useParams<{ jobId: string }>();
   const router = useRouter();
   const jobId = params.jobId;
@@ -88,7 +93,7 @@ export default function RenderPage() {
               className="mb-4 w-full rounded-lg bg-black"
             />
           ) : (
-            <p className="mb-4 text-sm text-zinc-400">Carregando vídeo…</p>
+            <p className="mb-4 text-sm text-zinc-400">{copy("Carregando vídeo…")}</p>
           )}
           <div className="flex flex-wrap gap-3">
             {outputSrc && (

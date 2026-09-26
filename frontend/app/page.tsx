@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Upload, Loader2, Scissors, Type } from "lucide-react";
@@ -18,6 +22,7 @@ const ACCEPTED = [".mp4", ".mov", ".mkv", ".avi", ".webm", ".m4v"];
 type AppMode = "legendas" | "cortes";
 
 export default function HomePage() {
+  useLocaleSubscription();
   const router = useRouter();
   const { t } = useI18n();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -45,7 +50,7 @@ export default function HomePage() {
     { value: "es", label: t("home.languages.es") },
     { value: "fr", label: t("home.languages.fr") },
     { value: "it", label: t("home.languages.it") },
-    { value: "de", label: t("home.languages.de") },
+    { value: copy("de"), label: t("home.languages.de") },
   ];
 
   const loadJobs = useCallback(async () => {
@@ -96,7 +101,7 @@ export default function HomePage() {
         await deleteJob(jobId);
         setRecentJobs((jobs) => jobs.filter((j) => j.id !== jobId));
       } catch (err) {
-        alert("Erro no frontend ao apagar: " + String(err));
+        alert(copy("Erro no frontend ao apagar: ") + String(err));
         await loadJobs();
       } finally {
         setDeletingId(null);

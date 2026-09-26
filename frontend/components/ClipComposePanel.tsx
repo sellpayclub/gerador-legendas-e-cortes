@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Image as ImageIcon, Loader2, Trash2, Upload } from "lucide-react";
@@ -25,6 +29,7 @@ export default function ClipComposePanel({
   jobId, format, compose, onComposeChange,
   clipText, onClipTextChange, clipTextLabel,
 }: Props) {
+  useLocaleSubscription();
   const { t } = useI18n();
   const [assets, setAssets] = useState<AssetInfo[]>([]);
   const [uploading, setUploading] = useState<string | null>(null);
@@ -47,7 +52,7 @@ export default function ClipComposePanel({
       onComposeChange({ [field]: r.filename });
       await refreshAssets();
     } catch (e: unknown) {
-      alert(`Erro ao enviar: ${e instanceof Error ? e.message : e}`);
+      alert(copy("Erro ao enviar: {0}", {0: e instanceof Error ? e.message : String(e)}));
     } finally {
       setUploading(null);
     }
@@ -66,7 +71,7 @@ export default function ClipComposePanel({
     <div className="space-y-4 px-4 py-3">
       {needsOverlay(format) && (
         <AssetBlock
-          label="Mídia do topo"
+          label={copy("Mídia do topo")}
           filename={compose.overlay_asset}
           uploading={uploading === "overlay_asset"}
           onPick={() => overlayRef.current?.click()}
@@ -84,22 +89,22 @@ export default function ClipComposePanel({
 
       {isChoquei && onClipTextChange && (
         <>
-          <Field label={clipTextLabel ?? "Headline do corte"}>
+          <Field label={clipTextLabel ?? copy("Headline do corte")}>
             <textarea
               value={clipText ?? ""}
               onChange={(e) => onClipTextChange(e.target.value)}
               rows={3}
-              placeholder="Digite o título — Enter para quebrar linha"
+              placeholder={copy("Digite o título — Enter para quebrar linha")}
               className="w-full rounded-md border border-border bg-bg px-3 py-2 text-sm leading-snug"
             />
           </Field>
-          <Field label="Estilo headline">
+          <Field label={copy("Estilo headline")}>
             <select
               value={compose.headline_style ?? "bold_red"}
               onChange={(e) => onComposeChange({ headline_style: e.target.value })}
               className="w-full rounded-md border border-border bg-bg px-3 py-2 text-sm"
             >
-              <option value="bold_red">Vermelho bold (Choquei)</option>
+              <option value="bold_red">{copy("Vermelho bold (Choquei)")}</option>
               <option value="simple">{t("template.styleSimple")}</option>
             </select>
           </Field>
@@ -107,7 +112,7 @@ export default function ClipComposePanel({
       )}
 
       <AssetBlock
-        label="Logo / marca d'água (opcional)"
+        label={copy("Logo / marca d'água (opcional)")}
         filename={compose.logo_asset}
         uploading={uploading === "logo_asset"}
         onPick={() => logoRef.current?.click()}
@@ -124,17 +129,17 @@ export default function ClipComposePanel({
 
       {(compose.logo_asset) && (
         <div className="grid grid-cols-2 gap-2">
-          <Field label="Logo X (%)">
+          <Field label={copy("Logo X (%)")}>
             <input type="range" min={0} max={100} value={Math.round((compose.logo_x ?? 0.85) * 100)}
               onChange={(e) => onComposeChange({ logo_x: Number(e.target.value) / 100 })}
               className="w-full" />
           </Field>
-          <Field label="Logo Y (%)">
+          <Field label={copy("Logo Y (%)")}>
             <input type="range" min={0} max={100} value={Math.round((compose.logo_y ?? 0.78) * 100)}
               onChange={(e) => onComposeChange({ logo_y: Number(e.target.value) / 100 })}
               className="w-full" />
           </Field>
-          <Field label="Tamanho logo">
+          <Field label={copy("Tamanho logo")}>
             <input type="range" min={8} max={40} value={Math.round((compose.logo_scale ?? 0.18) * 100)}
               onChange={(e) => onComposeChange({ logo_scale: Number(e.target.value) / 100 })}
               className="w-full" />
@@ -149,8 +154,7 @@ export default function ClipComposePanel({
           onChange={(e) => onComposeChange({ progress_enabled: e.target.checked })}
           className="rounded border-border"
         />
-        Barra de progresso fake
-      </label>
+        {copy("Barra de progresso fake")}</label>
 
       <ComposeStyleControls
         compose={compose}
@@ -169,6 +173,7 @@ export default function ClipComposePanel({
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  useLocaleSubscription();
   return (
     <div>
       <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-zinc-500">{label}</p>
@@ -184,6 +189,7 @@ function AssetBlock({
   assets: AssetInfo[]; current?: string | null;
   onSelect: (f: string) => void; onDelete: (f: string) => void;
 }) {
+  useLocaleSubscription();
   const { t } = useI18n();
   return (
     <Field label={label}>
@@ -191,8 +197,7 @@ function AssetBlock({
         <button type="button" onClick={onPick} disabled={uploading}
           className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border py-4 text-xs text-zinc-400 hover:border-accent/50">
           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-          Enviar arquivo
-        </button>
+          {copy("Enviar arquivo")}</button>
       ) : (
         <div className="flex items-center gap-2 rounded-lg border border-border px-2 py-2 text-xs">
           <ImageIcon className="h-3.5 w-3.5 shrink-0 text-accent" />

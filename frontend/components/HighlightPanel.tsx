@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useMemo, useState } from "react";
 import { Loader2, Sparkles } from "lucide-react";
@@ -29,6 +33,7 @@ export default function HighlightPanel({
   clipId,
   onPreviewAt,
 }: Props) {
+  useLocaleSubscription();
   const [detecting, setDetecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,7 +55,7 @@ export default function HighlightPanel({
         if (first) onPreviewAt(first.start);
       }
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Falha ao detectar");
+      setError(e instanceof Error ? e.message : copy("Falha ao detectar"));
     } finally {
       setDetecting(false);
     }
@@ -78,10 +83,10 @@ export default function HighlightPanel({
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <Section title="Destaque dramático" description="Frase grande no centro + vídeo embaçado no momento certo.">
+      <Section title={copy("Destaque dramático")} description={copy("Frase grande no centro + vídeo embaçado no momento certo.")}>
         <div className="flex items-center justify-between gap-3">
           <p className="text-sm text-zinc-400">
-            {highlightEnabled ? "Ativo — configure frases abaixo" : "Desligado"}
+            {highlightEnabled ? copy("Ativo — configure frases abaixo") : copy("Desligado")}
           </p>
           <button
             type="button"
@@ -102,7 +107,7 @@ export default function HighlightPanel({
       </Section>
 
       {highlightEnabled && (
-        <Section title="Frases de destaque" description="Toque nas palavras ou use IA para detectar" collapsible defaultOpen>
+        <Section title={copy("Frases de destaque")} description={copy("Toque nas palavras ou use IA para detectar")} collapsible defaultOpen>
           <div className="mb-3 flex items-center justify-end">
             <button
               onClick={handleDetect}
@@ -110,16 +115,14 @@ export default function HighlightPanel({
               className="touch-target flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-2 text-sm font-medium text-accent hover:bg-accent/20 disabled:opacity-50"
             >
               {detecting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-              {detecting ? "Detectando..." : "Detectar com IA"}
+              {detecting ? copy("Detectando...") : copy("Detectar com IA")}
             </button>
           </div>
           {error && <p className="mb-2 text-sm text-red-400">{error}</p>}
           <p className="mb-3 text-xs text-muted">
-            Cada destaque mostra 1 ou 2 palavras no tempo exato em que são faladas.
-            {keywords.length > 0 && (
+            {copy("Cada destaque mostra 1 ou 2 palavras no tempo exato em que são faladas.")}{keywords.length > 0 && (
               <button onClick={clearAll} className="ml-2 underline hover:text-zinc-200">
-                limpar tudo
-              </button>
+                {copy("limpar tudo")}</button>
             )}
           </p>
 
@@ -135,7 +138,7 @@ export default function HighlightPanel({
                   &ldquo;{ph.text}&rdquo;
                   <span className="ml-2 text-xs font-normal text-muted">
                     {ph.start.toFixed(1)}s
-                    {onPreviewAt && " · ver no vídeo"}
+                    {onPreviewAt && copy(" · ver no vídeo")}
                   </span>
                 </button>
               ))}
@@ -160,7 +163,7 @@ export default function HighlightPanel({
               );
             })}
             {words.length === 0 && (
-              <span className="text-sm text-muted">Aguardando transcrição...</span>
+              <span className="text-sm text-muted">{copy("Aguardando transcrição...")}</span>
             )}
           </div>
         </Section>

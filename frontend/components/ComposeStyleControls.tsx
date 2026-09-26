@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import type { ComposeSettings } from "@/lib/api";
 import { clampHeadlineWidthPct, clampProgressHeightPct } from "@/lib/composeLayout";
@@ -18,6 +22,7 @@ type Props = {
 function ColorField({
   label, value, onChange,
 }: { label: string; value: string; onChange: (v: string) => void }) {
+  useLocaleSubscription();
   return (
     <label className="block">
       <span className="label">{label}</span>
@@ -37,6 +42,7 @@ function RangeField({
   label: string; min: number; max: number; step?: number; value: number;
   onChange: (v: number) => void; unit?: string;
 }) {
+  useLocaleSubscription();
   return (
     <label className="block">
       <span className="label">{label}: {value}{unit}</span>
@@ -49,11 +55,12 @@ function RangeField({
 export default function ComposeStyleControls({
   compose, onChange, showHeadline, showInstagram, showProgress, showOverlayCrop,
 }: Props) {
+  useLocaleSubscription();
   const { t } = useI18n();
   return (
     <div className="space-y-3 p-3">
       {showHeadline && (
-        <Section title="Headline" description="Fonte, largura e cores" collapsible defaultOpen>
+        <Section title={copy("Headline")} description={copy("Fonte, largura e cores")} collapsible defaultOpen>
           <div className="space-y-3">
             <RangeField label={`${t("common.size")} fonte`} min={24} max={72} value={compose.headline_font_size ?? 42}
               onChange={(v) => onChange({ headline_font_size: v })} unit="px" />
@@ -79,7 +86,7 @@ export default function ComposeStyleControls({
       )}
 
       {showInstagram && (
-        <Section title="Header Instagram" description="Avatar, @ e caption" collapsible defaultOpen={false}>
+        <Section title={copy("Header Instagram")} description={copy("Avatar, @ e caption")} collapsible defaultOpen={false}>
           <div className="space-y-3">
             <ColorField label={t("common.background")} value={compose.ig_bg_color ?? "#FFFFFF"}
               onChange={(v) => onChange({ ig_bg_color: v })} />
@@ -89,25 +96,25 @@ export default function ComposeStyleControls({
               onChange={(v) => onChange({ ig_avatar_size: v })} unit="px" />
             <RangeField label="@usuario" min={22} max={48} value={compose.ig_username_size ?? 34}
               onChange={(v) => onChange({ ig_username_size: v })} unit="px" />
-            <RangeField label="Caption" min={18} max={40} value={compose.ig_caption_size ?? 28}
+            <RangeField label={copy("Caption")} min={18} max={40} value={compose.ig_caption_size ?? 28}
               onChange={(v) => onChange({ ig_caption_size: v })} unit="px" />
           </div>
         </Section>
       )}
 
       {showOverlayCrop && (
-        <Section title="Enquadramento mídia" description="Arraste no preview ou ajuste aqui" collapsible defaultOpen={false}>
+        <Section title={copy("Enquadramento mídia")} description={copy("Arraste no preview ou ajuste aqui")} collapsible defaultOpen={false}>
           <div className="space-y-3">
-            <RangeField label="Crop X" min={0} max={100} value={Math.round((compose.overlay_pos_x ?? 0.5) * 100)}
+            <RangeField label={copy("Crop X")} min={0} max={100} value={Math.round((compose.overlay_pos_x ?? 0.5) * 100)}
               onChange={(v) => onChange({ overlay_pos_x: v / 100 })} unit="%" />
-            <RangeField label="Crop Y" min={0} max={100} value={Math.round((compose.overlay_pos_y ?? 0.5) * 100)}
+            <RangeField label={copy("Crop Y")} min={0} max={100} value={Math.round((compose.overlay_pos_y ?? 0.5) * 100)}
               onChange={(v) => onChange({ overlay_pos_y: v / 100 })} unit="%" />
           </div>
         </Section>
       )}
 
       {showProgress && compose.progress_enabled && (
-        <Section title="Barra de progresso" collapsible defaultOpen>
+        <Section title={copy("Barra de progresso")} collapsible defaultOpen>
           <div className="space-y-3">
             <ColorField label={t("common.color")} value={compose.progress_color ?? "#E31B23"}
               onChange={(v) => onChange({ progress_color: v })} />

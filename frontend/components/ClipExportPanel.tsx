@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { Download, Loader2, Pencil } from "lucide-react";
 import type { ClipSegment, ExportFormatId } from "@/lib/api";
@@ -35,6 +39,7 @@ export default function ClipExportPanel({
   renderingIds,
   onEditFormat,
 }: Props) {
+  useLocaleSubscription();
   const { t } = useI18n();
   const accessToken = useAccessToken();
   const hosted = isMultiTenant();
@@ -63,14 +68,12 @@ export default function ClipExportPanel({
           className="touch-target flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm text-zinc-400 hover:border-accent/40 hover:text-accent"
         >
           <Pencil className="h-4 w-4" />
-          Alterar
-        </button>
+          {copy("Alterar")}</button>
       </div>
 
       {enabled.length === 0 && (
         <p className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted">
-          Nenhum corte selecionado. Volte à etapa 1 e marque os cortes desejados.
-        </p>
+          {copy("Nenhum corte selecionado. Volte à etapa 1 e marque os cortes desejados.")}</p>
       )}
 
       <ul className="space-y-3">
@@ -99,7 +102,7 @@ export default function ClipExportPanel({
                           : "bg-border text-zinc-500"
                   }`}
                 >
-                  {ready ? "Pronto" : busy ? "Gerando..." : failed ? "Erro" : "Pendente"}
+                  {ready ? copy("Pronto") : busy ? copy("Gerando...") : failed ? copy("Erro") : copy("Pendente")}
                 </span>
               </div>
               {failed && clip.error && (
@@ -118,8 +121,7 @@ export default function ClipExportPanel({
                     ) : (
                       <Download className="h-4 w-4" />
                     )}
-                    Gerar MP4
-                  </button>
+                    {copy("Gerar MP4")}</button>
                 )}
                 {ready && canDownload && (
                   <a
@@ -128,8 +130,7 @@ export default function ClipExportPanel({
                     className="touch-target flex items-center gap-2 rounded-lg bg-green-500/20 px-4 py-2.5 text-sm font-semibold text-green-300"
                   >
                     <Download className="h-4 w-4" />
-                    Baixar
-                  </a>
+                    {copy("Baixar")}</a>
                 )}
               </div>
             </li>
@@ -147,10 +148,10 @@ export default function ClipExportPanel({
           {renderingAll ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              Gerando {enabled.length} MP4s...
+              {copy("Gerando")}{enabled.length} MP4s...
             </>
           ) : (
-            <>Gerar todos ({enabled.length})</>
+            <>{copy("Gerar todos (")}{enabled.length})</>
           )}
         </button>
       )}

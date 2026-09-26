@@ -6,11 +6,16 @@ import type { Session } from "@supabase/supabase-js";
 import { config, missingConfiguration } from "./src/config";
 import { configurePurchases, hasProAccess, presentProPaywall } from "./src/revenuecat";
 import { getMobileSession, syncEntitlement } from "./src/session";
+import { getMobileLocale, mobileText } from "./src/i18n";
 
 export default function App() {
+  const locale = getMobileLocale();
   const webRef = useRef<WebView>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [error, setError] = useState<string | null>(missingConfiguration());
+  const [error, setError] = useState<string | null>(() => {
+    const initial = missingConfiguration();
+    return initial ? mobileText(initial, getMobileLocale()) : null;
+  });
   const [loading, setLoading] = useState(!missingConfiguration());
 
   useEffect(() => {
@@ -22,7 +27,7 @@ export default function App() {
         if (hasProAccess(info)) await syncEntitlement(nextSession.access_token);
         setSession(nextSession);
       } catch (cause) {
-        setError(cause instanceof Error ? cause.message : "Não foi possível iniciar o aplicativo.");
+        setError(mobileText(cause instanceof Error ? cause.message : "Não foi possível iniciar o aplicativo.", locale));
       } finally {
         setLoading(false);
       }
@@ -45,9 +50,9 @@ export default function App() {
         webRef.current?.reload();
         return;
       }
-      Alert.alert("Assinatura pendente", "Conclua a assinatura para salvar o vídeo.");
+      Alert.alert(mobileText("Assinatura pendente", locale), mobileText("Conclua a assinatura para salvar o vídeo.", locale));
     } catch {
-      Alert.alert("Não foi possível abrir o pagamento", "Tente novamente em alguns instantes.");
+      Alert.alert(mobileText("Não foi possível abrir o pagamento", locale), mobileText("Tente novamente em alguns instantes.", locale));
     }
   };
 
@@ -55,8 +60,8 @@ export default function App() {
     return (
       <View style={styles.loading}>
         {loading ? <ActivityIndicator color="#FFD21F" size="large" /> : null}
-        <Text style={styles.loadingText}>{error || "Preparando o ViralClips..."}</Text>
-        {error ? <Pressable style={styles.retry} onPress={() => { setError(null); setLoading(true); }}><Text style={styles.retryText}>Tentar novamente</Text></Pressable> : null}
+        <Text style={styles.loadingText}>{error || mobileText("Preparando o ViralClips...", locale)}</Text>
+        {error ? <Pressable style={styles.retry} onPress={() => { setError(null); setLoading(true); }}><Text style={styles.retryText}>{mobileText("Tentar novamente", locale)}</Text></Pressable> : null}
       </View>
     );
   }

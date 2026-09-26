@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
@@ -34,6 +38,7 @@ function parseTime(input: string): number | null {
 }
 
 export default function ClipBoundsEditor({ clip, onChange }: Props) {
+  useLocaleSubscription();
   const [open, setOpen] = useState(false);
   const { t } = useI18n();
 
@@ -99,7 +104,7 @@ export default function ClipBoundsEditor({ clip, onChange }: Props) {
 
       {open && (
         <div className="mt-2 space-y-3 rounded-lg border border-border/80 bg-panel/40 p-3">
-          <Field label="Título">
+          <Field label={copy("Título")}>
             <input
               type="text"
               value={clip.title}
@@ -108,7 +113,7 @@ export default function ClipBoundsEditor({ clip, onChange }: Props) {
             />
           </Field>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Início (m:ss)">
+            <Field label={copy("Início (m:ss)")}>
               <input
                 type="text"
                 defaultValue={fmtTime(displayStart)}
@@ -117,7 +122,7 @@ export default function ClipBoundsEditor({ clip, onChange }: Props) {
                 className={`${inputClass} tabular-nums`}
               />
             </Field>
-            <Field label="Fim (m:ss)">
+            <Field label={copy("Fim (m:ss)")}>
               <input
                 type="text"
                 defaultValue={fmtTime(displayEnd)}
@@ -129,13 +134,12 @@ export default function ClipBoundsEditor({ clip, onChange }: Props) {
           </div>
           {isColdOpen && (
             <p className="text-xs text-accent/80">
-              Gancho imediato + corpo (
-              {getClipPlaybackPlan(clip).map((s) => `${s.role} ${s.start_s.toFixed(0)}s`).join(" → ")}
+              {copy("Gancho imediato + corpo (")}{getClipPlaybackPlan(clip).map((s) => `${s.role} ${s.start_s.toFixed(0)}s`).join(" → ")}
               )
             </p>
           )}
           <p className="text-xs text-muted">
-            Duração exportada:{" "}
+            {copy("Duração exportada:")}{" "}
             <span className="font-medium text-zinc-300">{fmtTime(clip.duration_s)}</span>
           </p>
         </div>

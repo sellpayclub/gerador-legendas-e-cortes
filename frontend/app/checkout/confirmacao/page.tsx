@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import { trackPurchaseWhenReady } from "@/lib/checkoutTracking";
@@ -30,6 +34,7 @@ async function fulfillAccess(transactionId: string): Promise<boolean> {
 }
 
 export default function ConfirmacaoPage() {
+  useLocaleSubscription();
   const [accessPending, setAccessPending] = useState(false);
 
   useEffect(() => {
@@ -107,7 +112,7 @@ export default function ConfirmacaoPage() {
       >
         <img
           src={LOGO_URL}
-          alt="ClipSaaS"
+          alt={copy("ClipSaaS")}
           style={{ height: 36, marginBottom: 32, objectFit: "contain" }}
           draggable={false}
         />
@@ -152,8 +157,7 @@ export default function ConfirmacaoPage() {
             animation: "fadeUp 0.5s ease 0.3s both",
           }}
         >
-          Pagamento confirmado! 🎉
-        </h1>
+          {copy("Pagamento confirmado! 🎉")}</h1>
         <p
           style={{
             fontSize: 15,
@@ -164,12 +168,11 @@ export default function ConfirmacaoPage() {
           }}
         >
           {accessPending
-            ? "Estamos liberando seu acesso. Se o e-mail não chegar em alguns minutos, fale conosco pelo suporte."
-            : "Seus dados de acesso foram enviados para o seu e-mail."}
+            ? copy("Estamos liberando seu acesso. Se o e-mail não chegar em alguns minutos, fale conosco pelo suporte.")
+            : copy("Seus dados de acesso foram enviados para o seu e-mail.")}
           <br />
           <span style={{ fontSize: 13, color: "#71717a" }}>
-            Verifique sua caixa de entrada e spam.
-          </span>
+            {copy("Verifique sua caixa de entrada e spam.")}</span>
         </p>
 
         {/* Instructions card */}
@@ -194,8 +197,7 @@ export default function ConfirmacaoPage() {
               margin: "0 0 16px",
             }}
           >
-            Próximos passos
-          </p>
+            {copy("Próximos passos")}</p>
           <ol
             style={{
               margin: 0,
@@ -206,21 +208,19 @@ export default function ConfirmacaoPage() {
             }}
           >
             <li>
-              Acesse o <strong style={{ color: "#18181b" }}>e-mail</strong> com
-              seus dados de login
-            </li>
+              {copy("Acesse o")}<strong style={{ color: "#18181b" }}>{copy("e-mail")}</strong> {copy("com seus dados de login")}</li>
             <li>
-              Entre em{" "}
+              {copy("Entre em")}{" "}
               <strong style={{ color: "#ca8a04" }}>
                 app.clipsaas.site/login
               </strong>
             </li>
             <li>
-              Configure sua chave <strong style={{ color: "#18181b" }}>OpenAI</strong>
+              {copy("Configure sua chave")}<strong style={{ color: "#18181b" }}>{copy("OpenAI")}</strong>
             </li>
             <li>
-              Comece a{" "}
-              <strong style={{ color: "#22c55e" }}>gerar legendas e cortes virais!</strong>
+              {copy("Comece a")}{" "}
+              <strong style={{ color: "#22c55e" }}>{copy("gerar legendas e cortes virais!")}</strong>
             </li>
           </ol>
         </div>
@@ -247,8 +247,7 @@ export default function ConfirmacaoPage() {
             animation: "fadeUp 0.5s ease 0.9s both",
           }}
         >
-          Ir para o Login →
-        </a>
+          {copy("Ir para o Login →")}</a>
 
         <p
           style={{
@@ -258,8 +257,7 @@ export default function ConfirmacaoPage() {
             animation: "fadeUp 0.5s ease 1.1s both",
           }}
         >
-          Obrigado pela compra! Estamos felizes em ter você conosco. 💚
-        </p>
+          {copy("Obrigado pela compra! Estamos felizes em ter você conosco. 💚")}</p>
       </div>
 
       {/* Animations */}

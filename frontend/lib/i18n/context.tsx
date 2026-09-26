@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import pt, { type Messages } from "./locales/pt";
 import es from "./locales/es";
 import en from "./locales/en";
+import { setCopyLocale } from "./copy";
 
 export type Locale = "pt" | "es" | "en";
 
@@ -74,6 +75,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, [locale, ready]);
 
   const setLocale = useCallback((next: Locale) => {
+    setCopyLocale(next);
     setLocaleState(next);
   }, []);
 

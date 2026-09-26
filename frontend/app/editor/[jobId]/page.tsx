@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -34,17 +38,17 @@ import TabBar from "@/components/ui/TabBar";
 import HintBanner from "@/components/ui/HintBanner";
 
 const EDITOR_TABS = [
-  { id: "template" as const, label: "Template", shortLabel: "Tpl", icon: <LayoutTemplate className="h-4 w-4" /> },
-  { id: "highlight" as const, label: "Destaques", shortLabel: "Dest.", icon: <Zap className="h-4 w-4" /> },
-  { id: "style" as const, label: "Estilo", shortLabel: "Estilo", icon: <Type className="h-4 w-4" /> },
-  { id: "transcript" as const, label: "Transcrição", shortLabel: "Texto", icon: <ScrollText className="h-4 w-4" /> },
+  { id: "template" as const, get label() { return copy("Template"); }, get shortLabel() { return copy("Tpl"); }, icon: <LayoutTemplate className="h-4 w-4" /> },
+  { id: "highlight" as const, get label() { return copy("Destaques"); }, get shortLabel() { return copy("Dest."); }, icon: <Zap className="h-4 w-4" /> },
+  { id: "style" as const, get label() { return copy("Estilo"); }, get shortLabel() { return copy("Estilo"); }, icon: <Type className="h-4 w-4" /> },
+  { id: "transcript" as const, get label() { return copy("Transcrição"); }, get shortLabel() { return copy("Texto"); }, icon: <ScrollText className="h-4 w-4" /> },
 ];
 
 const TAB_HINTS: Record<Tab, string> = {
-  template: "Escolha o formato e envie mídia do topo (Choquei, logo, barra).",
-  style: "Ajustes refletem ao vivo no preview — arraste a legenda no vídeo.",
-  highlight: "Opcional — frases grandes no centro do vídeo.",
-  transcript: "Clique numa palavra para ir ao trecho no vídeo.",
+  get template() { return copy("Escolha o formato e envie mídia do topo (Choquei, logo, barra)."); },
+  get style() { return copy("Ajustes refletem ao vivo no preview — arraste a legenda no vídeo."); },
+  get highlight() { return copy("Opcional — frases grandes no centro do vídeo."); },
+  get transcript() { return copy("Clique numa palavra para ir ao trecho no vídeo."); },
 };
 
 const DEFAULT_STYLE: StyleConfig = {
@@ -77,6 +81,7 @@ const DEFAULT_COMPOSE_LOCAL: ComposeSettings = { ...DEFAULT_COMPOSE };
 type Tab = "style" | "transcript" | "template" | "highlight";
 
 export default function EditorPage() {
+  useLocaleSubscription();
   const params = useParams<{ jobId: string }>();
   const router = useRouter();
   const jobId = params.jobId;
@@ -205,7 +210,7 @@ export default function EditorPage() {
             await startTranscribe(jobId);
           }
         } else if (j.stage === "error") {
-          setError(j.message || "Falha ao processar o vídeo.");
+          setError(j.message || copy("Falha ao processar o vídeo."));
         } else if (j.stage === "audio_ready") {
           // Backend auto-transcribes new uploads; this is a fallback for jobs
           // that already have audio but no transcription (e.g. after restart).
@@ -231,7 +236,7 @@ export default function EditorPage() {
   useEffect(() => {
     if (liveJob) setJob(liveJob);
     if (liveJob?.stage === "error") {
-      setError(liveJob.message || "Falha ao processar o vídeo.");
+      setError(liveJob.message || copy("Falha ao processar o vídeo."));
     }
   }, [liveJob]);
 
@@ -245,7 +250,7 @@ export default function EditorPage() {
         const j = await getJob(jobId);
         setJob(j);
         if (j.stage === "error") {
-          setError(j.message || "Falha ao processar o vídeo.");
+          setError(j.message || copy("Falha ao processar o vídeo."));
           return;
         }
         if (j.has_words) {
@@ -353,13 +358,13 @@ export default function EditorPage() {
     if (selectedTemplate) {
       const tpl = templates.find(t => t.id === selectedTemplate);
       if (tpl?.needs_overlay && !overlayAsset) {
-        alert("Este template exige uma mídia (imagem/vídeo). Envie uma na aba Template.");
+        alert(copy("Este template exige uma mídia (imagem/vídeo). Envie uma na aba Template."));
         setRendering(false);
         return;
       }
     }
     if (highlightEnabled && keywords.length === 0) {
-      alert("Ative frases de destaque na aba Destaques, ou desligue o efeito.");
+      alert(copy("Ative frases de destaque na aba Destaques, ou desligue o efeito."));
       setRendering(false);
       return;
     }
@@ -423,7 +428,7 @@ export default function EditorPage() {
         // Keep the editor usable if the status check itself is unavailable.
       }
       setRendering(false);
-      setError(e instanceof Error ? e.message : "Não foi possível iniciar o render. Tente novamente.");
+      setError(e instanceof Error ? e.message : copy("Não foi possível iniciar o render. Tente novamente."));
     }
   };
 
@@ -457,8 +462,7 @@ export default function EditorPage() {
           onClick={() => setError(null)}
           className="mt-4 rounded-lg border border-red-400/40 px-4 py-2 text-sm font-medium text-red-100 hover:bg-red-500/10"
         >
-          Voltar ao editor
-        </button>
+          {copy("Voltar ao editor")}</button>
       </div>
     );
   }
@@ -480,8 +484,7 @@ export default function EditorPage() {
           onClick={() => router.push("/")}
           className="flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-100"
         >
-          <ArrowLeft className="h-4 w-4" /> Voltar
-        </button>
+          <ArrowLeft className="h-4 w-4" /> {copy("Voltar")}</button>
         <div className="truncate text-sm text-zinc-400">
           {job?.filename} · {Math.round((job?.duration ?? 0) / 60)} min
         </div>
@@ -591,8 +594,7 @@ export default function EditorPage() {
                 {processing ? (
                   <div className="flex flex-1 items-center justify-center text-sm text-zinc-400">
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Transcrevendo... aguarde para editar.
-                  </div>
+                    {copy("Transcrevendo... aguarde para editar.")}</div>
                 ) : words.length > 0 ? (
                   <TranscriptEditor
                     jobId={jobId}
@@ -603,7 +605,7 @@ export default function EditorPage() {
                     currentTime={currentTime}
                   />
                 ) : (
-                  <div className="p-4 text-sm text-zinc-500">Sem transcrição ainda.</div>
+                  <div className="p-4 text-sm text-zinc-500">{copy("Sem transcrição ainda.")}</div>
                 )}
               </div>
             )}
@@ -616,12 +618,11 @@ export default function EditorPage() {
               className="touch-target flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3.5 text-sm font-semibold text-bg transition hover:bg-accent-hover disabled:opacity-40"
             >
               {rendering ? <Loader2 className="h-5 w-5 animate-spin" /> : <Wand2 className="h-5 w-5" />}
-              {rendering ? "Renderizando..." : "Renderizar vídeo"}
+              {rendering ? copy("Renderizando...") : copy("Renderizar vídeo")}
             </button>
             {!wordsData && (
               <p className="mt-2 text-center text-xs text-zinc-500">
-                Aguarde a transcrição terminar para habilitar o render.
-              </p>
+                {copy("Aguarde a transcrição terminar para habilitar o render.")}</p>
             )}
           </div>
         </div>
@@ -635,6 +636,7 @@ export default function EditorPage() {
 }
 
 function TranscribingOverlay({ stage, pct, active }: { stage: string; pct: number; active: boolean }) {
+  useLocaleSubscription();
   return (
     <div className="absolute inset-0 z-30 flex items-center justify-center rounded-xl bg-bg/80 backdrop-blur-sm">
       <div className="flex w-full max-w-sm flex-col items-center gap-5 px-6 text-center">
@@ -648,8 +650,8 @@ function TranscribingOverlay({ stage, pct, active }: { stage: string; pct: numbe
         </div>
 
         <div className="space-y-1">
-          <p className="text-lg font-semibold text-zinc-100">Preparando suas legendas</p>
-          <p className="text-sm text-zinc-400">{stage || "Aguarde..."}</p>
+          <p className="text-lg font-semibold text-zinc-100">{copy("Preparando suas legendas")}</p>
+          <p className="text-sm text-zinc-400">{stage || copy("Aguarde...")}</p>
         </div>
 
         {active && (
@@ -665,8 +667,7 @@ function TranscribingOverlay({ stage, pct, active }: { stage: string; pct: numbe
         )}
 
         <p className="text-xs text-zinc-500">
-          A edição é liberada assim que a transcrição terminar.
-        </p>
+          {copy("A edição é liberada assim que a transcrição terminar.")}</p>
       </div>
     </div>
   );
@@ -674,15 +675,15 @@ function TranscribingOverlay({ stage, pct, active }: { stage: string; pct: numbe
 
 function labelForStage(stage: string): string {
   switch (stage) {
-    case "queued": return "Na fila";
-    case "extracting_audio": return "Extraindo áudio...";
-    case "audio_ready": return "Áudio pronto — iniciando transcrição...";
-    case "transcribing": return "Transcrevendo com Whisper...";
-    case "transcribed": return "Transcrição concluída";
-    case "generating_ass": return "Gerando legendas ASS";
-    case "rendering": return "Renderizando vídeo (FFmpeg)";
-    case "done": return "Vídeo pronto!";
-    case "error": return "Erro";
+    case "queued": return copy("Na fila");
+    case "extracting_audio": return copy("Extraindo áudio...");
+    case "audio_ready": return copy("Áudio pronto — iniciando transcrição...");
+    case "transcribing": return copy("Transcrevendo com Whisper...");
+    case "transcribed": return copy("Transcrição concluída");
+    case "generating_ass": return copy("Gerando legendas ASS");
+    case "rendering": return copy("Renderizando vídeo (FFmpeg)");
+    case "done": return copy("Vídeo pronto!");
+    case "error": return copy("Erro");
     default: return stage;
   }
 }

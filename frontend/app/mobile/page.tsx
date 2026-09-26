@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -9,7 +13,8 @@ import { createClient } from "@/lib/supabase/client";
  * immediately after Supabase has persisted it.
  */
 export default function MobileSessionPage() {
-  const [message, setMessage] = useState("Preparando seu editor...");
+  useLocaleSubscription();
+  const [message, setMessage] = useState(copy("Preparando seu editor..."));
 
   useEffect(() => {
     const bootstrap = async () => {
@@ -17,7 +22,7 @@ export default function MobileSessionPage() {
       const accessToken = values.get("access_token");
       const refreshToken = values.get("refresh_token");
       if (!accessToken || !refreshToken) {
-        setMessage("Não foi possível iniciar a sessão do aplicativo.");
+        setMessage(copy("Não foi possível iniciar a sessão do aplicativo."));
         return;
       }
       try {
@@ -26,7 +31,7 @@ export default function MobileSessionPage() {
           access_token: accessToken,
           refresh_token: refreshToken,
         });
-        if (error || !data.session) throw error || new Error("Sessão ausente");
+        if (error || !data.session) throw error || new Error(copy("Sessão ausente"));
         const response = await fetch("/api/mobile/session", {
           method: "POST",
           headers: { Authorization: `Bearer ${data.session.access_token}` },
@@ -34,7 +39,7 @@ export default function MobileSessionPage() {
         if (!response.ok) throw new Error(await response.text());
         window.location.replace("/");
       } catch {
-        setMessage("Não foi possível conectar ao ViralClips. Tente novamente.");
+        setMessage(copy("Não foi possível conectar ao ViralClips. Tente novamente."));
       }
     };
     void bootstrap();

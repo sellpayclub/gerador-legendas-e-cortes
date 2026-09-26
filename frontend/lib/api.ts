@@ -1,3 +1,5 @@
+
+import { copy } from "@/lib/i18n/copy";
 import { isMultiTenant } from "@/lib/hosted";
 
 export type Word = { w: string; start: number; end: number };
@@ -412,12 +414,12 @@ async function jsonOrThrow<T>(res: Response): Promise<T> {
     const text = await res.text().catch(() => res.statusText);
     if (res.status === 413) {
       throw new Error(
-        "413: Arquivo grande demais para o servidor. Se persistir após atualizar a VPS, avise o suporte.",
+        copy("413: Arquivo grande demais para o servidor. Se persistir após atualizar a VPS, avise o suporte."),
       );
     }
     if (res.status === 502) {
       throw new Error(
-        "502: O servidor cortou a conexão (upload grande ou timeout). Tente de novo — se persistir, atualize a VPS.",
+        copy("502: O servidor cortou a conexão (upload grande ou timeout). Tente de novo — se persistir, atualize a VPS."),
       );
     }
     try {
@@ -445,7 +447,7 @@ export async function uploadVideo(
   const hosted = isMultiTenant();
   const token = hosted ? await getAccessToken(true) : null;
   if (hosted && !token) {
-    throw new Error("401: Sessão expirada. Faça login novamente e tente outra vez.");
+    throw new Error(copy("401: Sessão expirada. Faça login novamente e tente outra vez."));
   }
 
   return new Promise((resolve, reject) => {
@@ -476,7 +478,7 @@ export async function uploadVideo(
         try {
           resolve(JSON.parse(xhr.responseText) as JobState);
         } catch {
-          reject(new Error("Resposta inválida do servidor após upload."));
+          reject(new Error(copy("Resposta inválida do servidor após upload.")));
         }
         return;
       }
@@ -486,17 +488,17 @@ export async function uploadVideo(
         return;
       }
       if (xhr.status === 502) {
-        reject(new Error("502: O servidor cortou a conexão (upload grande ou timeout)."));
+        reject(new Error(copy("502: O servidor cortou a conexão (upload grande ou timeout).")));
         return;
       }
       reject(new Error(`${xhr.status}: ${text}`));
     });
 
     xhr.addEventListener("error", () => {
-      reject(new Error("Erro de rede durante o upload. Verifique sua conexão."));
+      reject(new Error(copy("Erro de rede durante o upload. Verifique sua conexão.")));
     });
     xhr.addEventListener("abort", () => {
-      reject(new Error("Upload cancelado."));
+      reject(new Error(copy("Upload cancelado.")));
     });
 
     xhr.open("POST", apiUrl("/api/jobs"));
@@ -682,10 +684,10 @@ export async function pollForClips(
     if (!r.detecting) {
       return r;
     }
-    opts?.onProgress?.("Detectando cortes com IA (pode levar vários minutos)...");
+    opts?.onProgress?.(copy("Detectando cortes com IA (pode levar vários minutos)..."));
     await sleep(2500);
   }
-  throw new Error("Tempo esgotado — a detecção ainda está rodando. Recarregue em instantes.");
+  throw new Error(copy("Tempo esgotado — a detecção ainda está rodando. Recarregue em instantes."));
 }
 
 /** Start detection and poll until clips are ready (avoids proxy timeout). */

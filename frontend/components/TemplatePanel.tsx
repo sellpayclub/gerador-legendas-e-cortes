@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -36,6 +40,7 @@ export default function TemplatePanel({
   overlayAsset, onOverlayAssetChange,
   compose, onComposeChange,
 }: Props) {
+  useLocaleSubscription();
   const { t } = useI18n();
   const [assets, setAssets] = useState<AssetInfo[]>([]);
   const [uploading, setUploading] = useState<string | null>(null);
@@ -62,21 +67,21 @@ export default function TemplatePanel({
       else onComposeChange({ logo_asset: r.filename });
       await refreshAssets();
     } catch (e: unknown) {
-      alert(`Erro ao enviar: ${e instanceof Error ? e.message : e}`);
+      alert(copy("Erro ao enviar: {0}", {0: e instanceof Error ? e.message : String(e)}));
     } finally {
       setUploading(null);
     }
   };
 
   const handleRemoveAsset = async (filename: string) => {
-    if (!confirm("Remover esta mídia?")) return;
+    if (!confirm(copy("Remover esta mídia?"))) return;
     try {
       await deleteAsset(jobId, filename);
       if (overlayAsset === filename) onOverlayAssetChange(null);
       if (compose.logo_asset === filename) onComposeChange({ logo_asset: null });
       await refreshAssets();
     } catch (e: unknown) {
-      alert(`Erro: ${e instanceof Error ? e.message : e}`);
+      alert(copy("Erro: {0}", {0: e instanceof Error ? e.message : String(e)}));
     }
   };
 
@@ -86,7 +91,7 @@ export default function TemplatePanel({
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <Section title="Template" description="Formato e layout do vídeo exportado">
+      <Section title={copy("Template")} description={copy("Formato e layout do vídeo exportado")}>
         <div className="grid grid-cols-1 gap-2">
           <TemplateCard
             active={selectedTemplate === null}
@@ -106,8 +111,8 @@ export default function TemplatePanel({
         <>
           {tpl.needs_overlay && (
             <UploadSection
-              title="Mídia do template"
-              hint="Imagem ou vídeo no espaço de cima."
+              title={copy("Mídia do template")}
+              hint={copy("Imagem ou vídeo no espaço de cima.")}
               filename={overlayAsset}
               uploading={uploading === "overlay"}
               onUpload={() => fileInputRef.current?.click()}
@@ -116,18 +121,18 @@ export default function TemplatePanel({
           )}
 
           {isChoquei && (
-            <Section title="Headline" description="Título na faixa superior — Enter quebra linha" collapsible defaultOpen>
+            <Section title={copy("Headline")} description={copy("Título na faixa superior — Enter quebra linha")} collapsible defaultOpen>
               <div className="space-y-3">
-                <Field label="Texto">
+                <Field label={copy("Texto")}>
                   <textarea
                     value={compose.headline_text ?? ""}
                     onChange={(e) => onComposeChange({ headline_text: e.target.value })}
                     rows={3}
                     className={`${inputClass} leading-snug`}
-                    placeholder="Digite o título — Enter para quebrar linha"
+                    placeholder={copy("Digite o título — Enter para quebrar linha")}
                   />
                 </Field>
-                <Field label="Estilo">
+                <Field label={copy("Estilo")}>
                   <select
                     value={compose.headline_style ?? "bold_red"}
                     onChange={(e) => onComposeChange({ headline_style: e.target.value })}
@@ -142,8 +147,8 @@ export default function TemplatePanel({
           )}
 
           <UploadSection
-            title="Logo (opcional)"
-            hint="Marca d'água — arraste no preview."
+            title={copy("Logo (opcional)")}
+            hint={copy("Marca d'água — arraste no preview.")}
             filename={compose.logo_asset}
             uploading={uploading === "logo"}
             onUpload={() => logoRef.current?.click()}
@@ -151,7 +156,7 @@ export default function TemplatePanel({
           />
 
           {compose.logo_asset && (
-            <Section title="Posição da logo" collapsible defaultOpen={false}>
+            <Section title={copy("Posição da logo")} collapsible defaultOpen={false}>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="X %">
                   <input type="range" min={0} max={100} value={Math.round((compose.logo_x ?? 0.85) * 100)}
@@ -161,7 +166,7 @@ export default function TemplatePanel({
                   <input type="range" min={0} max={100} value={Math.round((compose.logo_y ?? 0.78) * 100)}
                     onChange={(e) => onComposeChange({ logo_y: Number(e.target.value) / 100 })} className="w-full" />
                 </Field>
-                <Field label="Tamanho" className="col-span-2">
+                <Field label={copy("Tamanho")} className="col-span-2">
                   <input type="range" min={8} max={40}
                     value={Math.round((compose.logo_scale ?? 0.18) * 100)}
                     onChange={(e) => onComposeChange({ logo_scale: Number(e.target.value) / 100 })} className="w-full" />
@@ -176,8 +181,7 @@ export default function TemplatePanel({
             <input type="checkbox" checked={compose.progress_enabled ?? false}
               onChange={(e) => onComposeChange({ progress_enabled: e.target.checked })}
               className="h-4 w-4 rounded border-border" />
-            Barra de progresso fake
-          </label>
+            {copy("Barra de progresso fake")}</label>
 
           <ComposeStyleControls
             compose={compose}
@@ -187,7 +191,7 @@ export default function TemplatePanel({
             showOverlayCrop={Boolean(tpl?.needs_overlay)}
           />
 
-          <Section title="Resolução" description="Qualidade do MP4 exportado">
+          <Section title={copy("Resolução")} description={copy("Qualidade do MP4 exportado")}>
             <div className="grid grid-cols-3 gap-2">
               {resolutions.map(r => {
                 const id = r.id as "480p" | "720p" | "1080p";
@@ -213,6 +217,7 @@ function UploadSection({ title, hint, filename, uploading, onUpload, onRemove }:
   title: string; hint: string; filename?: string | null; uploading: boolean;
   onUpload: () => void; onRemove: () => void;
 }) {
+  useLocaleSubscription();
   const { t } = useI18n();
   return (
     <Section title={title} description={hint}>
@@ -220,7 +225,7 @@ function UploadSection({ title, hint, filename, uploading, onUpload, onRemove }:
         <button onClick={onUpload} disabled={uploading}
           className="flex w-full flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border bg-panel px-4 py-8 text-sm text-zinc-400 transition hover:border-accent/50 hover:text-zinc-200 disabled:opacity-50">
           {uploading ? <Loader2 className="h-6 w-6 animate-spin" /> : <Upload className="h-6 w-6" />}
-          {uploading ? "Enviando..." : "Clique para enviar"}
+          {uploading ? copy("Enviando...") : copy("Clique para enviar")}
         </button>
       ) : (
         <div className="rounded-xl border border-border bg-panel p-3">
@@ -228,7 +233,7 @@ function UploadSection({ title, hint, filename, uploading, onUpload, onRemove }:
             <ImageIcon className="h-5 w-5 shrink-0 text-accent" />
             <span className="min-w-0 flex-1 truncate text-sm">{filename}</span>
             <button onClick={onUpload} disabled={uploading} className="touch-target rounded-lg px-2 text-xs text-zinc-400 hover:text-zinc-100">{t("template.change")}</button>
-            <IconButton onClick={onRemove} variant="danger" title="Remover">
+            <IconButton onClick={onRemove} variant="danger" title={copy("Remover")}>
               <Trash2 className="h-4 w-4" />
             </IconButton>
           </div>
@@ -243,6 +248,7 @@ function TemplateCard({
 }: {
   active: boolean; onClick: () => void; name: string; desc: string; aspect: string;
 }) {
+  useLocaleSubscription();
   return (
     <button onClick={onClick}
       className={`flex items-center gap-3 rounded-lg border p-3 text-left transition ${
@@ -258,6 +264,7 @@ function TemplateCard({
 }
 
 function AspectIcon({ aspect }: { aspect: string }) {
+  useLocaleSubscription();
   let w = 18, h = 18;
   if (aspect === "9:16") { w = 11; h = 20; }
   else if (aspect === "1:1") { w = 18; h = 18; }

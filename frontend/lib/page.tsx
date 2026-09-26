@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { captureAttribution, loadAttribution } from "@/lib/attribution";
@@ -10,27 +14,25 @@ const LOGO_URL = "/brand/logo-checkout.png";
 
 const MAIN_PRODUCT = {
   id: "clipsaas-main",
-  name: "ClipSaaS — Gerador de Legendas",
+  get name() { return copy("ClipSaaS — Gerador de Legendas"); },
   price_cents: 3700,
   regular_price_cents: 9700,
-  description: "Acesso vitalício à plataforma e uso ilimitado",
+  get description() { return copy("Acesso vitalício à plataforma e uso ilimitado"); },
 };
 
 const ORDER_BUMPS = [
   {
     id: "bump-whatsapp",
     emoji: "📱",
-    name: "Suporte WhatsApp",
-    description:
-      "Suporte exclusivo via WhatsApp para tirar dúvidas e receber ajuda personalizada",
+    get name() { return copy("Suporte WhatsApp"); },
+    get description() { return copy("Suporte exclusivo via WhatsApp para tirar dúvidas e receber ajuda personalizada"); },
     price_cents: 1990,
   },
   {
     id: "bump-updates",
     emoji: "🔄",
-    name: "Atualizações Futuras",
-    description:
-      "Receba todas as atualizações e novas funcionalidades da ferramenta",
+    get name() { return copy("Atualizações Futuras"); },
+    get description() { return copy("Receba todas as atualizações e novas funcionalidades da ferramenta"); },
     price_cents: 1990,
   },
 ];
@@ -363,10 +365,11 @@ const S = {
 /* ─── Stepper Component ─────────────────────────────────── */
 
 function Stepper({ current }: { current: number }) {
+  useLocaleSubscription();
   const steps = [
-    { n: 1, label: "Dados" },
-    { n: 2, label: "Ofertas" },
-    { n: 3, label: "Pagamento" },
+    { n: 1, label: copy("Dados") },
+    { n: 2, label: copy("Ofertas") },
+    { n: 3, label: copy("Pagamento") },
   ];
   return (
     <div style={S.stepper}>
@@ -435,6 +438,7 @@ function Stepper({ current }: { current: number }) {
 /* ─── Main Checkout Component ───────────────────────────── */
 
 export default function CheckoutPage() {
+  useLocaleSubscription();
   const [step, setStep] = useState(1);
   const [focusedField, setFocusedField] = useState("");
 
@@ -583,7 +587,7 @@ export default function CheckoutPage() {
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         throw new Error(
-          errData.detail || errData.error || "Erro ao gerar cobrança PIX"
+          errData.detail || errData.error || copy("Erro ao gerar cobrança PIX")
         );
       }
 
@@ -598,7 +602,7 @@ export default function CheckoutPage() {
       startTimer();
       startPolling(data.correlationID);
     } catch (err: any) {
-      setError(err.message || "Erro ao gerar PIX. Tente novamente.");
+      setError(err.message || copy("Erro ao gerar PIX. Tente novamente."));
     } finally {
       setLoading(false);
     }
@@ -638,7 +642,7 @@ export default function CheckoutPage() {
       <div style={S.container}>
         {/* Logo */}
         <div style={S.logoWrap}>
-          <img src={LOGO_URL} alt="ClipSaaS" style={S.logo} draggable={false} />
+          <img src={LOGO_URL} alt={copy("ClipSaaS")} style={S.logo} draggable={false} />
         </div>
 
         {/* Stepper */}
@@ -648,8 +652,7 @@ export default function CheckoutPage() {
         <div style={S.mainProduct}>
           <div>
             <div style={{ fontSize: 11, color: "#facc15", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>
-              Produto principal
-            </div>
+              {copy("Produto principal")}</div>
             <div style={{ fontSize: 15, fontWeight: 700, color: "#18181b" }}>
               {MAIN_PRODUCT.name}
             </div>
@@ -672,14 +675,13 @@ export default function CheckoutPage() {
           <div style={{ animation: "fadeIn 0.3s ease" }}>
             <div style={S.card}>
               <h2 style={{ ...S.sectionTitle, marginBottom: 24 }}>
-                Preencha seus dados
-              </h2>
+                {copy("Preencha seus dados")}</h2>
 
               <div style={{ marginBottom: 16 }}>
-                <label style={S.label}>Nome completo</label>
+                <label style={S.label}>{copy("Nome completo")}</label>
                 <input
                   type="text"
-                  placeholder="Seu nome completo"
+                  placeholder={copy("Seu nome completo")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onFocus={() => setFocusedField("name")}
@@ -708,7 +710,7 @@ export default function CheckoutPage() {
               </div>
 
               <div style={{ marginBottom: 24 }}>
-                <label style={S.label}>E-mail</label>
+                <label style={S.label}>{copy("E-mail")}</label>
                 <input
                   type="email"
                   placeholder="seu@email.com"
@@ -731,14 +733,12 @@ export default function CheckoutPage() {
                   ...(step1Valid ? S.btnPrimary : S.btnDisabled),
                 }}
               >
-                Continuar →
-              </button>
+                {copy("Continuar →")}</button>
             </div>
 
             <div style={S.securityBadge}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Seus dados estão seguros e protegidos
-            </div>
+              {copy("Seus dados estão seguros e protegidos")}</div>
           </div>
         )}
 
@@ -746,10 +746,9 @@ export default function CheckoutPage() {
         {step === 2 && (
           <div style={{ animation: "fadeIn 0.3s ease" }}>
             <button onClick={() => setStep(1)} style={S.backBtn}>
-              ← Voltar
-            </button>
+              {copy("← Voltar")}</button>
 
-            <h2 style={S.sectionTitle}>Aproveite essas ofertas especiais!</h2>
+            <h2 style={S.sectionTitle}>{copy("Aproveite essas ofertas especiais!")}</h2>
 
             {ORDER_BUMPS.map((bump) => {
               const selected = selectedBumps.has(bump.id);
@@ -768,7 +767,7 @@ export default function CheckoutPage() {
                         {formatBRL(bump.price_cents)}
                       </span>
                       <span style={S.bumpBtn(selected)}>
-                        {selected ? "Adicionado ✓" : "Adicionar oferta"}
+                        {selected ? copy("Adicionado ✓") : copy("Adicionar oferta")}
                       </span>
                     </div>
                   </div>
@@ -786,13 +785,11 @@ export default function CheckoutPage() {
               onClick={() => setStep(3)}
               style={{ ...S.btn, ...S.btnPrimary }}
             >
-              Continuar para pagamento →
-            </button>
+              {copy("Continuar para pagamento →")}</button>
 
             <div style={S.securityBadge}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Pagamento 100% seguro via PIX
-            </div>
+              {copy("Pagamento 100% seguro via PIX")}</div>
           </div>
         )}
 
@@ -808,15 +805,13 @@ export default function CheckoutPage() {
                 ...(pixData ? { opacity: 0.3, cursor: "default" } : {}),
               }}
             >
-              ← Voltar
-            </button>
+              {copy("← Voltar")}</button>
 
             <div style={S.card}>
               {!pixData ? (
                 <>
                   <h2 style={{ ...S.sectionTitle, marginBottom: 8 }}>
-                    Pagamento via PIX
-                  </h2>
+                    {copy("Pagamento via PIX")}</h2>
                   <p
                     style={{
                       textAlign: "center",
@@ -825,8 +820,7 @@ export default function CheckoutPage() {
                       marginBottom: 24,
                     }}
                   >
-                    Insira seu CPF para gerar o código PIX
-                  </p>
+                    {copy("Insira seu CPF para gerar o código PIX")}</p>
 
                   {error && <div style={S.errorMsg}>{error}</div>}
 
@@ -849,7 +843,7 @@ export default function CheckoutPage() {
 
                   {/* Total reminder */}
                   <div style={S.totalBar}>
-                    <span style={S.totalLabel}>Total a pagar</span>
+                    <span style={S.totalLabel}>{copy("Total a pagar")}</span>
                     <span style={S.totalValue}>{formatBRL(totalCents)}</span>
                   </div>
 
@@ -876,10 +870,9 @@ export default function CheckoutPage() {
                             animation: "spin 0.8s linear infinite",
                           }}
                         />
-                        Gerando PIX...
-                      </>
+                        {copy("Gerando PIX...")}</>
                     ) : (
-                      "Gerar PIX"
+                      copy("Gerar PIX")
                     )}
                   </button>
                 </>
@@ -900,8 +893,7 @@ export default function CheckoutPage() {
                       ⏰
                     </div>
                     <h2 style={{ ...S.sectionTitle, color: "#ef4444" }}>
-                      PIX expirado
-                    </h2>
+                      {copy("PIX expirado")}</h2>
                     <p
                       style={{
                         fontSize: 14,
@@ -909,8 +901,7 @@ export default function CheckoutPage() {
                         marginBottom: 24,
                       }}
                     >
-                      O tempo para pagamento expirou. Gere um novo código PIX.
-                    </p>
+                      {copy("O tempo para pagamento expirou. Gere um novo código PIX.")}</p>
                     <button
                       onClick={() => {
                         setPixData(null);
@@ -923,8 +914,7 @@ export default function CheckoutPage() {
                         color: "#fff",
                       }}
                     >
-                      Gerar novo PIX
-                    </button>
+                      {copy("Gerar novo PIX")}</button>
                   </div>
                 </>
               ) : (
@@ -932,8 +922,7 @@ export default function CheckoutPage() {
                   {/* QR Code and PIX code */}
                   <div style={S.qrWrap}>
                     <h2 style={{ ...S.sectionTitle, marginBottom: 4 }}>
-                      Escaneie o QR Code
-                    </h2>
+                      {copy("Escaneie o QR Code")}</h2>
                     <p
                       style={{
                         textAlign: "center",
@@ -942,8 +931,7 @@ export default function CheckoutPage() {
                         margin: "0 0 12px",
                       }}
                     >
-                      ou copie o código PIX abaixo
-                    </p>
+                      {copy("ou copie o código PIX abaixo")}</p>
 
                     {/* QR Code */}
                     <img
@@ -954,7 +942,7 @@ export default function CheckoutPage() {
 
                     {/* Timer */}
                     <div style={S.timer}>
-                      <div>Pague em até</div>
+                      <div>{copy("Pague em até")}</div>
                       <div style={S.timerValue}>
                         {timerMinutes}:{timerSeconds}
                       </div>
@@ -973,25 +961,23 @@ export default function CheckoutPage() {
                           display: "block",
                         }}
                       >
-                        PIX Copia e Cola
-                      </label>
+                        {copy("PIX Copia e Cola")}</label>
                       <div style={S.pixCode}>{pixData.brCode}</div>
                     </div>
 
                     <button onClick={handleCopy} style={S.copyBtn}>
                       {copied ? (
-                        <>✓ Código copiado!</>
+                        <>{copy("✓ Código copiado!")}</>
                       ) : (
                         <>
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                          Copiar código PIX
-                        </>
+                          {copy("Copiar código PIX")}</>
                       )}
                     </button>
 
                     {/* Total reminder */}
                     <div style={{ ...S.totalBar, width: "100%" }}>
-                      <span style={S.totalLabel}>Valor</span>
+                      <span style={S.totalLabel}>{copy("Valor")}</span>
                       <span style={S.totalValue}>{formatBRL(totalCents)}</span>
                     </div>
 
@@ -1003,8 +989,7 @@ export default function CheckoutPage() {
                         lineHeight: 1.6,
                       }}
                     >
-                      Após o pagamento, seu acesso será liberado automaticamente
-                      e os dados de login serão enviados para{" "}
+                      {copy("Após o pagamento, seu acesso será liberado automaticamente e os dados de login serão enviados para")}{" "}
                       <strong style={{ color: "#18181b" }}>{email}</strong>
                     </p>
                   </div>
@@ -1014,8 +999,7 @@ export default function CheckoutPage() {
 
             <div style={S.securityBadge}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Pagamento processado pela Asaas • 100% seguro
-            </div>
+              {copy("Pagamento processado pela Asaas • 100% seguro")}</div>
           </div>
         )}
       </div>

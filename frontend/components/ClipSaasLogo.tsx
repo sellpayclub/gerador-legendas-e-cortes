@@ -1,3 +1,5 @@
+
+import { copy } from "@/lib/i18n/copy";
 import Link from "next/link";
 
 type Props = {
@@ -23,17 +25,15 @@ export default function ClipSaasLogo({
   const inner = (
     <div className={`flex flex-col items-center gap-2 ${className}`}>
       <div
-        aria-label="ClipSaaS"
+        aria-label={copy("ClipSaaS")}
         className="flex items-center font-extrabold tracking-tight text-zinc-100"
         style={{ fontSize: Math.round(height * 0.62), lineHeight: `${height}px` }}
       >
         <span className="mr-2 text-green-500">▶</span>
-        ClipSaaS
-      </div>
+        {copy("ClipSaaS")}</div>
       {showTagline && (
         <span className="text-xs uppercase tracking-widest text-muted">
-          Gerador de Legendas
-        </span>
+          {copy("Gerador de Legendas")}</span>
       )}
     </div>
   );

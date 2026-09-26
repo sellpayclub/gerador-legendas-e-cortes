@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import { CheckCircle2, Loader2, Scissors, Sparkles } from "lucide-react";
@@ -17,6 +21,7 @@ export default function ClipDetectOverlay({
   phase = "working",
   clipCount = 0,
 }: Props) {
+  useLocaleSubscription();
   const [stepIdx, setStepIdx] = useState(0);
   const [progress, setProgress] = useState(0);
   const [startedAt] = useState(() => Date.now());
@@ -55,7 +60,7 @@ export default function ClipDetectOverlay({
       role="dialog"
       aria-modal="true"
       aria-busy={phase === "working"}
-      aria-label="Detectando cortes com IA"
+      aria-label={copy("Detectando cortes com IA")}
     >
       <div className="absolute inset-0 bg-bg/75 backdrop-blur-xl" />
 
@@ -78,7 +83,7 @@ export default function ClipDetectOverlay({
             </div>
 
             <h2 className="text-lg font-semibold text-zinc-100">
-              {phase === "working" ? "IA analisando seu vídeo" : "Cortes prontos!"}
+              {phase === "working" ? copy("IA analisando seu vídeo") : copy("Cortes prontos!")}
             </h2>
             <p className="mt-2 min-h-[2.5rem] text-sm leading-relaxed text-zinc-400 transition-opacity duration-500">
               {phase === "working" ? (
@@ -86,11 +91,9 @@ export default function ClipDetectOverlay({
               ) : clipCount > 0 ? (
                 <>
                   <span className="font-medium text-accent">{clipCount}</span>{" "}
-                  {clipCount === 1 ? "corte encontrado" : "cortes encontrados"} — você já pode
-                  continuar.
-                </>
+                  {clipCount === 1 ? "corte encontrado" : "cortes encontrados"} {copy("— você já pode continuar.")}</>
               ) : (
-                "Análise concluída. Revise os resultados na lista."
+                copy("Análise concluída. Revise os resultados na lista.")
               )}
             </p>
           </div>
@@ -103,8 +106,7 @@ export default function ClipDetectOverlay({
                 ) : (
                   <Scissors className="h-3 w-3 text-accent" />
                 )}
-                Editor profissional de cortes
-              </span>
+                {copy("Editor profissional de cortes")}</span>
               <span className="tabular-nums">{progress}%</span>
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-zinc-800/80">
@@ -149,9 +151,7 @@ export default function ClipDetectOverlay({
 
           {phase === "working" && (
             <p className="mt-4 text-center text-[10px] text-zinc-600">
-              Vídeos longos podem levar 5–15 minutos. Pode fechar e voltar depois — a análise
-              continua em segundo plano.
-            </p>
+              {copy("Vídeos longos podem levar 5–15 minutos. Pode fechar e voltar depois — a análise continua em segundo plano.")}</p>
           )}
         </div>
       </div>

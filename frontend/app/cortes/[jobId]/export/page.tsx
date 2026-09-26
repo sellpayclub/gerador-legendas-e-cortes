@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -15,6 +19,7 @@ import { useJobEvents } from "@/lib/useJobEvents";
 import { useAccessToken } from "@/lib/useAccessToken";
 
 export default function CortesExportPage() {
+  useLocaleSubscription();
   const params = useParams<{ jobId: string }>();
   const router = useRouter();
   const jobId = params.jobId;
@@ -53,10 +58,9 @@ export default function CortesExportPage() {
         onClick={() => router.push(`/cortes/${jobId}`)}
         className="flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-100"
       >
-        <ArrowLeft className="h-4 w-4" /> Voltar aos cortes
-      </button>
+        <ArrowLeft className="h-4 w-4" /> {copy("Voltar aos cortes")}</button>
 
-      <h1 className="text-2xl font-bold">Exportando cortes</h1>
+      <h1 className="text-2xl font-bold">{copy("Exportando cortes")}</h1>
 
       <div className="rounded-xl border border-border bg-panel p-6">
         <ProgressBar job={current} />
@@ -67,8 +71,7 @@ export default function CortesExportPage() {
           <div className="mb-4 flex items-center gap-2 text-green-300">
             <CheckCircle2 className="h-6 w-6" />
             <span className="text-lg font-medium">
-              {readyClips.length} corte(s) prontos!
-            </span>
+              {readyClips.length} {copy("corte(s) prontos!")}</span>
           </div>
           <ul className="space-y-4">
             {readyClips.map((clip) => (
@@ -88,8 +91,7 @@ export default function CortesExportPage() {
                   className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-bg"
                 >
                   <Download className="h-4 w-4" />
-                  Baixar MP4
-                </a>
+                  {copy("Baixar MP4")}</a>
               </li>
             ))}
           </ul>
@@ -99,29 +101,26 @@ export default function CortesExportPage() {
             className="mt-4 inline-flex items-center gap-2 rounded-lg border border-border bg-panel px-5 py-3 font-semibold text-zinc-100 hover:bg-border/40"
           >
             <Plus className="h-5 w-5" />
-            Novo vídeo
-          </button>
+            {copy("Novo vídeo")}</button>
         </div>
       )}
 
       {error && (
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-red-300">
-          <div className="font-medium">Erro ao exportar:</div>
+          <div className="font-medium">{copy("Erro ao exportar:")}</div>
           <div className="mt-1 text-sm">{current?.message}</div>
           <button
             onClick={() => router.push(`/cortes/${jobId}`)}
             className="mt-3 rounded-lg bg-red-500/20 px-4 py-2 text-sm"
           >
-            Voltar e tentar de novo
-          </button>
+            {copy("Voltar e tentar de novo")}</button>
         </div>
       )}
 
       {rendering && (
         <div className="flex items-center justify-center gap-2 text-sm text-zinc-400">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Gerando cortes com legenda — não feche esta página.
-        </div>
+          {copy("Gerando cortes com legenda — não feche esta página.")}</div>
       )}
       </div>
     </div>

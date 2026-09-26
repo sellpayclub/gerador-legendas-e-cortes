@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import type { ExportFormatId, TemplateInfo } from "@/lib/api";
 export const CORTES_VERTICAL = {
@@ -8,10 +12,10 @@ export const CORTES_VERTICAL = {
 } as const;
 
 export const FORMAT_OPTIONS: { id: ExportFormatId; label: string; desc: string }[] = [
-  { id: "original", label: "Original", desc: "Proporção do vídeo de entrada" },
-  { id: "reels_full", label: "9:16 Tela cheia", desc: "Vertical com crop central" },
-  { id: "choquei_image", label: "Choquei (imagem)", desc: "Imagem em cima, 70% vídeo embaixo" },
-  { id: "choquei_video", label: "Choquei (vídeo)", desc: "Vídeo loop em cima, 70% embaixo" },
+  { id: "original", label: "Original", get desc() { return copy("Proporção do vídeo de entrada"); } },
+  { id: "reels_full", get label() { return copy("9:16 Tela cheia"); }, get desc() { return copy("Vertical com crop central"); } },
+  { id: "choquei_image", get label() { return copy("Choquei (imagem)"); }, get desc() { return copy("Imagem em cima, 70% vídeo embaixo"); } },
+  { id: "choquei_video", get label() { return copy("Choquei (vídeo)"); }, get desc() { return copy("Vídeo loop em cima, 70% embaixo"); } },
 ];
 
 export function formatToBackend(fmt: ExportFormatId): {
@@ -41,14 +45,13 @@ type Props = {
 };
 
 export default function ClipFormatPicker({ format, onChange, disabled, compact }: Props) {
+  useLocaleSubscription();
   return (
     <div className={compact ? "px-4 py-3" : "rounded-lg border border-border bg-panel/50 p-3"}>
       <p className="mb-2 text-xs font-medium text-zinc-300">
-        Formato do vídeo final
-        {!compact && (
+        {copy("Formato do vídeo final")}{!compact && (
           <span className="mt-0.5 block text-[10px] font-normal text-zinc-500">
-            Escolha antes de posicionar a legenda — o preview muda na hora.
-          </span>
+            {copy("Escolha antes de posicionar a legenda — o preview muda na hora.")}</span>
         )}
       </p>
       <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">

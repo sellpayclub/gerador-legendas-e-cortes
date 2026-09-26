@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Loader2, Play, Sparkles, Trash2 } from "lucide-react";
@@ -7,12 +11,12 @@ import IconButton from "@/components/ui/IconButton";
 import { useI18n } from "@/lib/i18n/context";
 
 export const CLIP_FOCUS_OPTIONS: { id: ClipFocusType; label: string; desc: string }[] = [
-  { id: "viral", label: "Viral", desc: "Ganchos fortes, apelo amplo (padrão)" },
-  { id: "polemico", label: "Polêmicos", desc: "Opiniões fortes, debate" },
-  { id: "engracado", label: "Engraçados", desc: "Humor, punchlines" },
-  { id: "valioso", label: "Conteúdo valioso", desc: "Educativo, dicas práticas" },
-  { id: "inspirador", label: "Inspirador", desc: "Motivação, mindset" },
-  { id: "choque", label: "Choque", desc: "Fatos surpreendentes" },
+  { id: "viral", label: "Viral", get desc() { return copy("Ganchos fortes, apelo amplo (padrão)"); } },
+  { id: "polemico", get label() { return copy("Polêmicos"); }, get desc() { return copy("Opiniões fortes, debate"); } },
+  { id: "engracado", get label() { return copy("Engraçados"); }, get desc() { return copy("Humor, punchlines"); } },
+  { id: "valioso", get label() { return copy("Conteúdo valioso"); }, get desc() { return copy("Educativo, dicas práticas"); } },
+  { id: "inspirador", get label() { return copy("Inspirador"); }, get desc() { return copy("Motivação, mindset"); } },
+  { id: "choque", get label() { return copy("Choque"); }, get desc() { return copy("Fatos surpreendentes"); } },
 ];
 
 type Props = {
@@ -54,6 +58,7 @@ export default function ClipListPanel({
   onFocusesChange,
   showFocusPicker = false,
 }: Props) {
+  useLocaleSubscription();
   const { t } = useI18n();
   const [focusOpen, setFocusOpen] = useState(false);
   const enabledCount = clips.filter((c) => c.enabled).length;
@@ -64,7 +69,7 @@ export default function ClipListPanel({
   const summary =
     selectedLabels.length > 0
       ? selectedLabels.join(", ")
-      : "Viral (padrão)";
+      : copy("Viral (padrão)");
 
   const toggleFocus = (id: ClipFocusType) => {
     if (!onFocusesChange) return;
@@ -92,7 +97,7 @@ export default function ClipListPanel({
           type="button"
           onClick={onDetect}
           disabled={detecting || transcribing}
-          title={transcribing ? "Aguarde a transcrição terminar" : undefined}
+          title={transcribing ? copy("Aguarde a transcrição terminar") : undefined}
           className="touch-target flex shrink-0 items-center gap-2 rounded-lg bg-accent/10 px-3 py-2 text-sm font-medium text-accent transition hover:bg-accent/20 disabled:opacity-50"
         >
           {detecting ? (
@@ -100,7 +105,7 @@ export default function ClipListPanel({
           ) : (
             <Sparkles className="h-4 w-4" />
           )}
-          {detecting ? "Detectando..." : "Detectar com IA"}
+          {detecting ? copy("Detectando...") : copy("Detectar com IA")}
         </button>
       </div>
 
@@ -113,7 +118,7 @@ export default function ClipListPanel({
             className="flex w-full items-center justify-between gap-2 rounded px-1 py-1 text-left text-xs text-zinc-300 transition hover:text-zinc-100 disabled:opacity-50"
           >
             <span>
-              <span className="text-zinc-500">Foco dos cortes: </span>
+              <span className="text-zinc-500">{copy("Foco dos cortes:")}</span>
               <span className="font-medium text-zinc-100">{summary}</span>
             </span>
             {focusOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
@@ -144,16 +149,14 @@ export default function ClipListPanel({
           )}
           {!focusOpen && selectedLabels.length === 0 && (
             <p className="mt-1 px-1 text-[10px] text-zinc-500">
-              Toque para escolher polêmicos, engraçados, conteúdo valioso e mais. Pode combinar vários.
-            </p>
+              {copy("Toque para escolher polêmicos, engraçados, conteúdo valioso e mais. Pode combinar vários.")}</p>
           )}
         </div>
       )}
 
       {clips.length === 0 && !detecting && (
         <p className="rounded-lg border border-dashed border-border bg-panel/50 px-4 py-6 text-center text-xs text-zinc-500">
-          Clique em &ldquo;Detectar com IA&rdquo; para encontrar os melhores trechos do vídeo.
-        </p>
+          {copy("Clique em &ldquo;Detectar com IA&rdquo; para encontrar os melhores trechos do vídeo.")}</p>
       )}
 
       <ul className="flex flex-col gap-2">
@@ -174,7 +177,7 @@ export default function ClipListPanel({
                   checked={clip.enabled}
                   onChange={() => onToggle(clip.id)}
                   className="mt-1 shrink-0 accent-accent"
-                  title="Incluir na exportação"
+                  title={copy("Incluir na exportação")}
                 />
                 <button
                   type="button"
@@ -185,8 +188,7 @@ export default function ClipListPanel({
                     <div className="text-sm font-medium text-zinc-100">{clip.title}</div>
                     {clip.edit_mode === "hook_then_body" && (
                       <span className="rounded bg-accent/15 px-1.5 py-0.5 text-[10px] font-medium text-accent">
-                        Gancho imediato
-                      </span>
+                        {copy("Gancho imediato")}</span>
                     )}
                   </div>
                   {(clip.hook_text || clip.insight || clip.hook) && (
@@ -200,9 +202,9 @@ export default function ClipListPanel({
                       <>
                         <span>·</span>
                         <span>
-                          gancho {clip.segments.find((s) => s.role === "hook")?.start_s.toFixed(0)}s
+                          {copy("gancho")}{clip.segments.find((s) => s.role === "hook")?.start_s.toFixed(0)}s
                           {" → "}
-                          corpo {clip.segments.find((s) => s.role === "body")?.start_s.toFixed(0)}s
+                          {copy("corpo")}{clip.segments.find((s) => s.role === "body")?.start_s.toFixed(0)}s
                         </span>
                       </>
                     ) : (
@@ -226,7 +228,7 @@ export default function ClipListPanel({
                     type="button"
                     onClick={() => onReorder(clip.id, "up")}
                     disabled={idx === 0}
-                    title="Mover para cima"
+                    title={copy("Mover para cima")}
                     size="sm"
                   >
                     <ChevronUp className="h-4 w-4" />
@@ -235,7 +237,7 @@ export default function ClipListPanel({
                     type="button"
                     onClick={() => onReorder(clip.id, "down")}
                     disabled={idx === clips.length - 1}
-                    title="Mover para baixo"
+                    title={copy("Mover para baixo")}
                     size="sm"
                   >
                     <ChevronDown className="h-4 w-4" />
@@ -243,7 +245,7 @@ export default function ClipListPanel({
                   <IconButton
                     type="button"
                     onClick={() => onPreview(clip)}
-                    title="Ouvir trecho"
+                    title={copy("Ouvir trecho")}
                     size="sm"
                   >
                     <Play className="h-4 w-4" />
@@ -252,7 +254,7 @@ export default function ClipListPanel({
                     type="button"
                     variant="danger"
                     onClick={() => onRemove(clip.id)}
-                    title="Remover corte"
+                    title={copy("Remover corte")}
                     size="sm"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -266,8 +268,7 @@ export default function ClipListPanel({
 
       {clips.length > 0 && (
         <p className="text-xs text-zinc-500">
-          {enabledCount} de {clips.length} selecionado(s) para exportar
-        </p>
+          {enabledCount} {copy("de")}{clips.length} {copy("selecionado(s) para exportar")}</p>
       )}
     </div>
   );

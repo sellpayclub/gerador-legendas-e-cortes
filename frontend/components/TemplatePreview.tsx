@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Image as ImageIcon, Move, Pause, Play, SkipBack, SkipForward } from "lucide-react";
@@ -71,6 +75,7 @@ export default function TemplatePreview({
   compact = false,
   compactMaxHeight,
 }: Props) {
+  useLocaleSubscription();
   const { t } = useI18n();
   const accessToken = useAccessToken();
   const hosted = isMultiTenant();
@@ -350,8 +355,7 @@ export default function TemplatePreview({
     if (!canLoadAssets) {
       return (
         <div className={`flex items-center justify-center text-xs text-zinc-600 ${className}`}>
-          Carregando…
-        </div>
+          {copy("Carregando…")}</div>
       );
     }
     return effectiveOverlay ? (
@@ -437,7 +441,7 @@ export default function TemplatePreview({
                 {compose?.instagram_username || "usuario"}
               </p>
               <p className="mt-2 line-clamp-4 leading-snug" style={{ fontSize: igCaptionPx, color: igText }}>
-                {compose?.instagram_caption || "Caption do post..."}
+                {compose?.instagram_caption || copy("Caption do post...")}
               </p>
             </div>
           </div>
@@ -464,8 +468,7 @@ export default function TemplatePreview({
             {onOverlayPosChange && (
               <div className="pointer-events-none absolute left-1.5 top-1.5 flex items-center gap-1 rounded-md bg-black/55 px-1.5 py-0.5 text-[10px] text-zinc-300 backdrop-blur-sm sm:text-[11px]">
                 <Move className="h-3 w-3 shrink-0 text-accent" />
-                Mídia
-              </div>
+                {copy("Mídia")}</div>
             )}
           </div>
         )}
@@ -491,14 +494,12 @@ export default function TemplatePreview({
             />
           ) : (
             <div className="flex h-full min-h-[80px] items-center justify-center text-sm text-zinc-500">
-              Carregando vídeo…
-            </div>
+              {copy("Carregando vídeo…")}</div>
           )}
           {onVideoPosChange && (
             <div className="pointer-events-none absolute right-1.5 top-1.5 flex items-center gap-1 rounded-md bg-black/55 px-1.5 py-0.5 text-[10px] text-zinc-300 backdrop-blur-sm sm:text-[11px]">
               <Move className="h-3 w-3 shrink-0 text-accent" />
-              Enquadrar
-            </div>
+              {copy("Enquadrar")}</div>
           )}
         </div>
       </div>
@@ -555,8 +556,7 @@ export default function TemplatePreview({
           {onSubtitlePositionChange && (
             <div className="pointer-events-none absolute -top-7 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-md bg-black/55 px-1.5 py-0.5 text-[10px] text-zinc-300 backdrop-blur-sm sm:text-[11px]">
               <Move className="h-3 w-3 text-accent" />
-              Legenda
-            </div>
+              {copy("Legenda")}</div>
           )}
           <span style={{
             padding: style.box ? "0.1em 0.4em" : "0",

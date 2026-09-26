@@ -1,4 +1,6 @@
 "use client";
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useEffect, useState } from "react";
 import { eventsUrl, type JobState } from "@/lib/api";
@@ -26,7 +28,7 @@ export function useJobEvents(jobId: string | null, enabled: boolean = true) {
       }
     };
     es.onerror = () => {
-      setError("Conexão perdida com o backend");
+      setError(copy("Conexão perdida com o backend"));
     };
 
     return () => es.close();

@@ -1,4 +1,8 @@
 "use client";
+import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
+
+import { copy } from "@/lib/i18n/copy";
+
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Play, Pause, SkipBack, SkipForward, Move } from "lucide-react";
@@ -90,6 +94,7 @@ export default function VideoPreview({
   compose,
   progressTime,
 }: Props & { isPlaceholder?: boolean }) {
+  useLocaleSubscription();
   const accessToken = useAccessToken();
   const hosted = isMultiTenant();
   const mainVideoSrc = useMemo(() => {
@@ -320,8 +325,7 @@ export default function VideoPreview({
           />
         ) : (
           <div className="absolute inset-0 flex h-full min-h-[120px] w-full items-center justify-center text-sm text-zinc-500">
-            Carregando vídeo…
-          </div>
+            {copy("Carregando vídeo…")}</div>
         )}
 
         {/* Hero phrase — big, centered */}
@@ -386,8 +390,8 @@ export default function VideoPreview({
         <div className="pointer-events-none absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-md bg-black/55 px-1.5 py-0.5 text-[10px] text-zinc-300 backdrop-blur-sm sm:text-[11px]">
           <Move className="h-3 w-3 shrink-0 text-accent" />
           {isPlaceholder
-            ? "Arraste (transcrição em andamento)"
-            : "Arraste legenda"}
+            ? copy("Arraste (transcrição em andamento)")
+            : copy("Arraste legenda")}
         </div>
 
         {/* Progress Bar Fake (Espelhado do TemplatePreview) */}
