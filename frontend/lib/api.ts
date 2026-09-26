@@ -4,28 +4,6 @@ import { isMultiTenant } from "@/lib/hosted";
 
 export type Word = { w: string; start: number; end: number };
 
-export type SalesClient = {
-  name: string;
-  email: string;
-  whatsapp: string;
-  purchases_count: number;
-  total_cents: number;
-  last_paid_at: string | null;
-};
-
-export type SalesDashboard = {
-  generated_at: string;
-  total_sales_count: number;
-  total_revenue_cents: number;
-  month_sales_count: number;
-  month_revenue_cents: number;
-  year_revenue_cents: number;
-  annualized_revenue_cents: number;
-  customers_count: number;
-  clients: SalesClient[];
-  monthly_series: { label: string; revenue_cents: number; sales_count: number }[];
-};
-
 export type WordsData = {
   duration: number;
   fps: number;
@@ -936,32 +914,6 @@ export async function testOpenAI(apiKey?: string): Promise<{ ok: boolean; messag
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(apiKey ? { openai_api_key: apiKey } : {}),
-    }),
-  );
-}
-
-export type AdminSendAccessResult = {
-  ok: boolean;
-  email: string;
-  user_id?: string;
-  email_sent?: boolean;
-  email_id?: string;
-  access_link_generated?: boolean;
-};
-
-export async function getAdminSalesDashboard(): Promise<SalesDashboard> {
-  return jsonOrThrow(await apiFetch("/api/admin/sales-dashboard"));
-}
-
-export async function adminSendAccess(
-  email: string,
-  name = "",
-): Promise<AdminSendAccessResult> {
-  return jsonOrThrow(
-    await apiFetch("/api/admin/send-access", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, name }),
     }),
   );
 }

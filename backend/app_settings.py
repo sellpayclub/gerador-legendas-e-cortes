@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 import os
 import platform
 import threading
@@ -18,6 +19,14 @@ ROOT = Path(__file__).resolve().parent.parent
 SETTINGS_PATH = ROOT / "data" / "app-settings.json"
 
 _lock = threading.Lock()
+
+
+def mlx_available() -> bool:
+    return (
+        platform.system() == "Darwin"
+        and platform.machine() == "arm64"
+        and importlib.util.find_spec("mlx_whisper") is not None
+    )
 
 
 @dataclass
@@ -48,7 +57,7 @@ class Settings:
     def transcribe_ready(self) -> bool:
         engine = (self.transcribe_engine or "openai").strip().lower()
         if engine == "mlx":
-            return platform.system() == "Darwin"
+            return mlx_available()
         return self.openai_configured()
 
     def warnings(self) -> list[str]:
@@ -56,8 +65,8 @@ class Settings:
         if not self.openai_configured():
             out.append("Chave OpenAI não configurada — configure em Configurações.")
         engine = (self.transcribe_engine or "openai").strip().lower()
-        if engine == "mlx" and platform.system() != "Darwin":
-            out.append("Transcrição MLX só funciona no macOS (Apple Silicon). Use OpenAI Whisper na VPS.")
+        if engine == "mlx" and not mlx_available():
+            out.append("Transcrição MLX requer macOS Apple Silicon e instalação do extra mlx. Use OpenAI Whisper.")
         elif engine == "openai" and not self.openai_configured():
             out.append("Transcrição OpenAI requer API key.")
         return out
@@ -193,7 +202,7 @@ def to_public(settings: Optional[Settings] = None) -> dict[str, Any]:
         "warnings": s.warnings(),
         "source": settings_source(),
         "platform": platform.system(),
-        "mlx_available": platform.system() == "Darwin",
+        "mlx_available": mlx_available(),
     }
 
 

@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "mkdir -p .next/standalone/.next && (cp -r .next/static .next/standalone/.next/static || true) && (cp -r .next/server .next/standalone/.next/server || true) && rm -rf .next/standalone/public && (cp -r public .next/standalone/public || true)",
-    "start": "bash scripts/start-prod.sh",
+    "postbuild": "node scripts/copy-standalone.mjs",
+    "start": "node scripts/start-prod.mjs",
     "lint": "next lint"
   },
   "dependencies": {

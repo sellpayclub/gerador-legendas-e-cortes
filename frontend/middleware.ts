@@ -1,18 +1,17 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const PROTECTED = ["/", "/editor", "/cortes", "/configuracoes", "/render", "/aulas", "/admin"];
+const PROTECTED = ["/", "/editor", "/cortes", "/configuracoes", "/render", "/aulas"];
 const AUTH_PAGES = ["/login", "/signup", "/auth/callback", "/login/esqueci-senha"];
 const AUTH_PAGES_ALLOW_LOGGED_IN = ["/auth/atualizar-senha"];
 
 export async function middleware(request: NextRequest) {
   if (process.env.NEXT_PUBLIC_MULTI_TENANT !== "true") {
-    return NextResponse.next();
-  }
-
-  // Public checkout pages — skip auth checks
-  const p = request.nextUrl.pathname;
-  if (p.startsWith("/checkout") || p.startsWith("/comprar")) {
+    const hostedOnly = ["/login", "/signup", "/auth", "/plano-inativo", "/mobile", "/admin"];
+    const path = request.nextUrl.pathname;
+    if (hostedOnly.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
     return NextResponse.next();
   }
 

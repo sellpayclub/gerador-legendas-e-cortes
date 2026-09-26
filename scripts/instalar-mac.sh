@@ -14,8 +14,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 LA="$HOME/Library/LaunchAgents"
-NODE_BIN="/opt/homebrew/opt/node@20/bin"
-FFMPEG_BIN="/opt/homebrew/opt/ffmpeg-full/bin"
+BREW_PREFIX="$(brew --prefix)"
+NODE_BIN="$(dirname "$(bash "$ROOT/scripts/find-node-mac.sh")")"
 
 echo "==> Projeto em: $ROOT"
 case "$ROOT" in
@@ -27,21 +27,16 @@ esac
 
 mkdir -p "$ROOT/logs" "$LA"
 
-echo "==> Verificando fontes do render..."
-bash "$ROOT/scripts/download-fonts.sh" 2>/dev/null || true
-
 echo "==> Verificando backend (venv)..."
 if [ ! -x "$ROOT/backend/.venv/bin/python" ]; then
   echo "    Criando venv..."
-  (cd "$ROOT/backend" && python3.13 -m venv .venv && .venv/bin/pip install -q -U pip && .venv/bin/pip install -q -e .)
+  (cd "$ROOT/backend" && "$BREW_PREFIX/opt/python@3.13/bin/python3.13" -m venv .venv)
 fi
+(cd "$ROOT/backend" && .venv/bin/python -m pip install -q -e .)
 
 echo "==> Verificando frontend (build de producao)..."
-bash "$ROOT/scripts/sync-frontend-fonts.sh" 2>/dev/null || true
-if [ ! -d "$ROOT/frontend/.next" ]; then
-  echo "    Compilando frontend..."
-  (cd "$ROOT/frontend" && export PATH="$NODE_BIN:$PATH" && npm install --silent && npm run build)
-fi
+echo "    Compilando frontend..."
+(cd "$ROOT/frontend" && export PATH="$NODE_BIN:$PATH" BACKEND_URL="http://127.0.0.1:8000" NEXT_PUBLIC_MULTI_TENANT="false" && npm ci --silent && npm run build)
 
 echo "==> Gerando servicos do macOS..."
 cat > "$LA/com.legendas.backend.plist" <<PLIST
@@ -51,7 +46,7 @@ cat > "$LA/com.legendas.backend.plist" <<PLIST
 <dict>
     <key>Label</key><string>com.legendas.backend</string>
     <key>ProgramArguments</key>
-    <array><string>$ROOT/scripts/run-backend.sh</string></array>
+    <array><string>$ROOT/scripts/local-backend.sh</string></array>
     <key>RunAtLoad</key><true/>
     <key>KeepAlive</key><true/>
     <key>StandardOutPath</key><string>$ROOT/logs/backend.log</string>
@@ -67,7 +62,7 @@ cat > "$LA/com.legendas.frontend.plist" <<PLIST
 <dict>
     <key>Label</key><string>com.legendas.frontend</string>
     <key>ProgramArguments</key>
-    <array><string>$ROOT/scripts/run-frontend.sh</string></array>
+    <array><string>$ROOT/scripts/local-frontend.sh</string></array>
     <key>RunAtLoad</key><true/>
     <key>KeepAlive</key><true/>
     <key>StandardOutPath</key><string>$ROOT/logs/frontend.log</string>
@@ -76,26 +71,7 @@ cat > "$LA/com.legendas.frontend.plist" <<PLIST
 </plist>
 PLIST
 
-# Gera os scripts de execucao com o caminho atual.
-cat > "$ROOT/scripts/run-backend.sh" <<RUN
-#!/bin/bash
-cd "$ROOT/backend" || exit 1
-export PATH="$FFMPEG_BIN:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-exec .venv/bin/python -m uvicorn main:app --port 8000 --host 127.0.0.1
-RUN
-
-cat > "$ROOT/scripts/run-frontend.sh" <<RUN
-#!/bin/bash
-cd "$ROOT/frontend" || exit 1
-export PATH="$NODE_BIN:/opt/homebrew/bin:/usr/bin:/bin"
-export PORT=3000
-export HOSTNAME=127.0.0.1
-export BACKEND_URL="http://127.0.0.1:8000"
-[ -d .next ] || npm run build
-exec npm run start
-RUN
-
-chmod +x "$ROOT/scripts/run-backend.sh" "$ROOT/scripts/run-frontend.sh" "$ROOT/legendas.sh"
+chmod +x "$ROOT/scripts/local-backend.sh" "$ROOT/scripts/local-frontend.sh" "$ROOT/legendas.sh"
 
 echo "==> Ativando servicos..."
 launchctl unload "$LA/com.legendas.backend.plist" 2>/dev/null || true

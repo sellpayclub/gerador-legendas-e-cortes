@@ -50,7 +50,7 @@ export default function HomePage() {
     { value: "es", label: t("home.languages.es") },
     { value: "fr", label: t("home.languages.fr") },
     { value: "it", label: t("home.languages.it") },
-    { value: copy("de"), label: t("home.languages.de") },
+    { value: "de", label: t("home.languages.de") },
   ];
 
   const loadJobs = useCallback(async () => {

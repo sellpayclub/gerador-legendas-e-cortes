@@ -1,19 +1,17 @@
 /** @type {import('next').NextConfig} */
 const backendUrl = process.env.BACKEND_URL || "http://127.0.0.1:8000";
-const supabaseHostname = new URL(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://lcbczyzedluaoxtuajoz.supabase.co"
-).hostname;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
 const nextConfig = {
   output: "standalone",
   images: {
-    remotePatterns: [
+    remotePatterns: supabaseUrl ? [
       {
         protocol: "https",
-        hostname: supabaseHostname,
+        hostname: new URL(supabaseUrl).hostname,
         pathname: "/storage/v1/object/public/**",
       },
-    ],
+    ] : [],
   },
   experimental: {
     serverActions: {

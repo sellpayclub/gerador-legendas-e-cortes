@@ -123,9 +123,10 @@ def _recover_stale_render_state(job: Job) -> None:
         clips.update_clips(job.job_dir(), clip_list, manual=True)
 
 app = FastAPI(title="Legendas Locais")
-app.include_router(hosted_router)
-app.include_router(admin_router)
-app.include_router(mobile_router)
+if is_multi_tenant():
+    app.include_router(hosted_router)
+    app.include_router(admin_router)
+    app.include_router(mobile_router)
 
 @app.middleware("http")
 async def _inject_user_context(request, call_next):

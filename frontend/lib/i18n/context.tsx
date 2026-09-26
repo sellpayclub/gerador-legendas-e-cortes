@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import pt, { type Messages } from "./locales/pt";
 import es from "./locales/es";
 import en from "./locales/en";
-import { setCopyLocale } from "./copy";
+import { readLocale, setCopyLocale } from "./copy";
 
 export type Locale = "pt" | "es" | "en";
 
@@ -53,10 +53,7 @@ type I18nContextValue = {
 const I18nContext = createContext<I18nContextValue | null>(null);
 
 function readStoredLocale(): Locale {
-  if (typeof window === "undefined") return "pt";
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (raw === "es" || raw === "en" || raw === "pt") return raw;
-  return "pt";
+  return readLocale();
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
@@ -64,7 +61,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setLocaleState(readStoredLocale());
+    const initial = readStoredLocale();
+    setCopyLocale(initial);
+    setLocaleState(initial);
     setReady(true);
   }, []);
 

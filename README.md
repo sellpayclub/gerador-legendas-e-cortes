@@ -1,189 +1,48 @@
-# Legendas Automáticas Estilo CapCut — Open Source
+# Gerador de Legendas e Cortes
 
-App web **gratuito e open source** para transcrever vídeos, gerar legendas estilo CapCut e exportar cortes para redes sociais. Roda 100% na sua máquina ou VPS — nenhum dado sai do seu computador.
+[English](README.en.md) · [Español](README.es.md) · Português
 
-## ✨ Funcionalidades
+Aplicativo open source para transcrever vídeos, editar legendas, encontrar cortes com IA e exportar MP4. A interface funciona em português, inglês e espanhol. Não há checkout, assinatura ou conta obrigatória na instalação local.
 
-- 📝 **Transcrição automática** — palavra por palavra via OpenAI Whisper ou mlx-whisper local
-- 🎨 **Estilos de legenda** — presets CapCut (Amarelo, Ciano, Minimalista, YouTube) + personalização total
-- ✂️ **Cortes inteligentes** — detecção automática de cortes virais com IA (GPT-4o)
-- 🎬 **Renderização** — exporta MP4 com legendas queimadas usando FFmpeg
-- 🖱️ **Editor visual** — arraste a legenda no preview para posicionar
-- 🔤 **Palavras-chave** — destaque automático de termos importantes
-- 📱 **Templates** — Reels, YouTube Shorts, TikTok com overlays personalizados
-- 🌐 **Multilíngue** — transcrição em PT, EN, ES, FR, IT, DE + detecção automática
+## Instale com uma IA
 
-## 🚀 Instalação rápida
+Abra **[Instalar com Codex, Claude ou outra IA](INSTALAR-COM-IA.md)**, copie o bloco de texto e cole no seu assistente com acesso ao terminal. Ele baixa, instala, inicia e verifica o aplicativo. Você só informa sua chave OpenAI diretamente na tela de Configurações.
 
-```bash
-git clone https://github.com/sellpayclub/gerador-legendas.git legendas-locais
-cd legendas-locais
-cp .env.example backend/.env   # edite e cole OPENAI_API_KEY=sk-...
-bash install.sh
-```
+Os vídeos e os projetos ficam no computador que executa o servidor. A transcrição e os recursos de IA usam a sua própria chave OpenAI e podem gerar custos na sua conta. FFmpeg faz a renderização localmente. iPhone e Android podem usar a interface pelo navegador quando o aplicativo estiver publicado em um servidor com HTTPS; o processamento acontece no servidor, não no telefone.
 
-- **Mac:** http://localhost:3000 — `./legendas.sh status|reiniciar|logs`
-- **VPS:** o instalador pergunta o domínio e configura HTTPS automaticamente
+## Instalação rápida
 
-Guia completo para iniciantes: [GUIA-INSTALACAO.md](./GUIA-INSTALACAO.md)
-
----
-
-## Pré-requisitos
-
-### Mac (Apple Silicon — M1/M2/M3/M4)
-
-- **Python 3.13** — `brew install python@3.13`
-- **Node.js 20+** — `brew install node@20`
-- **FFmpeg com libass** — `brew install ffmpeg-full`
-- **OpenAI API key** — [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
-
-### VPS (Ubuntu 22.04+)
-
-- VPS com 2+ GB RAM (recomendado 4 GB)
-- Domínio apontando para o IP da VPS
-- OpenAI API key
-
-> O `install.sh` instala todas as dependências automaticamente tanto no Mac quanto na VPS.
-
-### Verificar dependências
+Baixe o [ZIP do projeto](https://github.com/sellpayclub/gerador-legendas-e-cortes/archive/refs/heads/main.zip) ou clone:
 
 ```bash
-python3.13 --version
-node --version
-/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg -filters | grep " ass "
-# deve mostrar:  .. ass               V->V       Render ASS subtitles ...
+git clone https://github.com/sellpayclub/gerador-legendas-e-cortes.git
+cd gerador-legendas-e-cortes
 ```
 
-## Instalação manual (sem install.sh)
+**macOS:** instale o [Homebrew](https://brew.sh), coloque a pasta fora de Desktop/Documentos/Downloads e execute `bash install.sh` no Terminal. O instalador instala Python, Node e FFmpeg, compila a aplicação e cria serviços que sobem ao entrar no Mac. Abra <http://localhost:3000>.
 
-### Backend
+**Windows 10/11:** extraia o ZIP, dê dois cliques em `Instalar-Windows.cmd` e siga os avisos. O script usa o Windows Package Manager (`winget`) para instalar Python, Node e FFmpeg quando faltarem, compila e abre o aplicativo. Ele também inicia o app automaticamente quando você entrar no Windows; use `Iniciar-Windows.cmd` para iniciar manualmente. Se o Windows pedir um novo terminal após instalar um programa, abra o instalador novamente.
 
-```bash
-cd backend
-python3.13 -m venv .venv
-source .venv/bin/activate
-pip install -e .
-```
+**Ubuntu/VPS:** veja [o guia completo](GUIA-INSTALACAO.md). A instalação publicada com domínio exige um servidor e HTTPS; o uso local no Mac ou Windows dispensa ambos.
 
-Configure `backend/.env`:
+Depois de abrir o app, entre em **Configurações**, cole sua [chave de API OpenAI](https://platform.openai.com/api-keys), clique em **Testar conexão** e **Salvar**. A chave não é fornecida pelo projeto. Para transcrição local sem OpenAI, usuários de Mac Apple Silicon podem instalar o extra opcional `mlx` e selecioná-lo nas configurações; detecção de cortes e outras funções de IA continuam precisando de chave OpenAI.
 
-```
-OPENAI_API_KEY=sk-...
-TRANSCRIBE_ENGINE=openai
-```
+## O que você pode fazer
 
-### Frontend
+- Enviar MP4, MOV, MKV, AVI ou WebM.
+- Transcrever fala com tempo por palavra; corrigir texto e pontuação no editor.
+- Aplicar estilos, destacar palavras e renderizar legendas no MP4.
+- Detectar cortes com IA, ajustar trechos, compor formatos verticais e exportar.
+- Selecionar português, inglês ou espanhol no menu de idioma.
 
-```bash
-cd frontend
-npm install
-```
+O [manual de instalação e uso](GUIA-INSTALACAO.md) tem instruções passo a passo, atualização e solução de problemas. O [guia rápido](COMO-USAR.md) explica o fluxo de trabalho.
 
-## Como rodar
+## Requisitos e armazenamento
 
-Em dois terminais:
+Requer Python 3.11+ (instalador usa 3.13), Node.js 22+ e FFmpeg com filtro `ass`/libass. Recomendamos pelo menos 4 GB de RAM e espaço para os vídeos e MP4 exportados. Os trabalhos ficam em `data/jobs/`; a configuração local da chave fica em `data/app-settings.json` ou `backend/.env`. Esses dados não entram no Git.
 
-**Terminal 1 — backend:**
+No Mac, use `./legendas.sh status`, `./legendas.sh reiniciar` e `./legendas.sh logs`. No Windows, use `Iniciar-Windows.cmd` para abrir novamente.
 
-```bash
-cd backend
-source .venv/bin/activate
-uvicorn main:app --reload --port 8000
-```
+## Código e licença
 
-**Terminal 2 — frontend:**
-
-```bash
-cd frontend
-npm run dev
-```
-
-Abra <http://localhost:3000>.
-
-## Uso
-
-1. **Upload** — arraste o vídeo MP4/MOV (até ~2 GB)
-2. Aguarde a transcrição (~2–4 min para 30 min de vídeo)
-3. **Editor**:
-   - Aba **Estilo**: escolha um preset ou ajuste cores/fonte/tamanho/outline/animação
-   - Aba **Transcrição**: corrija palavras erradas; clique numa palavra para pular
-   - Arraste a legenda no preview para posicionar
-4. **Renderizar** → acompanhe o progresso (~1–3 min)
-5. **Baixar MP4** legendado
-
-## Performance esperada (Mac M-series, vídeo 30 min 1080p)
-
-| Etapa                  | Tempo       |
-| ---------------------- | ----------- |
-| Upload + extração áudio | 10–20 s     |
-| Transcrição OpenAI API  | 10–30 s     |
-| Transcrição mlx-whisper | 2–4 min     |
-| Geração ASS             | <1 s        |
-| Render FFmpeg (HW)      | 1–3 min     |
-| **Total (OpenAI)**     | **2–4 min** |
-| **Total (mlx)**        | **5–8 min** |
-
-## Modelo de transcrição
-
-Por padrão usa OpenAI Whisper API. Para usar Whisper local no Mac:
-
-```bash
-# No backend/.env:
-TRANSCRIBE_ENGINE=mlx
-```
-
-Modelos locais disponíveis:
-- `mlx-community/whisper-medium-mlx-4bit` — equilíbrio velocidade/qualidade (padrão)
-- `mlx-community/whisper-large-v3-turbo` — melhor qualidade, mais lento
-- `mlx-community/whisper-small-mlx` — mais rápido, menos preciso
-
-## Estrutura
-
-```
-legendas-locais/
-├── backend/      # FastAPI + Whisper + FFmpeg
-├── frontend/     # Next.js + Tailwind
-└── data/jobs/    # arquivos por job (input, words.json, captions.ass, output.mp4)
-```
-
-Jobs antigos (mais de 7 dias) são apagados automaticamente no startup do backend.
-
-## Deploy VPS
-
-Para instalar em uma VPS própria com HTTPS:
-
-```bash
-git clone https://github.com/sellpayclub/gerador-legendas.git /opt/legendas-locais
-cd /opt/legendas-locais
-cp .env.example backend/.env
-nano backend/.env  # cole OPENAI_API_KEY=sk-...
-bash install.sh    # pergunta o domínio e configura HTTPS (Caddy)
-```
-
-### Atualizar
-
-```bash
-cd /opt/legendas-locais
-git pull
-bash install.sh --update
-```
-
-### Verificação pós-deploy
-
-```bash
-curl -s https://seu-dominio.com/api/health   # {"ok":true}
-```
-
-## Troubleshooting
-
-- **`Could not load model` no mlx-whisper** → primeira execução baixa o modelo; verifique conexão e espaço em `~/.cache/huggingface`
-- **`ffmpeg build lacks libass support`** → instale `brew install ffmpeg-full` (não o `ffmpeg` regular)
-- **Legenda fora de posição** → confira se o vídeo está em tela cheia no preview antes de arrastar
-- **Render lento** → verifique se `h264_videotoolbox` está disponível: `ffmpeg -encoders | grep videotoolbox`
-- **Caracteres acentuados não aparecem** → troque para uma fonte com suporte a Latin Extended (Inter, Montserrat, Arial)
-- **Python 3.14 + mlx-whisper com erro de wheel** → use Python 3.13
-
-## Licença
-
-Este projeto é open source e gratuito para uso pessoal e comercial.
+Frontend: Next.js. Backend: FastAPI, FFmpeg e OpenAI. O código do projeto é distribuído sob [licença MIT](LICENSE). Bibliotecas, fontes e outros recursos de terceiros mantêm suas próprias licenças.

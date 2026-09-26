@@ -29,7 +29,7 @@ def _resolve_bin(name: str, full_candidates: list[str]) -> str:
     if found:
         return found
     raise RuntimeError(
-        f"{name} not found. Install with: brew install ffmpeg-full"
+        f"{name} not found. Install FFmpeg with libass and add it to PATH."
     )
 
 
@@ -44,7 +44,7 @@ def ffprobe_bin() -> str:
 def ensure_ffmpeg() -> None:
     if shutil.which("ffmpeg") is None and not any(Path(c).exists() for c in FFMPEG_FULL_CANDIDATES):
         raise RuntimeError(
-            "ffmpeg not found. Install with: brew install ffmpeg-full"
+            "ffmpeg not found. Install FFmpeg with libass and add it to PATH."
         )
     # Confirm libass support
     out = subprocess.run(
@@ -54,7 +54,7 @@ def ensure_ffmpeg() -> None:
     if " ass " not in out.stdout:
         raise RuntimeError(
             "ffmpeg build lacks libass support (no 'ass' filter). "
-            "Install: brew install ffmpeg-full"
+            "Install an FFmpeg build with libass support."
         )
 
 

@@ -1,277 +1,94 @@
-# Guia de instalação — Legendas Locais
+# Manual de instalação e uso
 
-Manual passo a passo para **iniciantes**. Você vai clonar o repositório, colar sua chave OpenAI e rodar **um comando** de instalação.
+Este projeto roda no seu computador, sem checkout e sem cadastro obrigatório. A interface tem português, inglês e espanhol. Para transcrever e usar IA, você informa uma chave OpenAI sua; a cobrança do uso da API é feita pela OpenAI.
 
----
+Se você usa Codex, Claude ou outro assistente com acesso ao terminal, pode copiar o prompt de [Instalar com IA](INSTALAR-COM-IA.md) para ele fazer as etapas de instalação e verificação.
 
-## Antes de começar
+## 1. Baixar
 
-### O que você precisa
-
-| Item | Obrigatório? | Onde conseguir |
-|------|--------------|----------------|
-| Conta OpenAI | **Sim** | [platform.openai.com](https://platform.openai.com) |
-| Cartão na OpenAI | **Sim** | ~US$ 5 de crédito inicial costuma bastar para testes |
-| Mac **ou** VPS | **Sim** | Mac = uso no seu computador; VPS = acesso pela internet |
-| Domínio (só VPS) | **Sim na VPS** | Ex: `legendas.seudominio.com` no Registro.br, Cloudflare, etc. |
-
-### O que o sistema faz
-
-1. Você envia um vídeo
-2. A OpenAI transcreve a fala (palavra por palavra)
-3. Você escolhe estilo de legenda e exporta cortes
-4. O sistema gera MP4 com legendas queimadas
-
-> **Por que não é "só Vercel"?** Este app processa vídeos grandes com ffmpeg na sua máquina/servidor. Isso não cabe em hospedagem serverless como Vercel. O fluxo mais simples é: **clonar → colar chave → `bash install.sh`**.
-
----
-
-## Passo 0 — Chave OpenAI (Mac e VPS)
-
-1. Acesse [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
-2. Clique em **Create new secret key**
-3. Copie a chave (começa com `sk-...`) — ela só aparece uma vez
-4. Guarde em um lugar seguro
-
----
-
-## Opção A — Instalar no Mac (uso local)
-
-Ideal para usar só no seu computador. Acesse em **http://localhost:3000**.
-
-### A1. Instalar Homebrew (se ainda não tiver)
-
-Abra o **Terminal** (Spotlight → digite "Terminal") e cole:
+Na [página do projeto](https://github.com/sellpayclub/gerador-legendas-e-cortes), clique em **Code → Download ZIP**, extraia a pasta e mantenha-a em um local permanente. Se já usa Git, pode executar:
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+git clone https://github.com/sellpayclub/gerador-legendas-e-cortes.git
+cd gerador-legendas-e-cortes
 ```
 
-Siga as instruções na tela. Depois feche e abra o Terminal de novo.
+Não coloque a pasta do Mac em Desktop, Documentos ou Downloads para uso como serviço automático. Mova para uma pasta como `~/gerador-legendas-e-cortes`.
 
-### A2. Clonar o repositório
+## 2. Instalar no Mac
 
-```bash
-cd ~
-git clone https://github.com/sellpayclub/gerador-legendas.git legendas-locais
-cd legendas-locais
-```
-
-> **Importante:** não clone na Área de Trabalho, Documentos ou Downloads — o macOS bloqueia serviços em background nessas pastas.
-
-### A3. Configurar a chave OpenAI
-
-```bash
-cp .env.example backend/.env
-nano backend/.env
-```
-
-No editor, encontre a linha `OPENAI_API_KEY=` e cole sua chave:
-
-```
-OPENAI_API_KEY=sk-sua-chave-aqui
-```
-
-Salve: `Ctrl+O`, Enter, `Ctrl+X`.
-
-### A4. Rodar o instalador
+Instale o [Homebrew](https://brew.sh) se ainda não estiver instalado. Abra o Terminal dentro da pasta extraída e execute:
 
 ```bash
 bash install.sh
 ```
 
-O script instala dependências (Python, Node, ffmpeg), compila o app e configura para iniciar automaticamente.
+O instalador instala Python 3.13, Node.js 22 e FFmpeg com libass, cria o ambiente Python, baixa dependências do frontend e compila. Ele também registra dois serviços locais que iniciam quando você entra no Mac e reiniciam se pararem. O primeiro processo pode demorar vários minutos.
 
-### A5. Configurar na interface
+Abra <http://localhost:3000>. Para verificar ou reiniciar:
 
-1. Abra **http://localhost:3000/configuracoes**
-2. Cole a API key (se ainda não salvou pelo `.env`)
-3. Clique **Testar conexão** → deve aparecer sucesso
-4. Clique **Salvar**
-
-### A6. Primeiro vídeo
-
-1. Abra **http://localhost:3000**
-2. Envie um vídeo curto (30 segundos) para testar
-3. Aguarde a transcrição
-4. Escolha estilo e exporte
-
-### Comandos do dia a dia (Mac)
-
-```bash
-cd ~/legendas-locais
-
-./legendas.sh status      # ver se está rodando
-./legendas.sh reiniciar   # reiniciar após mudanças
-./legendas.sh logs        # ver erros
-./legendas.sh atualizar   # após git pull
-```
-
----
-
-## Opção B — Instalar na VPS (acesso pela internet)
-
-Ideal para acessar de qualquer lugar com seu domínio, ex: **https://legendas.seudominio.com**.
-
-### B1. Contratar VPS
-
-- **Sistema:** Ubuntu 22.04 ou 24.04
-- **RAM:** mínimo 2 GB (recomendado 4 GB)
-- **Provedores comuns:** Hostinger, DigitalOcean, Contabo, Hetzner
-
-Anote o **IP** da VPS.
-
-### B2. Apontar o DNS
-
-No painel do seu domínio (Registro.br, Cloudflare, etc.):
-
-| Tipo | Nome | Valor |
-|------|------|-------|
-| A | `legendas` (ou `@`) | IP da VPS |
-
-Exemplo: `legendas.seudominio.com` → `SEU_IP`
-
-A propagação pode levar de 5 minutos a 24 horas.
-
-### B3. Conectar na VPS (SSH)
-
-No Mac, abra o Terminal:
-
-```bash
-ssh root@SEU_IP
-```
-
-Digite a senha quando pedir. Na primeira vez, confirme com `yes`.
-
-> **O que é SSH?** É a forma de controlar o servidor Linux pelo terminal, como se estivesse "dentro" da máquina remota.
-
-### B4. Clonar e configurar
-
-```bash
-git clone https://github.com/sellpayclub/gerador-legendas.git /opt/legendas-locais
-cd /opt/legendas-locais
-cp .env.example backend/.env
-nano backend/.env
-```
-
-Cole sua chave OpenAI na linha `OPENAI_API_KEY=`.
-
-Salve: `Ctrl+O`, Enter, `Ctrl+X`.
-
-### B5. Rodar o instalador
-
-```bash
-bash install.sh
-```
-
-O script vai perguntar seu **domínio** (ex: `legendas.seudominio.com`). Depois instala tudo e configura HTTPS automaticamente (Caddy + Let's Encrypt).
-
-### B6. Configurar na interface
-
-1. Abra **https://legendas.seudominio.com/configuracoes**
-2. **Testar conexão** → **Salvar**
-3. Envie um vídeo curto de teste
-
-### B7. Verificar se está funcionando
-
-Na VPS:
-
-```bash
-curl -s http://127.0.0.1:8000/api/health
-```
-
-Deve retornar JSON com `"openai_configured": true` após configurar a chave.
-
----
-
-## Atualizar para versão nova
-
-```bash
-cd ~/legendas-locais          # Mac
-# ou
-cd /opt/legendas-locais       # VPS
-
-git pull
-bash install.sh --update
-```
-
----
-
-## Solução de problemas
-
-| Problema | Causa provável | O que fazer |
-|----------|----------------|-------------|
-| Site não abre (VPS) | DNS ainda propagando | Aguarde até 24h; teste `ping legendas.seudominio.com` |
-| Site não abre (VPS) | Firewall | Libere portas **80** e **443** no painel da VPS |
-| "Chave OpenAI não configurada" | Chave vazia ou inválida | Edite `backend/.env` ou use `/configuracoes` |
-| Transcrição falha | Sem crédito na OpenAI | Adicione crédito em platform.openai.com/billing |
-| Testar conexão falha | Chave errada ou expirada | Gere nova chave e salve de novo |
-| 502 no upload de vídeo | Vídeo muito grande ou serviço parado | Reinicie: `systemctl restart legendas-backend legendas-frontend` (VPS) ou `./legendas.sh reiniciar` (Mac) |
-| Render/export falha | ffmpeg sem libass | VPS: `ffmpeg -filters \| grep ass` deve listar `ass` |
-| Mac: serviço não sobe | Projeto na Área de Trabalho | Mova para `~/legendas-locais` e rode `bash install.sh` de novo |
-
-### Comandos de diagnóstico
-
-**Mac:**
 ```bash
 ./legendas.sh status
+./legendas.sh reiniciar
 ./legendas.sh logs
-curl -s http://127.0.0.1:8000/api/health
 ```
 
-**VPS:**
-```bash
-systemctl status legendas-backend legendas-frontend caddy
-journalctl -u legendas-backend -n 50 --no-pager
-curl -s http://127.0.0.1:8000/api/health
-```
+## 3. Instalar no Windows
 
----
+Requer Windows 10 ou 11 com [Windows Package Manager](https://learn.microsoft.com/windows/package-manager/winget/) (`winget`, normalmente já instalado). Abra a pasta extraída e dê dois cliques em **Instalar-Windows.cmd**. O instalador tenta instalar Python 3.13, Node.js LTS e FFmpeg quando faltarem. Se um instalador do Windows pedir permissão, conclua-o. Se aparecer uma mensagem para abrir outro terminal, feche a janela e dê dois cliques novamente no instalador.
 
-## Backup
+Depois da instalação, o navegador abre <http://localhost:3000>. O app inicia automaticamente quando você entra no Windows; também pode abrir **Iniciar-Windows.cmd** manualmente. O instalador verifica se o FFmpeg tem o filtro `ass`, necessário para gravar legendas no vídeo.
 
-Seus vídeos e trabalhos ficam em:
+## 4. Configurar a IA
 
-```
-data/jobs/
-```
+1. Crie uma chave em [OpenAI API Keys](https://platform.openai.com/api-keys). Uma conta do ChatGPT não inclui automaticamente créditos de API.
+2. Abra **Configurações** em <http://localhost:3000/configuracoes>.
+3. Cole a chave, clique em **Testar conexão** e depois em **Salvar**.
 
-Faça backup periódico dessa pasta (copiar para outro disco ou nuvem).
+A chave fica apenas no computador servidor, em `data/app-settings.json`. Não publique esse arquivo. Se preferir, coloque `OPENAI_API_KEY=` no arquivo `backend/.env` e não salve a mesma chave na interface. A configuração da interface tem prioridade.
 
----
-
-## Checklist pós-instalação
-
-Use esta lista para confirmar que tudo funciona:
-
-- [ ] `/api/health` retorna `"ok": true`
-- [ ] `/api/health` retorna `"openai_configured": true`
-- [ ] Página `/configuracoes` → Testar conexão OK
-- [ ] Upload de vídeo de 30 segundos funciona
-- [ ] Transcrição completa sem erro
-- [ ] Export de legenda ou corte gera MP4
-
----
-
-## Infra avançada (opcional)
-
-Se sua VPS **já usa Traefik + Docker Swarm**, rode:
+No Mac com Apple Silicon, a transcrição local MLX é opcional. Para instalar:
 
 ```bash
-USE_TRAEFIK=true DOMAIN=legendas.seudominio.com bash deploy/setup.sh
+cd backend
+.venv/bin/python -m pip install -e '.[mlx]'
 ```
 
-Para a maioria dos casos, o caminho padrão com **Caddy** (`bash install.sh`) é mais simples.
+Reinicie o app e selecione MLX nas Configurações. A detecção de cortes e outros recursos de IA ainda precisam da chave OpenAI.
 
----
+## 5. Criar o primeiro vídeo
 
-## Resumo em 3 passos
+1. Na página inicial, escolha **Legendas** ou **Cortes** e envie um MP4, MOV, MKV, AVI ou WebM curto para testar.
+2. Aguarde a transcrição. O editor mostra cada palavra com seu tempo. Corrija o texto se necessário.
+3. Em Legendas, selecione estilo, destaque e posição. Clique em **Renderizar**. Ao concluir, clique em **Baixar MP4**.
+4. Em Cortes, use a detecção por IA, escolha trechos, ajuste formato/composição, exporte e baixe cada MP4.
+5. Use o seletor no topo para mudar a interface entre português, inglês e espanhol. O idioma da fala do vídeo é uma opção separada na tela de envio.
 
-```bash
-git clone https://github.com/sellpayclub/gerador-legendas.git legendas-locais
-cd legendas-locais
-cp .env.example backend/.env    # edite e cole OPENAI_API_KEY=sk-...
-bash install.sh
-```
+Os projetos e arquivos ficam em `data/jobs/`. Faça backup dessa pasta se quiser preservá-los. Ao apagar um projeto no app, os arquivos associados são removidos.
 
-Depois abra `/configuracoes`, teste e salve. Pronto.
+## Atualizar
+
+Se baixou ZIP, baixe o ZIP novo e copie para ele `data/jobs/`, `data/app-settings.json` e `backend/.env` se existirem. Depois rode o instalador novamente. Se clonou com Git, execute `git pull` dentro da pasta e rode o instalador outra vez.
+
+No Mac, também pode usar `./legendas.sh atualizar`. No Windows, execute novamente **Instalar-Windows.cmd**.
+
+## Diagnóstico
+
+- **A página não abre:** no Mac, execute `./legendas.sh status` e `./legendas.sh logs`; no Windows, tente **Iniciar-Windows.cmd** novamente.
+- **Porta 3000 ou 8000 ocupada:** feche outro servidor que use essa porta e inicie o aplicativo novamente.
+- **Transcrição falha:** confirme a chave e o saldo na OpenAI em Configurações. Teste um vídeo curto primeiro.
+- **Render falha:** o FFmpeg precisa do filtro `ass`/libass. Rode `ffmpeg -filters` no Terminal/PowerShell e procure `ass`.
+- **Vídeo não aparece no preview:** experimente MP4 H.264 com áudio AAC. Outros formatos podem ser aceitos no upload, mas alguns navegadores não os reproduzem diretamente.
+- **Um botão parece parado:** recarregue a página, confirme que o backend está ativo e veja os logs. Trabalhos longos podem precisar de vários minutos para IA e renderização.
+
+O backend responde em <http://127.0.0.1:8000/api/health>. O resultado deve incluir `"ok":true` e `"ffmpeg_ok":true`. Após configurar a chave, `"openai_configured":true`.
+
+## Usar pelo telefone ou publicar
+
+O instalador local atende apenas `localhost`, por segurança. No iPhone ou Android, abra o aplicativo no navegador **quando ele estiver publicado em um servidor seu com HTTPS**. O telefone serve de interface; o processamento continua no servidor. O projeto também contém scripts de deploy para VPS Ubuntu, mas publicar na internet exige configurar domínio, HTTPS, proteção de acesso e armazenamento adequados ao seu uso. Não exponha diretamente o modo local sem autenticação.
+
+Em uma VPS Ubuntu 22.04/24.04, o fluxo básico é apontar o DNS do domínio para o IP do servidor, clonar o repositório e executar `sudo bash install.sh`. O instalador pede o domínio e configura os serviços e o proxy HTTPS. Antes de abrir o domínio para outras pessoas, configure uma camada de autenticação no proxy: a instalação local gratuita não exige conta e qualquer visitante que alcance a interface pode usar os recursos configurados nela. Para uso apenas pessoal, mantenha o acesso restrito pela rede privada ou VPN.
+
+## Licença
+
+O código do projeto está sob [MIT](LICENSE). Dependências e recursos de terceiros mantêm as próprias licenças.

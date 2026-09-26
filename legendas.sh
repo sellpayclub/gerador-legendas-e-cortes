@@ -16,7 +16,7 @@ ok()   { printf "\033[32m%s\033[0m\n" "$1"; }
 info() { printf "\033[36m%s\033[0m\n" "$1"; }
 warn() { printf "\033[33m%s\033[0m\n" "$1"; }
 
-NODE_PATH="/opt/homebrew/opt/node@20/bin:/opt/homebrew/bin:/usr/bin:/bin"
+NODE_PATH="$(dirname "$(bash "$ROOT/scripts/find-node-mac.sh")"):/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 
 rebuild_frontend_if_stale() {
   local fe="$ROOT/frontend"

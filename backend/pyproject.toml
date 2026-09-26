@@ -11,7 +11,6 @@ dependencies = [
     "fastapi>=0.110",
     "uvicorn[standard]>=0.27",
     "python-multipart>=0.0.9",
-    "mlx-whisper>=0.4.0",
     "requests>=2.31",
     "python-dotenv>=1.0",
     "pillow>=10.0",
@@ -22,6 +21,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["ruff>=0.4"]
+mlx = ["mlx-whisper>=0.4.0; sys_platform == 'darwin' and platform_machine == 'arm64'"]
 
 [tool.setuptools]
 py-modules = ["main", "transcribe", "ass_gen", "render", "jobs", "presets", "media", "fonts_util", "timing", "effects", "keywords", "compose", "templates", "overlays", "enrich", "clips", "clip_render", "auth", "tenant", "deps", "routes_me", "user_secrets", "supabase_client", "crypto_util", "db_jobs", "cakto_webhook", "purchase_email", "request_context", "client_ip", "asaas"]
