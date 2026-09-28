@@ -19,7 +19,7 @@ log = logging.getLogger("legendas.routes_admin")
 
 router = APIRouter()
 
-PRODUCT_NAME = "ClipSaaS — Gerador de Legendas"
+PRODUCT_NAME = "ClipShorts — Gerador de Legendas"
 BRAZIL_TZ = ZoneInfo("America/Sao_Paulo")
 
 

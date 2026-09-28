@@ -25,7 +25,7 @@ bash scripts/deploy-openpix-webhook.sh
 | Secret | Valor |
 |--------|-------|
 | `RESEND_API_KEY` | Chave Resend |
-| `RESEND_FROM_EMAIL` | `ClipSaaS <acesso@email.clonefyia.com>` |
+| `RESEND_FROM_EMAIL` | `ClipShorts <acesso@email.clonefyia.com>` |
 | `APP_PUBLIC_URL` | `https://app.clipsaas.site` |
 
 ## O que acontece ao gerar PIX (`CHARGE_CREATED`)

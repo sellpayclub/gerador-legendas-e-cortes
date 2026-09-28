@@ -12,7 +12,7 @@ class AsaasCheckoutTests(unittest.TestCase):
         with patch.dict(os.environ, {"ASAAS_ENVIRONMENT": "sandbox", "ASAAS_API_KEY": "secret"}):
             self.assertEqual(asaas._base_url(), "https://api-sandbox.asaas.com/v3")
             self.assertEqual(asaas._headers()["access_token"], "secret")
-            self.assertIn("ClipSaaS", asaas._headers()["User-Agent"])
+            self.assertIn("ClipShorts", asaas._headers()["User-Agent"])
 
     @patch.object(asaas, "_request")
     def test_creates_customer_payment_and_qr(self, request: Mock) -> None:

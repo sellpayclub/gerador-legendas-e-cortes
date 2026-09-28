@@ -3,7 +3,7 @@ import type { Messages } from "./pt";
 const es: Messages = {
   lang: { pt: "Português", es: "Español", en: "English", label: "Idioma" },
   nav: { home: "Inicio", lessons: "Clases", settings: "Configuración" },
-  brand: { name: "ClipSaaS", tagline: "Generador de Subtítulos" },
+  brand: { name: "ClipShorts", tagline: "Generador de Subtítulos" },
   common: {
     loading: "Cargando...",
     back: "Volver",
@@ -158,7 +158,7 @@ const es: Messages = {
     items: {
       openai: {
         title: "Cómo obtener tu clave API de OpenAI",
-        desc: "Paso a paso para crear cuenta en OpenAI, generar una API key y pegarla en Configuración de ClipSaaS. El cobro por el uso de IA va directo a tu cuenta de OpenAI.",
+        desc: "Paso a paso para crear cuenta en OpenAI, generar una API key y pegarla en Configuración de ClipShorts. El cobro por el uso de IA va directo a tu cuenta de OpenAI.",
         steps: {
           "0": "Mira el vídeo al lado con el paso a paso completo.",
           "1": "Copia la clave que empieza con sk-...",
@@ -169,7 +169,7 @@ const es: Messages = {
       },
       howto: {
         title: "CÓMO USAR LA HERRAMIENTA",
-        desc: "Tour completo por ClipSaaS: subir vídeo, transcribir, editar subtítulos, elegir estilo, renderizar y descargar.",
+        desc: "Tour completo por ClipShorts: subir vídeo, transcribir, editar subtítulos, elegir estilo, renderizar y descargar.",
         steps: {
           "0": "Mira el vídeo al lado con el paso a paso completo.",
           "1": "Sube un vídeo en la página inicial y espera la transcripción.",

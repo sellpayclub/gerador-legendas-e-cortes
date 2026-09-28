@@ -76,7 +76,7 @@ export function buildPixPendingEmailHtml(data: PixPendingEmailData): string {
               padding:32px 24px;border:1px solid #27272a">
     <h1 style="margin:0 0 8px;font-size:24px">Seu PIX está pronto</h1>
     <p style="color:#a1a1aa;margin:0 0 20px;line-height:1.5">
-      Olá, ${greeting}! Finalize o pagamento do <strong style="color:#fafafa">ClipSaaS</strong>
+      Olá, ${greeting}! Finalize o pagamento do <strong style="color:#fafafa">ClipShorts</strong>
       em até <strong style="color:#facc15">${data.expiresMinutes} minutos</strong>.
     </p>
 
@@ -133,7 +133,7 @@ export async function sendPixPendingEmail(
   const payload = {
     from: fromEmail,
     to: [data.customerEmail],
-    subject: `Seu PIX ClipSaaS — ${totalLabel} (válido por ${data.expiresMinutes} min)`,
+    subject: `Seu PIX ClipShorts — ${totalLabel} (válido por ${data.expiresMinutes} min)`,
     html,
   };
 

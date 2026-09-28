@@ -5,7 +5,7 @@ export const config = {
   supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "",
   revenueCatAndroidKey: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY || "",
   allowRevenueCatTestKey: process.env.EXPO_PUBLIC_ALLOW_REVENUECAT_TEST_KEY === "true",
-  entitlement: "ClipSaaS Pro",
+  entitlement: "ClipShorts Pro",
 } as const;
 
 export function missingConfiguration(): string | null {

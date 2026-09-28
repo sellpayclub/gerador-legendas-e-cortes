@@ -103,7 +103,7 @@ def _validate_checkout_identity(body: "CreateChargeBody") -> None:
 #  Server-side price catalog — NEVER trust the frontend price
 # ---------------------------------------------------------------------------
 _PRICE_CATALOG: dict[str, int] = {
-    "clipsaas-main": 3700,    # R$ 37,00 (ClipSaaS — Gerador de Legendas)
+    "clipsaas-main": 3700,    # R$ 37,00 (ClipShorts — Gerador de Legendas)
     "bump-whatsapp": 1990,    # R$ 19,90 (Suporte WhatsApp)
     "bump-updates": 1990,     # R$ 19,90 (Atualizações Futuras)
 }
@@ -460,7 +460,7 @@ async def create_checkout_charge(
                 to_email=body.email.strip().lower(),
                 customer_name=body.name,
                 total_cents=body.total_cents,
-                items=[item.dict() for item in body.items] if body.items else [{"name": "ClipSaaS — Gerador de Legendas", "price_cents": body.total_cents}],
+                items=[item.dict() for item in body.items] if body.items else [{"name": "ClipShorts — Gerador de Legendas", "price_cents": body.total_cents}],
                 br_code=charge_result.get("brCode", ""),
                 qr_code_image_url=charge_result.get("qrCodeImage", ""),
                 payment_link_url=charge_result.get("paymentLinkUrl", ""),

@@ -88,7 +88,7 @@ export default function CortesExportPage() {
                 <a
                   href={clipOutputUrl(jobId, clip.id, accessToken)}
                   download={`corte_${clip.title.replace(/[^\w\s-]/g, "").slice(0, 40)}.mp4`}
-                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-bg"
+                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white"
                 >
                   <Download className="h-4 w-4" />
                   {copy("Baixar MP4")}</a>

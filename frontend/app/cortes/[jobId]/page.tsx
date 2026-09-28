@@ -85,7 +85,7 @@ const DEFAULT_STYLE: StyleConfig = {
   font: "Roboto",
   font_size: 72,
   text_case: "normal",
-  primary_color: "#FACC15",
+  primary_color: "#8B5CF6",
   secondary_color: "#FFFFFF",
   outline_color: "#000000",
   outline_width: 8,
@@ -1328,7 +1328,7 @@ export default function CortesPage() {
 
           <div className="hidden shrink-0 border-t border-border bg-panel p-3 lg:block">
             <p className="mb-2 text-center text-xs text-muted">
-              {copy("Etapa")}{step} {copy("de 3 — use o botão amarelo abaixo da tela")}</p>
+              {copy("Etapa")}{step} {copy("de 3 — use o botão roxo abaixo da tela")}</p>
           </div>
         </aside>
       </div>
@@ -1359,7 +1359,7 @@ export default function CortesPage() {
                 type="button"
                 onClick={goNext}
                 disabled={transcribing || (step === 1 && !canContinueStep1)}
-                className="touch-target flex min-w-[200px] flex-1 items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-bold text-bg shadow-lg shadow-accent/20 disabled:opacity-50 sm:flex-none"
+                className="touch-target flex min-w-[200px] flex-1 items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent/20 disabled:opacity-50 sm:flex-none"
               >
                 {step === 1 ? copy("Continuar para legendas") : copy("Continuar para exportar")}
                 <ArrowRight className="h-4 w-4" />

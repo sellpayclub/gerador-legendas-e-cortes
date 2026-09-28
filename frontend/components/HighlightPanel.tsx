@@ -154,7 +154,7 @@ export default function HighlightPanel({
                   onClick={() => toggleWord(i)}
                   className={`min-h-[36px] rounded-md px-2 py-1 text-sm transition ${
                     on
-                      ? "bg-accent font-semibold text-bg"
+                      ? "bg-accent font-semibold text-white"
                       : "text-zinc-400 hover:bg-border/50 hover:text-zinc-100"
                   }`}
                 >

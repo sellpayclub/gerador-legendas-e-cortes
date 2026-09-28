@@ -1,0 +1,27 @@
+# Prompts de geração — copie apenas o bloco da sua versão
+
+Envie primeiro o documento-fonte indicado em COMECE-AQUI.md. Cole o prompt nas instruções de personalização do vídeo.
+
+## Português — Mac
+
+```text
+Crie uma aula explicativa narrada em português do Brasil para um iniciante absoluto instalar o Gerador de Legendas e Cortes no Mac. Use somente a fonte PT-MAC.md. Siga a ordem das 15 cenas. Explique cada ação com calma, mostre nomes de arquivos, comandos e endereços em texto grande, dê pausas e diga qual resultado o aluno deve conferir antes de avançar. Inclua o caminho por assistente com terminal e a alternativa manual. Não presuma que o aluno saiba o que é terminal, ZIP, API ou renderização. Preserve comandos e URLs literalmente. Diferencie o idioma da interface do idioma do áudio. Explique testar e salvar a chave separadamente. Termine com transcrição, renderização e abertura do MP4 baixado, e depois diagnóstico/reabertura. Não invente telas nem resultados de testes; quando faltar uma captura real, use cartões instrutivos claramente ilustrativos. Não mostre credenciais reais. Não prometa funcionamento 100% em toda máquina. Inclua Homebrew, pasta permanente, bash install.sh e reabertura com os serviços locais. Use voz clara, tom acolhedor, visual limpo e prioridade à legibilidade. Busque 10–15 minutos se possível, mas preserve os passos e indique se precisar dividir o conteúdo. Não leia instruções internas de produção ou a lista de fontes como narração.
+```
+
+## Português — Windows
+
+```text
+Crie uma aula explicativa narrada em português do Brasil para um iniciante absoluto instalar o Gerador de Legendas e Cortes no Windows. Use somente a fonte PT-WINDOWS.md. Siga a ordem das 15 cenas. Explique cada ação com calma, mostre nomes de arquivos, comandos e endereços em texto grande, dê pausas e diga qual resultado o aluno deve conferir antes de avançar. Inclua o caminho por assistente com terminal e a alternativa manual. Não presuma que o aluno saiba o que é terminal, ZIP, API ou renderização. Preserve comandos e URLs literalmente. Diferencie o idioma da interface do idioma do áudio. Explique testar e salvar a chave separadamente. Termine com transcrição, renderização e abertura do MP4 baixado, e depois diagnóstico/reabertura. Não invente telas nem resultados de testes; quando faltar uma captura real, use cartões instrutivos claramente ilustrativos. Não mostre credenciais reais. Não prometa funcionamento 100% em toda máquina. Informe que o procedimento Windows aguarda validação em máquina real. Use voz clara, tom acolhedor, visual limpo e prioridade à legibilidade. Busque 10–15 minutos se possível, mas preserve os passos e indique se precisar dividir o conteúdo. Não leia instruções internas de produção ou a lista de fontes como narração.
+```
+
+## English — Mac
+
+```text
+Create a narrated English explainer lesson for a complete beginner installing the Subtitle and Clip Generator on Mac. Use only EN-MAC.md. Follow its 15 scenes in order. Explain one action at a time, display filenames, commands and URLs in large readable text, allow pauses, and state the expected checkpoint before moving on. Include both a terminal-capable AI assistant and the manual installation alternative. Explain terminal, ZIP, API key and rendering in simple terms. Preserve commands and URLs exactly, including Portuguese script filenames. Distinguish interface language from recording language. Explain testing and saving the key as separate steps. Include transcription, rendering and opening the downloaded MP4, followed by troubleshooting and reopening. Do not invent application screens or successful tests; use clearly illustrative instruction cards when actual screenshots are unavailable. Never show real credentials or promise universal 100% compatibility. Include Homebrew, a permanent folder, bash install.sh, and the local startup services. Use a clear voice, a patient tone and a clean, readable visual style. Aim for 10–15 minutes if possible; preserve the steps and indicate if the content needs splitting. Do not narrate production notes or read the source list.
+```
+
+## English — Windows
+
+```text
+Create a narrated English explainer lesson for a complete beginner installing the Subtitle and Clip Generator on Windows. Use only EN-WINDOWS.md. Follow its 15 scenes in order. Explain one action at a time, display filenames, commands and URLs in large readable text, allow pauses, and state the expected checkpoint before moving on. Include both a terminal-capable AI assistant and the manual installation alternative. Explain terminal, ZIP, API key and rendering in simple terms. Preserve commands and URLs exactly, including Portuguese script filenames. Distinguish interface language from recording language. Explain testing and saving the key as separate steps. Include transcription, rendering and opening the downloaded MP4, followed by troubleshooting and reopening. Do not invent application screens or successful tests; use clearly illustrative instruction cards when actual screenshots are unavailable. Never show real credentials or promise universal 100% compatibility. Say that the Windows procedure still needs validation on an actual Windows machine. Use a clear voice, a patient tone and a clean, readable visual style. Aim for 10–15 minutes if possible; preserve the steps and indicate if the content needs splitting. Do not narrate production notes or read the source list.
+```

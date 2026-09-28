@@ -147,7 +147,7 @@ export default function TranscriptEditor({
           <button
             onClick={handleSave}
             className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium ${
-              saved ? "bg-green-500/20 text-green-300" : "bg-accent text-bg"
+              saved ? "bg-green-500/20 text-green-300" : "bg-accent text-white"
             }`}
           >
             {saved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}

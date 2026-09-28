@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GraduationCap, Home, Settings } from "lucide-react";
-import ClipSaasLogo from "@/components/ClipSaasLogo";
+import ClipShortsLogo from "@/components/ClipShortsLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { isMultiTenant } from "@/lib/hosted";
 import { useI18n } from "@/lib/i18n/context";
 
 type Props = {
@@ -15,7 +14,6 @@ type Props = {
 
 export default function AppTopNav({ className = "", maxWidth = "max-w-5xl" }: Props) {
   const pathname = usePathname();
-  const hosted = isMultiTenant();
   const { t } = useI18n();
 
   const links = [
@@ -29,7 +27,7 @@ export default function AppTopNav({ className = "", maxWidth = "max-w-5xl" }: Pr
       className={`mb-6 flex w-full ${maxWidth} items-center justify-between gap-3 ${className}`}
     >
       <div className="flex items-center gap-2">
-        {hosted && <ClipSaasLogo size="sm" showTagline={false} href="/" />}
+        <ClipShortsLogo size="sm" showTagline={false} href="/" />
       </div>
       <div className="flex flex-wrap items-center justify-end gap-2">
         <LanguageSwitcher />

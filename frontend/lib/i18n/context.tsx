@@ -8,7 +8,7 @@ import { readLocale, setCopyLocale } from "./copy";
 
 export type Locale = "pt" | "es" | "en";
 
-const STORAGE_KEY = "clipsaas_locale";
+const STORAGE_KEY = "clipshorts_locale";
 
 const LOCALES: Record<Locale, Messages> = { pt, es, en };
 

@@ -114,7 +114,7 @@ export default function ClipExportPanel({
                     type="button"
                     onClick={() => onRenderOne(clip.id)}
                     disabled={busy || renderingAll}
-                    className="touch-target flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-bg disabled:opacity-50"
+                    className="touch-target flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
                   >
                     {busy ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -143,7 +143,7 @@ export default function ClipExportPanel({
           type="button"
           onClick={onRenderAll}
           disabled={renderingAll || enabled.some((c) => renderingIds.has(c.id))}
-          className="touch-target flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3.5 text-sm font-bold text-bg disabled:opacity-50"
+          className="touch-target flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3.5 text-sm font-bold text-white disabled:opacity-50"
         >
           {renderingAll ? (
             <>

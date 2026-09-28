@@ -47,7 +47,7 @@ export function buildPurchaseEmailHtml(data: PurchaseEmailData): string {
     <div style="text-align:center;margin-bottom:24px">
       <span style="display:inline-block;background:#27272a;border:1px solid #3f3f46;
                    border-radius:999px;padding:8px 16px;font-size:13px;color:#facc15;font-weight:600">
-        ClipSaaS — Acesso liberado
+        ClipShorts — Acesso liberado
       </span>
     </div>
     <div style="background:#18181b;border-radius:16px;padding:32px;border:1px solid #27272a">
@@ -111,7 +111,7 @@ export function buildPurchaseEmailHtml(data: PurchaseEmailData): string {
       </p>
       <p style="font-size:12px;color:#52525b;margin-top:24px;line-height:1.5">
         Dúvidas? Responda este e-mail ou fale com nosso suporte.<br>
-        ClipSaaS — Gerador de Legendas
+        ClipShorts — Gerador de Legendas
       </p>
     </div>
   </div>

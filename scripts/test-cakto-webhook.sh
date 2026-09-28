@@ -36,7 +36,7 @@ PAYLOAD=$(cat <<EOF
       "email": "$EMAIL",
       "phone": "5561999999999"
     },
-    "product": { "name": "ClipSaaS — Gerador de Legendas" },
+    "product": { "name": "ClipShorts — Gerador de Legendas" },
     "amount": 97.0,
     "paidAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   }

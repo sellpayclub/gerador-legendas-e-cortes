@@ -12,7 +12,7 @@ class TransactionalEmailRetryTests(unittest.TestCase):
             os.environ,
             {
                 "RESEND_API_KEY": "test-key",
-                "RESEND_FROM_EMAIL": "ClipSaaS <test@example.com>",
+                "RESEND_FROM_EMAIL": "ClipShorts <test@example.com>",
                 "APP_PUBLIC_URL": "https://example.com",
             },
         )
@@ -30,7 +30,7 @@ class TransactionalEmailRetryTests(unittest.TestCase):
                 to_email="buyer@example.com",
                 customer_name="Buyer",
                 total_cents=3700,
-                items=[{"name": "ClipSaaS", "price_cents": 3700}],
+                items=[{"name": "ClipShorts", "price_cents": 3700}],
                 br_code="pix-code",
                 qr_code_image_url="",
                 payment_link_url="",
@@ -48,7 +48,7 @@ class TransactionalEmailRetryTests(unittest.TestCase):
             result = purchase_email.send_purchase_approved_email(
                 to_email="buyer@example.com",
                 customer_name="Buyer",
-                product_name="ClipSaaS",
+                product_name="ClipShorts",
                 access_link="https://example.com/access",
                 login_password="temporary",
                 order_id="order-2",

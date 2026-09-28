@@ -81,7 +81,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 font-medium text-zinc-950 transition hover:bg-accent-hover disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 font-medium text-white transition hover:bg-accent-hover disabled:opacity-60"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           {t("auth.loginSubmit")}

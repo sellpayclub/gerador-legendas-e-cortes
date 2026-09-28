@@ -100,7 +100,7 @@ export default function RenderPage() {
             <a
               href={outputSrc}
               download={`legendado_${current?.filename ?? "video.mp4"}`}
-              className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 font-semibold text-bg"
+              className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 font-semibold text-white"
             >
               <Download className="h-5 w-5" />
               {t("render.downloadLabeled")}

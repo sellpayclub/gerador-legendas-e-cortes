@@ -1,7 +1,7 @@
-# Manual de Suporte IA — ClipSaaS
+# Manual de Suporte IA — ClipShorts
 
 > **Documento de base de conhecimento** para IA de suporte ao cliente.  
-> Produto: **ClipSaaS — Gerador de Legendas**  
+> Produto: **ClipShorts — Gerador de Legendas**
 > URL oficial: **https://app.clipsaas.site**  
 > Idioma do manual: português (Brasil).  
 > Última revisão alinhada ao produto em julho/2026.
@@ -26,9 +26,9 @@
 
 ## 1. Identidade do produto
 
-### O que é o ClipSaaS
+### O que é o ClipShorts
 
-O **ClipSaaS** é uma ferramenta online (SaaS) para criadores de conteúdo que:
+O **ClipShorts** é uma ferramenta online (SaaS) para criadores de conteúdo que:
 
 - **Transcreve** vídeos automaticamente (palavra por palavra, com timestamps).
 - **Gera legendas estilizadas** (karaoke, cores, animações, templates virais).
@@ -48,11 +48,11 @@ O cliente acessa pelo navegador em **https://app.clipsaas.site**. Não precisa i
 
 Para usar a ferramenta, o cliente precisa de:
 
-1. **Conta** no ClipSaaS (e-mail + senha).
+1. **Conta** no ClipShorts (e-mail + senha).
 2. **Plano ativo** (compra confirmada).
 3. **Chave API da OpenAI** (`sk-...`) configurada em **Configurações**.
 
-**Importante sobre a OpenAI:** o ClipSaaS usa a chave **do próprio cliente** (modelo BYOK — “Bring Your Own Key”). A cobrança de transcrição, detecção de cortes e outras funções de IA vai **direto na conta OpenAI do cliente**, não na fatura do ClipSaaS.
+**Importante sobre a OpenAI:** o ClipShorts usa a chave **do próprio cliente** (modelo BYOK — “Bring Your Own Key”). A cobrança de transcrição, detecção de cortes e outras funções de IA vai **direto na conta OpenAI do cliente**, não na fatura do ClipShorts.
 
 ### O que o cliente recebe após a compra
 
@@ -68,7 +68,7 @@ Após pagamento confirmado (PIX), o cliente recebe um **e-mail** com:
 
 | Item | Valor |
 |------|-------|
-| **ClipSaaS — Gerador de Legendas** (produto principal) | R$ 97,00 |
+| **ClipShorts — Gerador de Legendas** (produto principal) | R$ 97,00 |
 | Order bump: Suporte WhatsApp | R$ 9,90 |
 | Order bump: Atualizações Futuras | R$ 19,90 |
 
@@ -103,7 +103,7 @@ Página inicial → enviar primeiro vídeo
 ### Passo 1 — Conferir o e-mail
 
 1. Pedir ao cliente para verificar **caixa de entrada** e **spam/lixo eletrônico**.
-2. Assunto típico: *"Acesso liberado — ClipSaaS"* (ou nome do produto).
+2. Assunto típico: *"Acesso liberado — ClipShorts"* (ou nome do produto).
 3. Anotar **e-mail de login** e **senha** enviados no corpo do e-mail.
 
 ### Passo 2 — Fazer login
@@ -211,7 +211,7 @@ Painel **Seus projetos** na parte inferior:
 
 ### Retenção de arquivos (importante)
 
-Na versão online (ClipSaaS), **vídeos e projetos são apagados automaticamente após 24 horas**.
+Na versão online (ClipShorts), **vídeos e projetos são apagados automaticamente após 24 horas**.
 
 - Orientar o cliente a **baixar os MP4s** assim que ficarem prontos.
 - Se o projeto “sumiu”, provavelmente passou o prazo — é necessário enviar o vídeo de novo.
@@ -628,7 +628,7 @@ A preferência fica salva no navegador.
 
 ## 11. Instruções para a IA de suporte
 
-Esta seção define **como a IA deve se comportar** ao atender clientes do ClipSaaS.
+Esta seção define **como a IA deve se comportar** ao atender clientes do ClipShorts.
 
 ### Tom e estilo
 
@@ -649,11 +649,11 @@ Esta seção define **como a IA deve se comportar** ao atender clientes do ClipS
 
 ### O que a IA NÃO DEVE fazer
 
-- **Nunca pedir** a senha completa da conta ClipSaaS ou a chave OpenAI completa (`sk-...`) no chat.
+- **Nunca pedir** a senha completa da conta ClipShorts ou a chave OpenAI completa (`sk-...`) no chat.
   - Orientar: *"Cole sua chave diretamente em Configurações no site — não envie aqui por segurança."*
 - **Não prometer** prazos exatos de liberação de acesso após PIX (dizer "alguns minutos").
 - **Não inventar** funcionalidades que não existem (ex.: upload ilimitado permanente, armazenamento na nuvem forever).
-- **Não orientar** instalação Mac/VPS (produto local) — isso é outro produto; ClipSaaS é **100% online**.
+- **Não orientar** instalação Mac/VPS (produto local) — isso é outro produto; ClipShorts é **100% online**.
 - **Não compartilhar** detalhes internos (admin, servidores, tokens, webhooks).
 
 ### Quando escalar para suporte humano
@@ -662,7 +662,7 @@ Encaminhar para atendente humano quando:
 
 1. **PIX pago há mais de 30 minutos** e cliente não recebeu e-mail de acesso (informar e-mail usado na compra).
 2. **Erro de render** que persiste após 2 tentativas (template correto, OpenAI OK, vídeo < 2 GB).
-3. **Cobrança indevida OpenAI** — orientar contato com OpenAI; ClipSaaS não controla fatura OpenAI.
+3. **Cobrança indevida OpenAI** — orientar contato com OpenAI; ClipShorts não controla fatura OpenAI.
 4. **Reembolso ou cancelamento** — decisão comercial, não técnica.
 5. Cliente reporta **bug claro** (tela em branco, erro 502 repetido) após passos básicos (limpar cache, outro navegador).
 
@@ -709,4 +709,4 @@ Status que o cliente pode ver durante processamento:
 
 ---
 
-*Fim do manual. Documento pronto para colar na base de conhecimento da IA de suporte ClipSaaS.*
+*Fim do manual. Documento pronto para colar na base de conhecimento da IA de suporte ClipShorts.*

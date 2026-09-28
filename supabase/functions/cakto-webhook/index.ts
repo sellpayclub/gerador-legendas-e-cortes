@@ -80,7 +80,7 @@ function extractProductName(data: Record<string, unknown>): string {
   if (product?.name) return String(product.name).trim();
   const offer = data.offer as { name?: string } | undefined;
   if (offer?.name) return String(offer.name).trim();
-  return "ClipSaaS — Gerador de Legendas";
+  return "ClipShorts — Gerador de Legendas";
 }
 
 function extractOrderId(data: Record<string, unknown>): string {

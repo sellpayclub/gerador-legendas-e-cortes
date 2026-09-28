@@ -4,7 +4,7 @@ import es from "./locales/es";
 import { extraCopy } from "./extra";
 
 export type CopyLocale = "pt" | "en" | "es";
-export const LOCALE_STORAGE_KEY = "clipsaas_locale";
+export const LOCALE_STORAGE_KEY = "clipshorts_locale";
 export const copyCatalog: Record<string, { en: string; es: string }> = {};
 function collect(p: any, e: any, s: any) {
   for (const key of Object.keys(p)) {

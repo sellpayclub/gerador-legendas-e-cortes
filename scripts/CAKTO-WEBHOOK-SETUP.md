@@ -48,7 +48,7 @@ bash scripts/deploy-cakto-webhook.sh
 |--------|-------|
 | `CAKTO_WEBHOOK_SECRET` | **Copiar do painel Cakto** (Chave Secreta do webhook) |
 | `RESEND_API_KEY` | Chave Resend |
-| `RESEND_FROM_EMAIL` | `ClipSaaS <acesso@email.clonefyia.com>` (sem aspas) |
+| `RESEND_FROM_EMAIL` | `ClipShorts <acesso@email.clonefyia.com>` (sem aspas) |
 | `APP_PUBLIC_URL` | `https://app.clipsaas.site` |
 
 > **Crítico:** o secret na Cakto e no Supabase devem ser **idênticos**. Ao criar/editar o webhook na Cakto, copie a chave gerada para `CAKTO_WEBHOOK_SECRET` no Supabase.

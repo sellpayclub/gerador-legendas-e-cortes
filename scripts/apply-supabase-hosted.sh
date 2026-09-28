@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Apply ClipSaaS hosted migrations to a remote Supabase Postgres database.
+# Apply ClipShorts hosted migrations to a remote Supabase Postgres database.
 #
 # Usage:
 #   export SUPABASE_DB_URL='postgresql://postgres.[ref]:[PASSWORD]@aws-0-[region].pooler.supabase.com:6543/postgres'

@@ -119,7 +119,7 @@ async function handleChargeCreated(
   const fallbackItems =
     items.length > 0
       ? items
-      : [{ name: "ClipSaaS — Gerador de Legendas", price_cents: totalCents }];
+      : [{ name: "ClipShorts — Gerador de Legendas", price_cents: totalCents }];
 
   const expiresMinutes = Math.max(
     1,
@@ -252,7 +252,7 @@ async function handleChargeCompleted(
       .update({
         access_active: true,
         email,
-        plan_name: "ClipSaaS — Gerador de Legendas",
+        plan_name: "ClipShorts — Gerador de Legendas",
         cakto_customer_id: correlationID,
         ...(customerName ? { name: customerName } : {}),
       })
@@ -289,7 +289,7 @@ async function handleChargeCompleted(
         customerName,
         customerEmail: email,
         customerPhone: order.customer_whatsapp || "",
-        productName: "ClipSaaS — Gerador de Legendas",
+        productName: "ClipShorts — Gerador de Legendas",
         orderId: correlationID,
         amount: formatAmount(order.total_cents),
         paidAt: new Date().toLocaleDateString("pt-BR"),
@@ -303,7 +303,7 @@ async function handleChargeCompleted(
       const payload: Record<string, unknown> = {
         from: fromEmail,
         to: [email],
-        subject: `Acesso liberado — ClipSaaS`,
+        subject: `Acesso liberado — ClipShorts`,
         html,
       };
       if (attachments?.length) payload.attachments = attachments;

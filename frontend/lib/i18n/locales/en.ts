@@ -3,7 +3,7 @@ import type { Messages } from "./pt";
 const en: Messages = {
   lang: { pt: "Português", es: "Español", en: "English", label: "Language" },
   nav: { home: "Home", lessons: "Lessons", settings: "Settings" },
-  brand: { name: "ClipSaaS", tagline: "Subtitle Generator" },
+  brand: { name: "ClipShorts", tagline: "Subtitle Generator" },
   common: {
     loading: "Loading...",
     back: "Back",
@@ -158,7 +158,7 @@ const en: Messages = {
     items: {
       openai: {
         title: "How to get your OpenAI API key",
-        desc: "Step by step to create an OpenAI account, generate an API key and paste it in ClipSaaS Settings. Billing for AI usage goes directly to your OpenAI account.",
+        desc: "Step by step to create an OpenAI account, generate an API key and paste it in ClipShorts Settings. Billing for AI usage goes directly to your OpenAI account.",
         steps: {
           "0": "Watch the video on the side for the full walkthrough.",
           "1": "Copy the key starting with sk-...",
@@ -169,7 +169,7 @@ const en: Messages = {
       },
       howto: {
         title: "HOW TO USE THE TOOL",
-        desc: "Full ClipSaaS tour: upload video, transcribe, edit subtitles, pick style, render and download.",
+        desc: "Full ClipShorts tour: upload video, transcribe, edit subtitles, pick style, render and download.",
         steps: {
           "0": "Watch the video on the side for the full walkthrough.",
           "1": "Upload a video on the home page and wait for transcription.",

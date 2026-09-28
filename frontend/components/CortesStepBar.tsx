@@ -52,7 +52,7 @@ export default function CortesStepBar({ step, onStep }: Props) {
                 <span
                   className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold sm:h-8 sm:w-8 ${
                     active
-                      ? "bg-accent text-bg"
+                      ? "bg-accent text-white"
                       : done
                         ? "bg-accent/20 text-accent"
                         : "bg-border text-zinc-500"

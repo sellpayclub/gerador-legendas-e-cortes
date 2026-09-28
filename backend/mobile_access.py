@@ -31,7 +31,7 @@ def _revenuecat_entitlement_active(app_user_id: str) -> bool:
     if response.status_code >= 400:
         raise HTTPException(502, "Não foi possível validar a assinatura agora.")
     entitlement = (response.json().get("subscriber", {}).get("entitlements", {})
-                   .get(os.environ.get("REVENUECAT_ENTITLEMENT", "ClipSaaS Pro")))
+                   .get(os.environ.get("REVENUECAT_ENTITLEMENT", "ClipShorts Pro")))
     if not isinstance(entitlement, dict):
         return False
     expires_at = entitlement.get("expires_date")

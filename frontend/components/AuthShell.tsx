@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import ClipSaasLogo from "@/components/ClipSaasLogo";
+import ClipShortsLogo from "@/components/ClipShortsLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 type Props = {
@@ -20,12 +20,12 @@ export default function AuthShell({ title, subtitle, children, footer }: Props) 
         aria-hidden
         style={{
           background:
-            "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(250,204,21,0.12), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(250,204,21,0.06), transparent)",
+            "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124,58,237,0.16), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(124,58,237,0.08), transparent)",
         }}
       />
       <div className="w-full max-w-md">
         <div className="mb-8 flex justify-center">
-          <ClipSaasLogo size="lg" />
+          <ClipShortsLogo size="lg" />
         </div>
         <div className="rounded-2xl border border-border bg-panel p-8 shadow-xl shadow-black/20">
           <h1 className="mb-1 text-center text-xl font-bold text-zinc-100">{title}</h1>

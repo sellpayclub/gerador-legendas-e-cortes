@@ -266,7 +266,7 @@ export default function ConfiguracoesPage() {
                     type="button"
                     onClick={handleSave}
                     disabled={saving}
-                    className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-zinc-950 disabled:opacity-60"
+                    className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
                   >
                     {saving ? copy("Salvando...") : copy("Salvar chave")}
                   </button>
@@ -450,7 +450,7 @@ export default function ConfiguracoesPage() {
             type="button"
             onClick={handleSave}
             disabled={saving || mlxBlocked}
-            className="w-full rounded-xl bg-accent py-3 text-sm font-semibold text-bg transition hover:bg-accent/90 disabled:opacity-50"
+            className="w-full rounded-xl bg-accent py-3 text-sm font-semibold text-white transition hover:bg-accent/90 disabled:opacity-50"
           >
             {saving ? (
               <span className="inline-flex items-center gap-2">

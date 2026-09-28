@@ -111,7 +111,7 @@ export default function ClipDetectOverlay({
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-zinc-800/80">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-accent/80 via-accent to-amber-300 transition-[width] duration-500 ease-out"
+                className="h-full rounded-full bg-gradient-to-r from-violet-500 via-accent to-fuchsia-400 transition-[width] duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>

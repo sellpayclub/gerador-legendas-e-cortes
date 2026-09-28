@@ -271,6 +271,6 @@ function AspectIcon({ aspect }: { aspect: string }) {
   else if (aspect === "16:9") { w = 22; h = 12; }
   return (
     <div className="shrink-0 rounded-sm border-2"
-      style={{ width: w, height: h, borderColor: aspect === "original" ? "#52525b" : "#FACC15" }} />
+      style={{ width: w, height: h, borderColor: aspect === "original" ? "#52525b" : "#8B5CF6" }} />
   );
 }

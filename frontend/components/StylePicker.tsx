@@ -23,7 +23,7 @@ const STYLE_DEFAULTS: StyleConfig = {
   font_size: 72,
   text_case: "normal",
   pause_threshold_s: 0.45,
-  primary_color: "#FACC15",
+  primary_color: "#8B5CF6",
   secondary_color: "#FFFFFF",
   outline_color: "#000000",
   outline_width: 8,

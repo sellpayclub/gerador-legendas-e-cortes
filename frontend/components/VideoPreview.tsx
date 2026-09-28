@@ -413,7 +413,7 @@ export default function VideoPreview({
         <button onClick={() => seekRel(-5)} className="text-zinc-400 transition hover:text-zinc-100" title="-5s">
           <SkipBack className="h-4 w-4" />
         </button>
-        <button onClick={togglePlay} className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-black transition hover:bg-accent/90" title="Play/Pause">
+        <button onClick={togglePlay} className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-white transition hover:bg-accent/90" title="Play/Pause">
           {playing ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
         </button>
         <button onClick={() => seekRel(5)} className="text-zinc-400 transition hover:text-zinc-100" title="+5s">

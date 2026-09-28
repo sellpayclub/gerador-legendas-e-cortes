@@ -11,7 +11,7 @@ from supabase_client import rest_get, rest_patch, rest_upsert
 
 log = logging.getLogger("legendas.pix_fulfillment")
 
-PRODUCT_NAME = "ClipSaaS — Gerador de Legendas"
+PRODUCT_NAME = "ClipShorts — Gerador de Legendas"
 
 
 def _get_order(correlation_id: str) -> Optional[dict[str, Any]]:

@@ -5,7 +5,7 @@ import Providers from "@/components/Providers";
 const isHosted = process.env.NEXT_PUBLIC_MULTI_TENANT === "true";
 
 export const metadata: Metadata = {
-  title: isHosted ? "ClipSaaS — Gerador de Legendas" : "Legendas Locais",
+  title: isHosted ? "ClipShorts — Gerador de Legendas" : "ClipShorts — Legendas Locais",
   description: isHosted
     ? "Gere legendas e cortes virais com IA"
     : "Legendas automaticas estilo CapCut - uso pessoal",

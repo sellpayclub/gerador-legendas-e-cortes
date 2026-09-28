@@ -269,7 +269,7 @@ export default function HomePage() {
           uploadBlocked
             ? "cursor-not-allowed border-border/60 bg-panel/50 opacity-60"
             : dragging
-            ? "border-accent bg-accent/10 shadow-[0_0_32px_rgba(250,204,21,0.12)]"
+            ? "border-accent bg-accent/10 shadow-[0_0_32px_rgba(124,58,237,0.22)]"
             : "border-border bg-panel hover:border-zinc-600"
         }`}
       >

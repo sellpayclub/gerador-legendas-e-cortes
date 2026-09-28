@@ -55,7 +55,7 @@ const DEFAULT_STYLE: StyleConfig = {
   font: "Roboto",
   font_size: 72,
   text_case: "normal",
-  primary_color: "#FACC15",
+  primary_color: "#8B5CF6",
   secondary_color: "#FFFFFF",
   outline_color: "#000000",
   outline_width: 8,
@@ -615,7 +615,7 @@ export default function EditorPage() {
             <button
               onClick={handleRender}
               disabled={!wordsData || rendering}
-              className="touch-target flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3.5 text-sm font-semibold text-bg transition hover:bg-accent-hover disabled:opacity-40"
+              className="touch-target flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-accent-hover disabled:opacity-40"
             >
               {rendering ? <Loader2 className="h-5 w-5 animate-spin" /> : <Wand2 className="h-5 w-5" />}
               {rendering ? copy("Renderizando...") : copy("Renderizar vídeo")}

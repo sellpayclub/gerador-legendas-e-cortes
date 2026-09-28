@@ -23,7 +23,7 @@ def _headers() -> dict[str, str]:
     return {
         "access_token": (os.environ.get("ASAAS_API_KEY") or "").strip(),
         "Content-Type": "application/json",
-        "User-Agent": "ClipSaaS/1.0 (Python; checkout)",
+        "User-Agent": "ClipShorts/1.0 (Python; checkout)",
     }
 
 
@@ -75,7 +75,7 @@ def _find_or_create_customer(
             "cpfCnpj": cpf,
             "mobilePhone": phone,
             "externalReference": external_reference,
-            # ClipSaaS already sends its own transactional messages.
+            # ClipShorts already sends its own transactional messages.
             "notificationDisabled": True,
         },
     )
@@ -106,7 +106,7 @@ def create_pix_charge(
                 "billingType": "PIX",
                 "value": value_cents / 100,
                 "dueDate": date.today().isoformat(),
-                "description": "ClipSaaS — Gerador de Legendas",
+                "description": "ClipShorts — Gerador de Legendas",
                 "externalReference": correlation_id,
             },
         )

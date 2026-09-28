@@ -71,7 +71,7 @@ export default function AulasPage() {
               >
                 <span
                   className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold ${
-                    active ? "bg-accent text-zinc-950" : "bg-bg text-zinc-400"
+                    active ? "bg-accent text-white" : "bg-bg text-zinc-400"
                   }`}
                 >
                   {String(item.numero).padStart(2, "0")}
@@ -103,7 +103,7 @@ export default function AulasPage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/configuracoes"
-              className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:bg-accent/90"
+              className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent/90"
             >
               <PlayCircle className="h-4 w-4" />
               {t("lessons.goToSettings")}

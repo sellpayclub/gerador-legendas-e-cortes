@@ -3,7 +3,7 @@ export const extraCopy = `
 Não foi possível carregar as vendas.|Could not load sales.|No se pudieron cargar las ventas.
 Carregando painel admin...|Loading admin dashboard...|Cargando panel de administración...
 Painel Admin|Admin dashboard|Panel de administración
-Vendas, clientes e configurações globais do ClipSaaS|ClipSaaS sales, customers and global settings|Ventas, clientes y configuración global de ClipSaaS
+Vendas, clientes e configurações globais do ClipShorts|ClipShorts sales, customers and global settings|Ventas, clientes y configuración global de ClipShorts
 Visão de vendas|Sales overview|Resumen de ventas
 Pedidos pagos, atualizados automaticamente.|Paid orders, updated automatically.|Pedidos pagados, actualizados automáticamente.
 Atualizado agora|Updated just now|Actualizado ahora
@@ -127,7 +127,7 @@ Ajustar legenda antes de exportar?|Adjust subtitles before exporting?|¿Ajustar 
 ← Voltar para editar Estilo / Destaques / Texto|← Back to edit Style / Highlights / Text|← Volver para editar Estilo / Destacados / Texto
 Destaques dramáticos incluídos no MP4|Dramatic highlights included in MP4|Destacados dramáticos incluidos en el MP4
 Etapa|Step|Paso
-de 3 — use o botão amarelo abaixo da tela|of 3 — use the yellow button below|de 3: usa el botón amarillo de abajo
+de 3 — use o botão roxo abaixo da tela|of 3 — use the purple button below|de 3: usa el botón morado de abajo
 Não foi possível iniciar o render. Tente novamente.|Could not start rendering. Try again.|No se pudo iniciar la renderización. Inténtalo de nuevo.
 Vídeo pronto!|Video ready!|¡Vídeo listo!
 Preparando seu editor...|Preparing your editor...|Preparando tu editor...
@@ -233,7 +233,7 @@ Enviar acesso|Send access|Enviar acceso
 Ex: 123456789012345|e.g. 123456789012345|Ej.: 123456789012345
 Salvar Pixel|Save Pixel|Guardar píxel
 Seus dados de acesso foram enviados para o seu e-mail.|Your login details have been sent to your email.|Tus datos de acceso se han enviado a tu correo.
-ClipSaaS — Gerador de Legendas|ClipSaaS — Subtitle Generator|ClipSaaS — Generador de subtítulos
+ClipShorts — Gerador de Legendas|ClipShorts — Subtitle Generator|ClipShorts — Generador de subtítulos
 Dados|Details|Datos
 Ofertas|Offers|Ofertas
 Pagamento|Payment|Pago

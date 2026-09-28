@@ -98,7 +98,7 @@ def _build_html(
               padding:32px 24px;border:1px solid #27272a">
     <h1 style="margin:0 0 8px;font-size:24px">Seu PIX está pronto</h1>
     <p style="color:#a1a1aa;margin:0 0 20px;line-height:1.5">
-      Olá, {greeting}! Finalize o pagamento do <strong style="color:#fafafa">ClipSaaS</strong>
+      Olá, {greeting}! Finalize o pagamento do <strong style="color:#fafafa">ClipShorts</strong>
       em até <strong style="color:#facc15">{expires_minutes} minutos</strong>.
     </p>
 
@@ -174,7 +174,7 @@ def send_pix_pending_email(
     payload: dict[str, Any] = {
         "from": from_email,
         "to": [to_email.strip().lower()],
-        "subject": f"Seu PIX ClipSaaS — {total_label} (válido por {expires_minutes} min)",
+        "subject": f"Seu PIX ClipShorts — {total_label} (válido por {expires_minutes} min)",
         "html": html_body,
     }
 

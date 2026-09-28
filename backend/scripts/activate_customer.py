@@ -26,7 +26,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Ativar cliente e enviar e-mail de acesso")
     parser.add_argument("email", help="E-mail do cliente")
     parser.add_argument("--name", default="", help="Nome do cliente")
-    parser.add_argument("--product", default="ClipSaaS — Gerador de Legendas")
+    parser.add_argument("--product", default="ClipShorts — Gerador de Legendas")
     parser.add_argument("--order-id", default="manual-activation")
     args = parser.parse_args()
 

@@ -37,12 +37,12 @@ let issues = [];
 // Find missing keys or untranslated values (where en/es equals pt)
 for (let key in pt) {
     if (!en[key]) issues.push({ lang: 'EN', type: 'MISSING', key, ptValue: pt[key] });
-    else if (en[key] === pt[key] && pt[key].length > 4 && !pt[key].includes("SaaS") && !pt[key].includes("ClipSaaS")) {
+    else if (en[key] === pt[key] && pt[key].length > 4 && !pt[key].includes("SaaS") && !pt[key].includes("ClipShorts")) {
         issues.push({ lang: 'EN', type: 'UNTRANSLATED', key, ptValue: pt[key], val: en[key] });
     }
     
     if (!es[key]) issues.push({ lang: 'ES', type: 'MISSING', key, ptValue: pt[key] });
-    else if (es[key] === pt[key] && pt[key].length > 4 && !pt[key].includes("SaaS") && !pt[key].includes("ClipSaaS")) {
+    else if (es[key] === pt[key] && pt[key].length > 4 && !pt[key].includes("SaaS") && !pt[key].includes("ClipShorts")) {
         issues.push({ lang: 'ES', type: 'UNTRANSLATED', key, ptValue: pt[key], val: es[key] });
     }
 }

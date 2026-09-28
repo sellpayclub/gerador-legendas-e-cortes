@@ -1,4 +1,4 @@
--- ClipSaaS: lock billing fields on profiles (prevent self-activation bypass)
+-- ClipShorts: lock billing fields on profiles (prevent self-activation bypass)
 
 alter table public.profiles
   add column if not exists name text;

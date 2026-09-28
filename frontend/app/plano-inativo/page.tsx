@@ -25,7 +25,7 @@ export default function PlanoInativoPage() {
         </Link>
         <Link
           href="/login"
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-zinc-950"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white"
         >
           {t("planInactive.backToLogin")}
         </Link>

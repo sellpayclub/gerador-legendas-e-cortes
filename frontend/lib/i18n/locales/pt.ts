@@ -1,7 +1,7 @@
 const pt = {
   lang: { pt: "Português", es: "Español", en: "English", label: "Idioma" },
   nav: { home: "Início", lessons: "Aulas", settings: "Configurações" },
-  brand: { name: "ClipSaaS", tagline: "Gerador de Legendas" },
+  brand: { name: "ClipShorts", tagline: "Gerador de Legendas" },
   common: {
     loading: "Carregando...",
     back: "Voltar",
@@ -156,7 +156,7 @@ const pt = {
     items: {
       openai: {
         title: "Como pegar sua chave API da OpenAI",
-        desc: "Passo a passo para criar conta na OpenAI, gerar uma API key e colar em Configurações do ClipSaaS. A cobrança do uso de IA vai direto na sua conta OpenAI.",
+        desc: "Passo a passo para criar conta na OpenAI, gerar uma API key e colar em Configurações do ClipShorts. A cobrança do uso de IA vai direto na sua conta OpenAI.",
         steps: {
           "0": "Assista ao vídeo ao lado com o passo a passo completo.",
           "1": "Copie a chave que começa com sk-...",
@@ -167,7 +167,7 @@ const pt = {
       },
       howto: {
         title: "COMO USAR A FERRAMENTA",
-        desc: "Tour completo pelo ClipSaaS: enviar vídeo, transcrever, editar legendas, escolher estilo, renderizar e baixar o arquivo final.",
+        desc: "Tour completo pelo ClipShorts: enviar vídeo, transcrever, editar legendas, escolher estilo, renderizar e baixar o arquivo final.",
         steps: {
           "0": "Assista ao vídeo ao lado com o passo a passo completo.",
           "1": "Envie um vídeo na página inicial e aguarde a transcrição.",

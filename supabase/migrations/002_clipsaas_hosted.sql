@@ -1,4 +1,4 @@
--- ClipSaaS hosted: extend existing profiles + new tables (safe on shared Supabase)
+-- ClipShorts hosted: extend existing profiles + new tables (safe on shared Supabase)
 
 -- Colunas novas em profiles (app legado mantém name, etc.)
 alter table public.profiles
