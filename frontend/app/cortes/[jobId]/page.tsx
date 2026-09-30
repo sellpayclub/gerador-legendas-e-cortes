@@ -1156,6 +1156,15 @@ export default function CortesPage() {
                   )}
 
                   <div className="space-y-3 p-3">
+                    {!exportFormat.startsWith("choquei_") && (
+                      <Section title={copy("Headline")} description={copy("Título na faixa superior — Enter quebra linha")}>
+                        <p className="text-sm text-zinc-300">{copy("Selecione um template Choquei abaixo para adicionar headline. Seu texto é preservado ao trocar de formato.")}</p>
+                        <div className="flex flex-wrap gap-2">
+                          <button type="button" onClick={() => handleFormatChange("choquei_image")} className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white">{copy("Choquei (imagem)")}</button>
+                          <button type="button" onClick={() => handleFormatChange("choquei_video")} className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white">{copy("Choquei (vídeo)")}</button>
+                        </div>
+                      </Section>
+                    )}
                     <Section step={1} title={copy("Formato do vídeo")} description={copy("Proporção e template de exportação")}>
                       <ClipFormatPicker
                         format={exportFormat}

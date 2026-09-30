@@ -91,6 +91,46 @@ export default function TemplatePanel({
 
   return (
     <div className="flex flex-col gap-4 p-4">
+
+            <Section title={copy("Headline")} description={copy("Título na faixa superior — Enter quebra linha")} collapsible defaultOpen>
+              <div className="space-y-3">
+                {!isChoquei && (
+                  <div className="space-y-2 text-sm text-zinc-300">
+                    <p>{copy("Selecione um template Choquei abaixo para adicionar headline. Seu texto é preservado ao trocar de formato.")}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {templates.filter((item) => item.id.startsWith("choquei_")).map((item) => (
+                        <button key={item.id} type="button" onClick={() => onTemplateChange(item.id)}
+                          className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white">
+                          {copy(item.name)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <Field label={copy("Texto")}>
+                  <textarea
+                    disabled={!isChoquei}
+                    value={compose.headline_text ?? ""}
+                    onChange={(e) => onComposeChange({ headline_text: e.target.value })}
+                    rows={3}
+                    className={`${inputClass} leading-snug`}
+                    placeholder={copy("Digite o título — Enter para quebrar linha")}
+                  />
+                </Field>
+                <Field label={copy("Estilo")}>
+                  <select
+                    disabled={!isChoquei}
+                    value={compose.headline_style ?? "bold_red"}
+                    onChange={(e) => onComposeChange({ headline_style: e.target.value })}
+                    className={inputClass}
+                  >
+                    <option value="bold_red">{t("template.styleBoldRed")}</option>
+                    <option value="simple">{t("template.styleSimple")}</option>
+                  </select>
+                </Field>
+              </div>
+            </Section>
+
       <Section title={copy("Template")} description={copy("Formato e layout do vídeo exportado")}>
         <div className="grid grid-cols-1 gap-2">
           <TemplateCard
@@ -118,32 +158,6 @@ export default function TemplatePanel({
               onUpload={() => fileInputRef.current?.click()}
               onRemove={() => overlayAsset && handleRemoveAsset(overlayAsset)}
             />
-          )}
-
-          {isChoquei && (
-            <Section title={copy("Headline")} description={copy("Título na faixa superior — Enter quebra linha")} collapsible defaultOpen>
-              <div className="space-y-3">
-                <Field label={copy("Texto")}>
-                  <textarea
-                    value={compose.headline_text ?? ""}
-                    onChange={(e) => onComposeChange({ headline_text: e.target.value })}
-                    rows={3}
-                    className={`${inputClass} leading-snug`}
-                    placeholder={copy("Digite o título — Enter para quebrar linha")}
-                  />
-                </Field>
-                <Field label={copy("Estilo")}>
-                  <select
-                    value={compose.headline_style ?? "bold_red"}
-                    onChange={(e) => onComposeChange({ headline_style: e.target.value })}
-                    className={inputClass}
-                  >
-                    <option value="bold_red">{t("template.styleBoldRed")}</option>
-                    <option value="simple">{t("template.styleSimple")}</option>
-                  </select>
-                </Field>
-              </div>
-            </Section>
           )}
 
           <UploadSection

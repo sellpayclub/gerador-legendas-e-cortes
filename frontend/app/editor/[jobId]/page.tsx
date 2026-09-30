@@ -348,7 +348,6 @@ export default function EditorPage() {
       overlay_pos_y: 0.5,
       video_pos_x: 0.5,
       video_pos_y: 0.5,
-      ...(id.startsWith("choquei_") ? {} : { headline_text: null }),
     }));
   }, []);
 
@@ -490,9 +489,9 @@ export default function EditorPage() {
         </div>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-row gap-3 overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto lg:flex-row lg:overflow-hidden">
         {/* Esquerda: vídeo/template sempre visível */}
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border border-border bg-panel/30 p-3">
+        <div className="flex min-h-[280px] min-w-0 flex-1 flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border border-border bg-panel/30 p-3 lg:min-h-0">
           <div className="flex min-h-0 w-full flex-1 items-center justify-center overflow-hidden">
             {job && selectedTemplate && templates.find(t => t.id === selectedTemplate) ? (
               <TemplatePreview
@@ -546,7 +545,7 @@ export default function EditorPage() {
         </div>
 
         {/* Direita: ajustes com scroll próprio */}
-        <div className="flex min-h-0 w-[360px] shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-panel sm:w-[400px] xl:w-[480px]">
+        <div className="flex min-h-[420px] w-full shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-panel lg:min-h-0 lg:w-[400px] xl:w-[480px]">
           <TabBar tabs={EDITOR_TABS} active={tab} onChange={setTab} />
 
           <div className="min-h-0 flex-1 overflow-y-auto">
