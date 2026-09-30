@@ -1059,6 +1059,7 @@ export default function CortesPage() {
               highlightEnabled={highlightEnabled}
               highlightPhrases={highlightPhrases}
               compose={previewCompose}
+              onHeadlinePosChange={(p) => handleComposeChange({ headline_x: p.x, headline_y: p.y })}
               videoPos={videoPos}
               onVideoPosChange={handleVideoPosChange}
               onOverlayPosChange={handleOverlayPosChange}
@@ -1097,6 +1098,7 @@ export default function CortesPage() {
               }
               videoObjectFit={step >= 2 && exportFormat !== "original" ? "cover" : "contain"}
               compose={step >= 2 ? previewCompose : undefined}
+              onHeadlinePosChange={step >= 2 ? (p) => handleComposeChange({ headline_x: p.x, headline_y: p.y }) : undefined}
             />
           ) : null}
           </div>

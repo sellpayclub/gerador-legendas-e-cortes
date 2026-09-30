@@ -1,4 +1,5 @@
 "use client";
+import { useHeadlineDrag } from "@/lib/useHeadlineDrag";
 import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
 
 import { copy } from "@/lib/i18n/copy";
@@ -52,6 +53,7 @@ type Props = {
   videoPos?: { x: number; y: number };
   onVideoPosChange?: (pos: { x: number; y: number }) => void;
   compose?: ComposeSettings;
+  onHeadlinePosChange?: (pos: { x: number; y: number }) => void;
   onLogoPosChange?: (pos: { x: number; y: number }) => void;
   onOverlayPosChange?: (pos: { x: number; y: number }) => void;
   onSubtitlePositionChange?: (pos: { x: number; y: number }) => void;
@@ -70,7 +72,7 @@ export default function TemplatePreview({
   jobId, template, overlayAsset, words, style, wordsPerLine, currentTime,
   duration = 0, progressTime,
   highlightEnabled = false, highlightPhrases = [],
-  videoPos, onVideoPosChange, compose, onLogoPosChange, onOverlayPosChange,
+  videoPos, onVideoPosChange, compose, onHeadlinePosChange, onLogoPosChange, onOverlayPosChange,
   onSubtitlePositionChange, registerControls,
   compact = false,
   compactMaxHeight,
@@ -240,6 +242,7 @@ export default function TemplatePreview({
     return layoutHeadlineLines(headlineDisplay, innerW, headlineCssFs).join("\n");
   }, [headlineDisplay, frameWidth, headlineWidthPct, headlinePadX, headlineCssFs]);
   const progressHeightPct = clampProgressHeightPct(compose?.progress_height_pct);
+  const headlineDrag = useHeadlineDrag(compose?.headline_x ?? 0.5, compose?.headline_y ?? (tpl.overlay_region.h / tpl.height || 0.15), headlineWidthPct, onHeadlinePosChange);
   const showHeadline = Boolean(headlineWrapped && !isHstack);
   const divPct = isHstack ? 0 : (tpl.overlay_region.h / tpl.height) * 100;
   const overlayPos = {
@@ -506,7 +509,8 @@ export default function TemplatePreview({
 
       {showHeadline && (
         <div
-          className="pointer-events-none absolute z-20 font-bold"
+          {...headlineDrag}
+          className="absolute z-20 font-bold"
           style={{
             top: `${(compose?.headline_y ?? (divPct > 0 ? divPct / 100 : 0.15)) * 100}%`,
             width: `${headlineWidthPct * 100}%`,
@@ -519,6 +523,8 @@ export default function TemplatePreview({
             fontWeight: headlineStyle === "bold_red" ? 700 : 400,
             lineHeight: 1.1,
             letterSpacing: "normal",
+            pointerEvents: onHeadlinePosChange ? "auto" : "none",
+            cursor: onHeadlinePosChange ? "grab" : undefined, touchAction: "none", userSelect: "none",
             padding: `${headlinePad}px ${headlinePadX}px`,
             whiteSpace: "pre-wrap",
             wordBreak: "normal",

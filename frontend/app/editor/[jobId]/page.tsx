@@ -510,6 +510,7 @@ export default function EditorPage() {
                 videoPos={videoPos}
                 onVideoPosChange={setVideoPos}
                 compose={compose}
+                onHeadlinePosChange={(p) => setCompose((c) => ({ ...c, headline_x: p.x, headline_y: p.y }))}
                 onLogoPosChange={(p) => setCompose((c) => ({ ...c, logo_x: p.x, logo_y: p.y }))}
                 onOverlayPosChange={(p) => setCompose((c) => ({ ...c, overlay_pos_x: p.x, overlay_pos_y: p.y }))}
                 onSubtitlePositionChange={(pos) => {
@@ -533,6 +534,7 @@ export default function EditorPage() {
                 highlightEnabled={highlightEnabled}
                 highlightPhrases={highlightPhrases}
                 compose={compose}
+                onHeadlinePosChange={(p) => setCompose((c) => ({ ...c, headline_x: p.x, headline_y: p.y }))}
                 registerControls={(c) => (videoControlsRef.current = c)}
               />
             )}

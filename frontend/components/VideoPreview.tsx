@@ -1,4 +1,5 @@
 "use client";
+import { useHeadlineDrag } from "@/lib/useHeadlineDrag";
 import { useI18n as useLocaleSubscription } from "@/lib/i18n/context";
 
 import { copy } from "@/lib/i18n/copy";
@@ -62,6 +63,7 @@ type Props = {
   /** When "cover", simulates 9:16 crop (vertical export preview). */
   videoObjectFit?: "contain" | "cover";
   compose?: ComposeSettings;
+  onHeadlinePosChange?: (pos: { x: number; y: number }) => void;
   progressTime?: number;
 };
 
@@ -92,8 +94,10 @@ export default function VideoPreview({
   activeClip = null,
   videoObjectFit = "contain",
   compose,
+  onHeadlinePosChange,
   progressTime,
 }: Props & { isPlaceholder?: boolean }) {
+  const headlineDrag = useHeadlineDrag(compose?.headline_x ?? 0.5, compose?.headline_y ?? 0.15, clampHeadlineWidthPct(compose?.headline_max_width_pct), onHeadlinePosChange);
   useLocaleSubscription();
   const accessToken = useAccessToken();
   const hosted = isMultiTenant();
@@ -335,7 +339,7 @@ export default function VideoPreview({
           const pad = headlineBoxBorder(compose.headline_style) * scale;
           const text = headlineDisplayText(compose.headline_text, compose.headline_style);
           const lines = layoutHeadlineLines(text, Math.max(20, videoRect.w * pct - pad * 2), fs);
-          return <div className="absolute z-20" style={{
+          return <div {...headlineDrag} className="absolute z-20" style={{
             left: `${(compose.headline_x ?? 0.5) * (1 - pct) * 100}%`,
             top: `${(compose.headline_y ?? 0.15) * 100}%`,
             transform: "translateY(-50%)", width: `${pct * 100}%`,
@@ -345,7 +349,8 @@ export default function VideoPreview({
             overflowWrap: "break-word", textAlign: compose.headline_align ?? "center",
             background: compose.headline_bg ?? "#E31B23", color: compose.headline_color ?? "#FFFFFF",
             padding: pad, borderRadius: headlineBorderRadius(compose.headline_style, scale),
-            pointerEvents: "none",
+            pointerEvents: onHeadlinePosChange ? "auto" : "none",
+            cursor: onHeadlinePosChange ? "grab" : undefined, touchAction: "none", userSelect: "none",
           }}>{lines.join("\n")}</div>;
         })()}
 
