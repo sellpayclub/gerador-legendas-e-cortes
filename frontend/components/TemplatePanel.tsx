@@ -94,22 +94,8 @@ export default function TemplatePanel({
 
             <Section title={copy("Headline")} description={copy("Título na faixa superior — Enter quebra linha")} collapsible defaultOpen>
               <div className="space-y-3">
-                {!isChoquei && (
-                  <div className="space-y-2 text-sm text-zinc-300">
-                    <p>{copy("Selecione um template Choquei abaixo para adicionar headline. Seu texto é preservado ao trocar de formato.")}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {templates.filter((item) => item.id.startsWith("choquei_")).map((item) => (
-                        <button key={item.id} type="button" onClick={() => onTemplateChange(item.id)}
-                          className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white">
-                          {copy(item.name)}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 <Field label={copy("Texto")}>
                   <textarea
-                    disabled={!isChoquei}
                     value={compose.headline_text ?? ""}
                     onChange={(e) => onComposeChange({ headline_text: e.target.value })}
                     rows={3}
@@ -119,7 +105,6 @@ export default function TemplatePanel({
                 </Field>
                 <Field label={copy("Estilo")}>
                   <select
-                    disabled={!isChoquei}
                     value={compose.headline_style ?? "bold_red"}
                     onChange={(e) => onComposeChange({ headline_style: e.target.value })}
                     className={inputClass}
@@ -129,6 +114,7 @@ export default function TemplatePanel({
                   </select>
                 </Field>
               </div>
+              <ComposeStyleControls compose={compose} onChange={onComposeChange} showHeadline inlineHeadline />
             </Section>
 
       <Section title={copy("Template")} description={copy("Formato e layout do vídeo exportado")}>
@@ -200,7 +186,6 @@ export default function TemplatePanel({
           <ComposeStyleControls
             compose={compose}
             onChange={onComposeChange}
-            showHeadline={isChoquei}
             showProgress
             showOverlayCrop={Boolean(tpl?.needs_overlay)}
           />

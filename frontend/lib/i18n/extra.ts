@@ -1,6 +1,7 @@
 /** Additional interface copy. Columns: Portuguese | English | Spanish. */
 export const extraCopy = `
-Selecione um template Choquei abaixo para adicionar headline. Seu texto é preservado ao trocar de formato.|Select a Choquei template below to add a headline. Your text is preserved when switching formats.|Selecciona un template Choquei abajo para añadir un título. Tu texto se conserva al cambiar de formato.
+Posição X|Horizontal position|Posición horizontal
+Posição Y|Vertical position|Posición vertical
 Não foi possível carregar as vendas.|Could not load sales.|No se pudieron cargar las ventas.
 Carregando painel admin...|Loading admin dashboard...|Cargando panel de administración...
 Painel Admin|Admin dashboard|Panel de administración

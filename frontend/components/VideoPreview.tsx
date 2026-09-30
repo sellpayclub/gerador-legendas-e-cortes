@@ -25,7 +25,7 @@ import {
   trimWordEnds,
 } from "@/lib/timing";
 import { fakeProgress } from "@/lib/fakeProgress";
-import { clampProgressHeightPct } from "@/lib/composeLayout";
+import { clampHeadlineWidthPct, headlineFontSize, headlineBoxBorder, headlineBorderRadius, headlineDisplayText, layoutHeadlineLines, clampProgressHeightPct } from "@/lib/composeLayout";
 import type { ComposeSettings } from "@/lib/api";
 
 /** Shown on the preview while transcription is pending or returned empty. */
@@ -327,6 +327,27 @@ export default function VideoPreview({
           <div className="absolute inset-0 flex h-full min-h-[120px] w-full items-center justify-center text-sm text-zinc-500">
             {copy("Carregando vídeo…")}</div>
         )}
+
+        {compose?.headline_text?.trim() && videoRect && (() => {
+          const pct = clampHeadlineWidthPct(compose.headline_max_width_pct);
+          const scale = videoRect.w / width;
+          const fs = headlineFontSize(compose.headline_font_size) * scale;
+          const pad = headlineBoxBorder(compose.headline_style) * scale;
+          const text = headlineDisplayText(compose.headline_text, compose.headline_style);
+          const lines = layoutHeadlineLines(text, Math.max(20, videoRect.w * pct - pad * 2), fs);
+          return <div className="absolute z-20" style={{
+            left: `${(compose.headline_x ?? 0.5) * (1 - pct) * 100}%`,
+            top: `${(compose.headline_y ?? 0.15) * 100}%`,
+            transform: "translateY(-50%)", width: `${pct * 100}%`,
+            fontFamily: 'var(--font-roboto), "Noto Color Emoji", sans-serif', fontSize: fs,
+            fontWeight: compose.headline_style === "bold_red" ? 700 : 400,
+            lineHeight: 1.1, letterSpacing: "normal", whiteSpace: "pre-wrap",
+            overflowWrap: "break-word", textAlign: compose.headline_align ?? "center",
+            background: compose.headline_bg ?? "#E31B23", color: compose.headline_color ?? "#FFFFFF",
+            padding: pad, borderRadius: headlineBorderRadius(compose.headline_style, scale),
+            pointerEvents: "none",
+          }}>{lines.join("\n")}</div>;
+        })()}
 
         {/* Hero phrase — big, centered */}
         {showHero && heroLayout && videoRect && (

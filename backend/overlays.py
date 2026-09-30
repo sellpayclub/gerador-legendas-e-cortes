@@ -54,6 +54,8 @@ class ComposeExtras:
     headline_font_size: int = 42
     headline_align: str = "center"
     headline_max_width_pct: float = 0.85
+    headline_x: float = 0.5
+    headline_y: float | None = None
     overlay_pos_x: float = 0.5
     overlay_pos_y: float = 0.5
     instagram: InstagramHeader | None = None
@@ -96,6 +98,8 @@ class ComposeExtras:
             headline_font_size=int(d.get("headline_font_size") or 42),
             headline_align=str(d.get("headline_align") or "center"),
             headline_max_width_pct=float(d.get("headline_max_width_pct", 0.85)),
+            headline_x=max(0.0, min(1.0, float(d.get("headline_x", 0.5)))),
+            headline_y=max(0.0, min(1.0, float(d["headline_y"]))) if d.get("headline_y") is not None else None,
             overlay_pos_x=float(d.get("overlay_pos_x", 0.5)),
             overlay_pos_y=float(d.get("overlay_pos_y", 0.5)),
             instagram=ig,

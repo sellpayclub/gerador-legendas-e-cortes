@@ -14,6 +14,7 @@ type Props = {
   compose: ComposeSettings;
   onChange: (patch: Partial<ComposeSettings>) => void;
   showHeadline?: boolean;
+  inlineHeadline?: boolean;
   showInstagram?: boolean;
   showProgress?: boolean;
   showOverlayCrop?: boolean;
@@ -53,14 +54,15 @@ function RangeField({
 }
 
 export default function ComposeStyleControls({
-  compose, onChange, showHeadline, showInstagram, showProgress, showOverlayCrop,
+  compose, onChange, showHeadline, inlineHeadline, showInstagram, showProgress, showOverlayCrop,
 }: Props) {
   useLocaleSubscription();
   const { t } = useI18n();
   return (
     <div className="space-y-3 p-3">
       {showHeadline && (
-        <Section title={copy("Headline")} description={copy("Fonte, largura e cores")} collapsible defaultOpen>
+        <div className="space-y-3">
+          {!inlineHeadline && <h3 className="text-sm font-semibold">{copy("Headline")}</h3>}
           <div className="space-y-3">
             <RangeField label={`${t("common.size")} fonte`} min={24} max={72} value={compose.headline_font_size ?? 42}
               onChange={(v) => onChange({ headline_font_size: v })} unit="px" />
@@ -77,12 +79,16 @@ export default function ComposeStyleControls({
                 <option value="right">{t("style.alignRight")}</option>
               </select>
             </label>
+            <RangeField label={copy("Posição X")} min={0} max={100} value={Math.round((compose.headline_x ?? 0.5) * 100)}
+              onChange={(v) => onChange({ headline_x: v / 100 })} unit="%" />
+            <RangeField label={copy("Posição Y")} min={0} max={100} value={Math.round((compose.headline_y ?? 0.15) * 100)}
+              onChange={(v) => onChange({ headline_y: v / 100 })} unit="%" />
             <ColorField label={t("common.background")} value={compose.headline_bg ?? "#E31B23"}
               onChange={(v) => onChange({ headline_bg: v })} />
             <ColorField label={t("common.text")} value={compose.headline_color ?? "#FFFFFF"}
               onChange={(v) => onChange({ headline_color: v })} />
           </div>
-        </Section>
+        </div>
       )}
 
       {showInstagram && (

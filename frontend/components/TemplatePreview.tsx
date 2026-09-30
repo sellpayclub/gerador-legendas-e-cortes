@@ -240,7 +240,7 @@ export default function TemplatePreview({
     return layoutHeadlineLines(headlineDisplay, innerW, headlineCssFs).join("\n");
   }, [headlineDisplay, frameWidth, headlineWidthPct, headlinePadX, headlineCssFs]);
   const progressHeightPct = clampProgressHeightPct(compose?.progress_height_pct);
-  const showHeadline = Boolean(headlineWrapped && !isHstack && tpl.id.startsWith("choquei_"));
+  const showHeadline = Boolean(headlineWrapped && !isHstack);
   const divPct = isHstack ? 0 : (tpl.overlay_region.h / tpl.height) * 100;
   const overlayPos = {
     x: compose?.overlay_pos_x ?? 0.5,
@@ -508,16 +508,17 @@ export default function TemplatePreview({
         <div
           className="pointer-events-none absolute z-20 font-bold"
           style={{
-            top: `${divPct}%`,
+            top: `${(compose?.headline_y ?? (divPct > 0 ? divPct / 100 : 0.15)) * 100}%`,
             width: `${headlineWidthPct * 100}%`,
             boxSizing: "border-box",
-            left: headlineAlign === "left" ? "2%" : headlineAlign === "right" ? "auto" : "50%",
-            right: headlineAlign === "right" ? "2%" : "auto",
-            transform: headlineAlign === "center" ? "translate(-50%, -50%)" : "translateY(-50%)",
+            left: `${(compose?.headline_x ?? 0.5) * (1 - headlineWidthPct) * 100}%`,
+            right: "auto",
+            transform: "translateY(-50%)",
             fontSize: `${headlineCssFs}px`,
             fontFamily: 'var(--font-roboto), "Noto Color Emoji", sans-serif',
-            fontWeight: 700,
-            lineHeight: 1.2,
+            fontWeight: headlineStyle === "bold_red" ? 700 : 400,
+            lineHeight: 1.1,
+            letterSpacing: "normal",
             padding: `${headlinePad}px ${headlinePadX}px`,
             whiteSpace: "pre-wrap",
             wordBreak: "normal",

@@ -41,16 +41,12 @@ def _is_image(p: Path) -> bool:
 
 def _headline_overlay_expr(extras: ComposeExtras, tpl: TemplateDef) -> tuple[str, str]:
     """Return (x_expr, y_expr) for centering headline PNG on the template division."""
-    y_div = tpl.overlay_region.h
-    align = extras.headline_align or "center"
-    if align == "left":
-        x_expr = "40"
-    elif align == "right":
-        x_expr = "W-w-40"
-    else:
-        x_expr = "(W-w)/2"
-    y_expr = f"{y_div}-h/2"
-    return x_expr, y_expr
+    x = max(0.0, min(1.0, extras.headline_x))
+    y = extras.headline_y
+    if y is None:
+        y = tpl.overlay_region.h / tpl.height if tpl.overlay_region.h else 0.15
+    return f"(W-w)*{x:.6f}", f"max(0,min(H-h,H*{y:.6f}-h/2))"
+
 
 
 def _progress_overlay_chain(
@@ -387,7 +383,7 @@ def render_compose(
             caption_size=ig.caption_size if ig else 28,
         )
 
-    if extras and extras.headline_text and tpl.id.startswith("choquei_"):
+    if extras and extras.headline_text:
         tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
         tmp.close()
         tmp_files.append(tmp.name)

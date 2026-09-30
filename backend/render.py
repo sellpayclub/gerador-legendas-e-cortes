@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import platform
 import subprocess
+import tempfile
 from functools import lru_cache
 from pathlib import Path
 from typing import Callable, Optional
@@ -42,6 +43,7 @@ def _build_video_chain(
     duration: float,
     canvas_w: int,
     canvas_h: int,
+    headline_png: Path | None = None,
 ) -> str:
     current = in_label
     parts: list[str] = []
@@ -61,6 +63,12 @@ def _build_video_chain(
     # Burn the regular captions and the dramatic phrase after the blur.
     parts.append(f"[{current}]{_ass_filter(ass_path)}[vass]")
     current = "vass"
+
+    if headline_png is not None and extras:
+        x = max(0.0, min(1.0, extras.headline_x))
+        y = extras.headline_y if extras.headline_y is not None else 0.15
+        parts.append(f"[{current}][1:v]overlay=x='(W-w)*{x:.6f}':y='max(0,min(H-h,H*{y:.6f}-h/2))'[vheadline]")
+        current = "vheadline"
 
     # progress bar fake
     if extras and extras.progress_enabled:
@@ -91,18 +99,22 @@ def _build_cmd(
     canvas_h: int,
     highlight_phrases: list[dict] | None = None,
     extras: 'ComposeExtras' | None = None,
+    headline_png: Path | None = None,
 ) -> list[str]:
     # Highlight blur needs filter_complex even without a template or progress
     # bar. The previous condition meant the effect was silently skipped for
     # the standard subtitle export.
-    use_complex = bool((extras and extras.progress_enabled) or highlight_phrases)
+    use_complex = bool((extras and extras.progress_enabled) or highlight_phrases or headline_png)
 
     # Emit newline-delimited progress so the interface can update during long
     # renders instead of waiting for FFmpeg's final carriage-return status.
     cmd: list[str] = [ffmpeg_bin(), "-y", "-progress", "pipe:2", "-nostats", "-i", str(video)]
 
+    if headline_png is not None:
+        cmd += ["-loop", "1", "-t", f"{max(0.001, duration):.3f}", "-i", str(headline_png)]
+
     if use_complex:
-        vchain = _build_video_chain("0:v", "vout", ass, highlight_phrases, extras, duration, canvas_w, canvas_h)
+        vchain = _build_video_chain("0:v", "vout", ass, highlight_phrases, extras, duration, canvas_w, canvas_h, headline_png)
         cmd += ["-filter_complex", vchain, "-map", "[vout]", "-map", "0:a?"]
     else:
         cmd += ["-vf", _ass_filter(ass), "-map", "0:v", "-map", "0:a?"]
@@ -142,6 +154,7 @@ def _run_ffmpeg(
     finally:
         if proc.poll() is None:
             proc.kill()
+        proc.stderr.close()
 
 
 def render_video(
@@ -162,23 +175,29 @@ def render_video(
     if out_path.exists():
         out_path.unlink()
 
-    hw = _hw_encoder_available()
-    cmd = _build_cmd(video, ass_path, out_path, hw, duration, canvas_w, canvas_h, highlight_phrases, extras)
-    if on_progress:
-        on_progress(0.0, f"Renderizando ({'HW' if hw else 'CPU'})...")
-
-    rc, tail = _run_ffmpeg(cmd, duration, on_progress)
-    if rc != 0 and hw:
-        if out_path.exists():
-            out_path.unlink()
+    with tempfile.TemporaryDirectory(prefix="clipshorts-headline-") as tmp:
+        headline_png = None
+        if extras and extras.headline_text and extras.headline_text.strip():
+            from overlays import render_headline_png
+            headline_png = Path(tmp) / "headline.png"
+            render_headline_png(headline_png, canvas_width=canvas_w, extras=extras)
+        hw = _hw_encoder_available()
+        cmd = _build_cmd(video, ass_path, out_path, hw, duration, canvas_w, canvas_h, highlight_phrases, extras, headline_png)
         if on_progress:
-            on_progress(0.0, "Encoder de hardware indisponível; usando CPU...")
-        cpu_cmd = _build_cmd(
-            video, ass_path, out_path, False, duration, canvas_w, canvas_h,
-            highlight_phrases, extras,
-        )
-        rc, tail = _run_ffmpeg(cpu_cmd, duration, on_progress)
-    if rc != 0:
-        raise RuntimeError(f"ffmpeg exited with {rc}: {tail}")
-    if on_progress:
-        on_progress(1.0, "Render completo")
+            on_progress(0.0, f"Renderizando ({'HW' if hw else 'CPU'})...")
+
+        rc, tail = _run_ffmpeg(cmd, duration, on_progress)
+        if rc != 0 and hw:
+            if out_path.exists():
+                out_path.unlink()
+            if on_progress:
+                on_progress(0.0, "Encoder de hardware indisponível; usando CPU...")
+            cpu_cmd = _build_cmd(
+                video, ass_path, out_path, False, duration, canvas_w, canvas_h,
+                highlight_phrases, extras, headline_png,
+            )
+            rc, tail = _run_ffmpeg(cpu_cmd, duration, on_progress)
+        if rc != 0:
+            raise RuntimeError(f"ffmpeg exited with {rc}: {tail}")
+        if on_progress:
+            on_progress(1.0, "Render completo")

@@ -78,6 +78,8 @@ export type ComposeSettings = {
   headline_font_size?: number;
   headline_align?: "left" | "center" | "right";
   headline_max_width_pct?: number;
+  headline_x?: number;
+  headline_y?: number;
   profile_asset?: string | null;
   instagram_username?: string;
   instagram_caption?: string;
@@ -138,6 +140,8 @@ export type ClipsData = {
   headline_font_size?: number;
   headline_align?: string;
   headline_max_width_pct?: number;
+  headline_x?: number;
+  headline_y?: number;
   overlay_pos_x?: number;
   overlay_pos_y?: number;
   video_pos_x?: number;
@@ -175,6 +179,8 @@ export type ClipsRenderRequest = {
   headline_font_size?: number;
   headline_align?: string;
   headline_max_width_pct?: number;
+  headline_x?: number;
+  headline_y?: number;
   overlay_pos_x?: number;
   overlay_pos_y?: number;
   video_pos_x?: number;
@@ -211,6 +217,8 @@ export type ClipsSettings = {
   headline_font_size?: number;
   headline_align?: string;
   headline_max_width_pct?: number;
+  headline_x?: number;
+  headline_y?: number;
   overlay_pos_x?: number;
   overlay_pos_y?: number;
   video_pos_x?: number;
@@ -274,6 +282,8 @@ export type RenderRequest = {
   headline_font_size?: number;
   headline_align?: string;
   headline_max_width_pct?: number;
+  headline_x?: number;
+  headline_y?: number;
   instagram_username?: string | null;
   instagram_caption?: string | null;
   logo_asset?: string | null;

@@ -87,7 +87,7 @@ export default function ClipComposePanel({
         />
       )}
 
-      {isChoquei && onClipTextChange && (
+      {onClipTextChange && (
         <>
           <Field label={clipTextLabel ?? copy("Headline do corte")}>
             <textarea
@@ -108,6 +108,7 @@ export default function ClipComposePanel({
               <option value="simple">{t("template.styleSimple")}</option>
             </select>
           </Field>
+          <ComposeStyleControls compose={compose} onChange={onComposeChange} showHeadline inlineHeadline />
         </>
       )}
 
@@ -159,7 +160,6 @@ export default function ClipComposePanel({
       <ComposeStyleControls
         compose={compose}
         onChange={onComposeChange}
-        showHeadline={isChoquei}
         showProgress
         showOverlayCrop={needsOverlay(format)}
       />

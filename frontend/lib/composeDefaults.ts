@@ -7,6 +7,8 @@ export const DEFAULT_COMPOSE: ComposeSettings = {
   headline_font_size: 42,
   headline_align: "center",
   headline_max_width_pct: 0.85,
+  headline_x: 0.5,
+  headline_y: 0.15,
   logo_x: 0.85,
   logo_y: 0.78,
   logo_scale: 0.18,

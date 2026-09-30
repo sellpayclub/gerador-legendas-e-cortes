@@ -247,6 +247,8 @@ export default function CortesPage() {
           headline_font_size: clipsData?.headline_font_size ?? DEFAULT_COMPOSE_LOCAL.headline_font_size,
           headline_align: (clipsData?.headline_align as ComposeSettings["headline_align"]) ?? DEFAULT_COMPOSE_LOCAL.headline_align,
           headline_max_width_pct: clipsData?.headline_max_width_pct ?? DEFAULT_COMPOSE_LOCAL.headline_max_width_pct,
+          headline_x: clipsData?.headline_x ?? DEFAULT_COMPOSE_LOCAL.headline_x,
+          headline_y: clipsData?.headline_y ?? DEFAULT_COMPOSE_LOCAL.headline_y,
           overlay_pos_x: clipsData?.overlay_pos_x ?? DEFAULT_COMPOSE_LOCAL.overlay_pos_x,
           overlay_pos_y: clipsData?.overlay_pos_y ?? DEFAULT_COMPOSE_LOCAL.overlay_pos_y,
           video_pos_x: clipsData?.video_pos_x ?? DEFAULT_COMPOSE_LOCAL.video_pos_x,
@@ -542,6 +544,8 @@ export default function CortesPage() {
           headline_font_size: composePayload.headline_font_size,
           headline_align: composePayload.headline_align,
           headline_max_width_pct: composePayload.headline_max_width_pct,
+          headline_x: composePayload.headline_x,
+          headline_y: composePayload.headline_y,
           overlay_pos_x: composePayload.overlay_pos_x,
           overlay_pos_y: composePayload.overlay_pos_y,
           video_pos_x: composePayload.video_pos_x ?? videoPos.x,
@@ -859,6 +863,8 @@ export default function CortesPage() {
       headline_font_size: compose.headline_font_size,
       headline_align: compose.headline_align,
       headline_max_width_pct: compose.headline_max_width_pct,
+      headline_x: compose.headline_x,
+      headline_y: compose.headline_y,
       overlay_pos_x: compose.overlay_pos_x,
       overlay_pos_y: compose.overlay_pos_y,
       video_pos_x: videoPos.x,
@@ -1090,6 +1096,7 @@ export default function CortesPage() {
                     : null
               }
               videoObjectFit={step >= 2 && exportFormat !== "original" ? "cover" : "contain"}
+              compose={step >= 2 ? previewCompose : undefined}
             />
           ) : null}
           </div>
@@ -1156,15 +1163,6 @@ export default function CortesPage() {
                   )}
 
                   <div className="space-y-3 p-3">
-                    {!exportFormat.startsWith("choquei_") && (
-                      <Section title={copy("Headline")} description={copy("Título na faixa superior — Enter quebra linha")}>
-                        <p className="text-sm text-zinc-300">{copy("Selecione um template Choquei abaixo para adicionar headline. Seu texto é preservado ao trocar de formato.")}</p>
-                        <div className="flex flex-wrap gap-2">
-                          <button type="button" onClick={() => handleFormatChange("choquei_image")} className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white">{copy("Choquei (imagem)")}</button>
-                          <button type="button" onClick={() => handleFormatChange("choquei_video")} className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white">{copy("Choquei (vídeo)")}</button>
-                        </div>
-                      </Section>
-                    )}
                     <Section step={1} title={copy("Formato do vídeo")} description={copy("Proporção e template de exportação")}>
                       <ClipFormatPicker
                         format={exportFormat}
@@ -1173,7 +1171,7 @@ export default function CortesPage() {
                       />
                     </Section>
 
-                    {isComposeFormat(exportFormat) && (
+                    {(
                       <Section step={2} title={copy("Composição")} description={copy("Headline, mídia e barra de progresso")}>
                         <ClipComposePanel
                           jobId={jobId}

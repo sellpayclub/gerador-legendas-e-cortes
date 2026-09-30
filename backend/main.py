@@ -286,6 +286,8 @@ class RenderRequest(BaseModel):
     headline_font_size: int = 42
     headline_align: str = "center"
     headline_max_width_pct: float = 0.85
+    headline_x: float = 0.5
+    headline_y: float | None = None
     instagram_username: str | None = None
     instagram_caption: str | None = None
     logo_asset: str | None = None
@@ -349,6 +351,8 @@ class ClipsSettingsUpdate(BaseModel):
     headline_font_size: int | None = None
     headline_align: str | None = None
     headline_max_width_pct: float | None = None
+    headline_x: float | None = None
+    headline_y: float | None = None
     overlay_pos_x: float | None = None
     overlay_pos_y: float | None = None
     video_pos_x: float | None = None
@@ -401,6 +405,8 @@ class ClipsRenderRequest(BaseModel):
     headline_font_size: int | None = None
     headline_align: str | None = None
     headline_max_width_pct: float | None = None
+    headline_x: float | None = None
+    headline_y: float | None = None
     overlay_pos_x: float | None = None
     overlay_pos_y: float | None = None
     video_pos_x: float | None = None
@@ -437,6 +443,8 @@ class SingleClipRenderRequest(BaseModel):
     headline_font_size: int | None = None
     headline_align: str | None = None
     headline_max_width_pct: float | None = None
+    headline_x: float | None = None
+    headline_y: float | None = None
     overlay_pos_x: float | None = None
     overlay_pos_y: float | None = None
     video_pos_x: float | None = None
@@ -463,6 +471,8 @@ def _compose_dict_from_saved(saved: dict) -> dict:
         "headline_font_size": saved.get("headline_font_size", 42),
         "headline_align": saved.get("headline_align", "center"),
         "headline_max_width_pct": saved.get("headline_max_width_pct", 0.85),
+        "headline_x": saved.get("headline_x", 0.5),
+        "headline_y": saved.get("headline_y", 0.15),
         "overlay_pos_x": saved.get("overlay_pos_x", 0.5),
         "overlay_pos_y": saved.get("overlay_pos_y", 0.5),
         "video_pos_x": saved.get("video_pos_x", 0.5),
@@ -496,7 +506,7 @@ _COMPOSE_FLAT_KEYS = (
     "overlay_asset", "profile_asset", "instagram_username", "logo_asset",
     "logo_x", "logo_y", "logo_scale", "progress_enabled", "progress_color",
     "progress_height_pct", "headline_style", "headline_bg", "headline_color",
-    "headline_font_size", "headline_align", "headline_max_width_pct", "overlay_pos_x", "overlay_pos_y",
+    "headline_font_size", "headline_align", "headline_max_width_pct", "headline_x", "headline_y", "overlay_pos_x", "overlay_pos_y",
     "video_pos_x", "video_pos_y", "ig_bg_color", "ig_text_color",
     "ig_avatar_size", "ig_username_size", "ig_caption_size",
 )
@@ -521,6 +531,8 @@ def _compose_extras_from_render(body: RenderRequest, job_dir: Path) -> ComposeEx
         "headline_font_size": body.headline_font_size,
         "headline_align": body.headline_align,
         "headline_max_width_pct": body.headline_max_width_pct,
+        "headline_x": body.headline_x,
+        "headline_y": body.headline_y,
         "overlay_pos_x": body.overlay_pos_x,
         "overlay_pos_y": body.overlay_pos_y,
         "logo_asset": body.logo_asset,

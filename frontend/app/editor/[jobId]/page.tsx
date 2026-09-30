@@ -395,6 +395,8 @@ export default function EditorPage() {
         headline_font_size: compose.headline_font_size,
         headline_align: compose.headline_align,
         headline_max_width_pct: compose.headline_max_width_pct,
+        headline_x: compose.headline_x,
+        headline_y: compose.headline_y,
         instagram_username: compose.instagram_username,
         instagram_caption: compose.instagram_caption,
         profile_asset: compose.profile_asset,

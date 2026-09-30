@@ -200,6 +200,14 @@ def render_clip(
 
     phrases_arg = highlight_phrases if highlight_enabled else None
 
+    extras = ComposeExtras.from_dict(compose_opts or {}, job_dir)
+    if clip.get("headline"):
+        extras.headline_text = str(clip["headline"])
+    if clip.get("caption"):
+        if extras.instagram is None:
+            extras.instagram = InstagramHeader()
+        extras.instagram.caption = str(clip["caption"])
+
     if tpl:
         import compose
         overlay_path: Path | None = None
@@ -209,14 +217,6 @@ def render_clip(
                 overlay_path = candidate
         elif tpl.needs_overlay:
             raise RuntimeError("Este template exige mídia de overlay.")
-
-        extras = ComposeExtras.from_dict(compose_opts or {}, job_dir)
-        if clip.get("headline"):
-            extras.headline_text = str(clip["headline"])
-        if clip.get("caption"):
-            if extras.instagram is None:
-                extras.instagram = InstagramHeader()
-            extras.instagram.caption = str(clip["caption"])
 
         compose.render_compose(
             raw_path, overlay_path, ass_path, out_path,
@@ -233,6 +233,9 @@ def render_clip(
             duration=duration,
             on_progress=lambda p, m: on_progress and on_progress(0.25 + p * 0.75, m),
             highlight_phrases=phrases_arg,
+            extras=extras,
+            canvas_w=data["width"],
+            canvas_h=data["height"],
         )
 
     return out_path
